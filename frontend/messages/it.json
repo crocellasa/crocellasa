@@ -1,0 +1,42 @@
+{
+  "common": {
+    "loading": "Caricamento...",
+    "error": "Errore",
+    "success": "Successo"
+  },
+  "portal": {
+    "welcome": "Benvenuto in Alcova Landolina",
+    "checkin": "Check-in",
+    "checkout": "Check-out",
+    "guests": "Ospiti",
+    "accessCodes": "Codici d'Accesso",
+    "mainEntrance": "Portone Principale",
+    "floorDoor": "Porta Piano",
+    "apartmentDoor": "Porta Appartamento",
+    "validFrom": "Valido dalle",
+    "validUntil": "Valido fino alle",
+    "propertyInfo": "Informazioni Appartamento",
+    "address": "Indirizzo",
+    "wifi": "WiFi",
+    "password": "Password",
+    "scanQR": "Scansiona per connetterti",
+    "intercom": "Apri Portone",
+    "intercomSuccess": "Portone aperto!",
+    "intercomError": "Errore nell'apertura del portone",
+    "houseRules": "Regole della Casa",
+    "recycling": "Raccolta Differenziata",
+    "contact": "Contatti",
+    "needHelp": "Hai bisogno di aiuto?",
+    "contactHost": "Contatta l'host",
+    "invalidToken": "Link non valido o scaduto",
+    "bookingCancelled": "Prenotazione cancellata"
+  },
+  "rules": {
+    "title": "Regole della Casa",
+    "quiet": "Silenzio dopo le 22:00",
+    "noSmoking": "Vietato fumare all'interno",
+    "noPets": "Non sono ammessi animali",
+    "checkoutTime": "Check-out entro le 11:00",
+    "recycling": "Segui le regole della raccolta differenziata"
+  }
+}
