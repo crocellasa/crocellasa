@@ -2,12 +2,19 @@
 Notification service for WhatsApp, SMS, Email, and Telegram
 """
 from twilio.rest import Client as TwilioClient
-from telegram import Bot
 from typing import Optional
 from datetime import datetime
 from app.core.config import settings
 from app.core.database import get_supabase
 import logging
+
+# Optional Telegram import (removed due to httpx dependency conflict)
+try:
+    from telegram import Bot
+    TELEGRAM_AVAILABLE = True
+except ImportError:
+    TELEGRAM_AVAILABLE = False
+    Bot = None
 
 logger = logging.getLogger(__name__)
 
@@ -27,10 +34,13 @@ class NotificationService:
             settings.TWILIO_AUTH_TOKEN
         )
 
-        # Telegram Bot
-        self.telegram = Bot(token=settings.TELEGRAM_BOT_TOKEN)
-
-        logger.info("✅ Notification service initialized")
+        # Telegram Bot (optional)
+        if TELEGRAM_AVAILABLE:
+            self.telegram = Bot(token=settings.TELEGRAM_BOT_TOKEN)
+            logger.info("✅ Notification service initialized (with Telegram)")
+        else:
+            self.telegram = None
+            logger.warning("⚠️ Notification service initialized (Telegram disabled - dependency not installed)")
 
     async def send_whatsapp(
         self,
@@ -151,6 +161,11 @@ class NotificationService:
         Returns:
             True if sent successfully
         """
+        if not TELEGRAM_AVAILABLE or self.telegram is None:
+            logger.warning("⚠️ Telegram message not sent - library not available")
+            logger.info(f"📝 Telegram message (not sent): {message}")
+            return False
+
         try:
             if chat_id is None:
                 chat_id = settings.TELEGRAM_ADMIN_CHAT_ID
