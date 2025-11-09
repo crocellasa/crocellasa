@@ -25,7 +25,7 @@ aiosmtplib==3.0.1
 emails==0.6
 
 # HTTP Clients
-httpx==0.25.2
+# httpx - managed by supabase (auto-installed with compatible version)
 aiohttp==3.9.1
 
 # Security & Auth
