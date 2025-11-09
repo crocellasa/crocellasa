@@ -20,7 +20,7 @@ tinytuya==1.13.2  # Tuya Cloud API library (works well)
 
 # Communication
 twilio==8.10.3
-python-telegram-bot==20.7
+python-telegram-bot==20.6  # Compatible with httpx==0.24.1
 aiosmtplib==3.0.1
 emails==0.6
 
