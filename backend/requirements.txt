@@ -38,7 +38,6 @@ apscheduler==3.10.4
 
 # Utilities
 python-dotenv==1.0.0
-pydantic-core==2.14.5
 python-dateutil==2.8.2
 
 # Development & Testing (not needed for production)
