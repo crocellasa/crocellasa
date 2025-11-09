@@ -11,8 +11,8 @@ python-multipart==0.0.6
 email-validator==2.1.0  # Required by pydantic EmailStr
 
 # Database
-supabase==2.4.5  # Stable version without proxy issues
-httpx==0.24.1  # Compatible with supabase 2.4.5
+supabase>=2.9.0  # Version 2.9.0+ fixes proxy compatibility issues
+# httpx version auto-managed by supabase (no conflicts now that telegram library removed)
 asyncpg==0.29.0
 
 # Tuya Integration
@@ -25,7 +25,7 @@ aiosmtplib==3.0.1
 emails==0.6
 
 # HTTP Clients
-# httpx pinned above with supabase
+# httpx auto-managed by supabase dependency
 aiohttp==3.9.1
 
 # Security & Auth
