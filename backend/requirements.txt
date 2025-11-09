@@ -15,8 +15,7 @@ postgrest==0.13.2
 asyncpg==0.29.0
 
 # Tuya Integration
-# tuya-connector==0.1.3  # Not available on PyPI - will configure later
-tinytuya==1.13.2  # Using tinytuya for now (works with Tuya Cloud API)
+tuya-connector-python==0.13.4  # Official Tuya Cloud API library
 
 # Communication
 twilio==8.10.3
