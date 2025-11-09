@@ -11,8 +11,8 @@ python-multipart==0.0.6
 email-validator==2.1.0  # Required by pydantic EmailStr
 
 # Database
-supabase==2.3.4
-postgrest==0.13.2
+supabase==2.7.4  # Updated for compatibility
+postgrest==0.16.8
 asyncpg==0.29.0
 
 # Tuya Integration
