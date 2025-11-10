@@ -31,9 +31,9 @@ class Settings(BaseSettings):
     TUYA_CLIENT_ID: str
     TUYA_SECRET: str
     TUYA_REGION: str = "eu"
-    TUYA_DEVICE_MAIN_ENTRANCE: str
-    TUYA_DEVICE_FLOOR_DOOR: str
-    TUYA_DEVICE_APARTMENT: str
+    TUYA_DEVICE_MAIN_ENTRANCE: str  # Ingresso principale (portone edificio)
+    TUYA_DEVICE_FLOOR_DOOR: Optional[str] = None  # Optional - uses Ring intercom instead
+    TUYA_DEVICE_APARTMENT: str  # Porta appartamento
 
     # Twilio (WhatsApp/SMS)
     TWILIO_ACCOUNT_SID: str
@@ -45,10 +45,14 @@ class Settings(BaseSettings):
     TELEGRAM_BOT_TOKEN: str
     TELEGRAM_ADMIN_CHAT_ID: str
 
-    # Home Assistant (Ring Intercom)
+    # Home Assistant (for Tuya locks automation)
     HOME_ASSISTANT_URL: str
     HOME_ASSISTANT_TOKEN: str
-    RING_BUTTON_ENTITY_ID: str = "button.ring_intercom_unlock"
+
+    # Ring Intercom (floor door)
+    RING_REFRESH_TOKEN: str  # Ring API refresh token
+    RING_INTERCOM_DEVICE_ID: str  # Ring intercom device ID
+    RING_BUTTON_ENTITY_ID: str = "button.ring_intercom_unlock"  # HA entity for Ring
 
     # Email (Fallback)
     SMTP_HOST: str = "smtp.gmail.com"
