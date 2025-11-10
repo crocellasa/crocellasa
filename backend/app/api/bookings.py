@@ -13,6 +13,7 @@ from app.core.security import generate_guest_token
 from app.core.config import settings
 from app.services.code_generator import generate_pin_code, calculate_code_validity
 from app.services.tuya_service import get_tuya_service
+from app.services.ring_service import get_ring_service
 from app.services.notification_service import get_notification_service
 
 logger = logging.getLogger(__name__)
@@ -41,6 +42,7 @@ async def create_booking(booking: BookingCreate):
     try:
         supabase = get_supabase()
         tuya_service = get_tuya_service()
+        ring_service = get_ring_service()
         notification_service = get_notification_service()
 
         # 1. Create booking in database
@@ -75,12 +77,12 @@ async def create_booking(booking: BookingCreate):
             .order("display_order")\
             .execute()
 
-        locks = locks_result.data
+        locks_map = {lock["lock_type"]: lock for lock in locks_result.data}
 
-        if not locks:
+        if not locks_map:
             raise HTTPException(status_code=404, detail=f"No active locks found for property {booking.property_id}")
 
-        # 3. Generate codes and create on Tuya
+        # 3. Generate codes and create on Tuya/Ring
         valid_from, valid_until = calculate_code_validity(
             booking.checkin_date,
             booking.checkout_date
@@ -88,11 +90,11 @@ async def create_booking(booking: BookingCreate):
 
         created_codes = []
 
-        for lock in locks:
-            # Generate unique PIN
+        # Code 1: Main Entrance (Tuya)
+        if "main_entrance" in locks_map:
+            lock = locks_map["main_entrance"]
             code = generate_pin_code()
 
-            # Create on Tuya
             tuya_password_id = tuya_service.create_temporary_password(
                 device_id=lock["device_id"],
                 password=code,
@@ -101,12 +103,11 @@ async def create_booking(booking: BookingCreate):
                 name=f"{booking.guest_name[:20]}"
             )
 
-            # Save to database
             code_data = {
                 "booking_id": booking_id,
                 "lock_id": lock["id"],
                 "code": code,
-                "lock_name": lock["lock_type"],
+                "lock_name": "main_entrance",
                 "valid_from": valid_from.isoformat(),
                 "valid_until": valid_until.isoformat(),
                 "status": "active" if tuya_password_id else "failed",
@@ -118,10 +119,80 @@ async def create_booking(booking: BookingCreate):
 
             if code_result.data:
                 created_codes.append({
-                    "lock_type": lock["lock_type"],
+                    "lock_type": "main_entrance",
                     "code": code,
                     "display_name": lock.get(f"display_name_{booking.guest_language}", lock["device_name"])
                 })
+                logger.info(f"✅ Created main entrance code: {code[:2]}****")
+
+        # Code 2: Apartment (Tuya)
+        if "apartment" in locks_map:
+            lock = locks_map["apartment"]
+            code = generate_pin_code()
+
+            tuya_password_id = tuya_service.create_temporary_password(
+                device_id=lock["device_id"],
+                password=code,
+                valid_from=valid_from,
+                valid_until=valid_until,
+                name=f"{booking.guest_name[:20]}"
+            )
+
+            code_data = {
+                "booking_id": booking_id,
+                "lock_id": lock["id"],
+                "code": code,
+                "lock_name": "apartment",
+                "valid_from": valid_from.isoformat(),
+                "valid_until": valid_until.isoformat(),
+                "status": "active" if tuya_password_id else "failed",
+                "tuya_sync_status": "synced" if tuya_password_id else "failed",
+                "tuya_password_id": tuya_password_id
+            }
+
+            code_result = supabase.table("access_codes").insert(code_data).execute()
+
+            if code_result.data:
+                created_codes.append({
+                    "lock_type": "apartment",
+                    "code": code,
+                    "display_name": lock.get(f"display_name_{booking.guest_language}", lock["device_name"])
+                })
+                logger.info(f"✅ Created apartment code: {code[:2]}****")
+
+        # Code 3: Floor Door (Ring Intercom)
+        if "floor_door" in locks_map:
+            lock = locks_map["floor_door"]
+            code = generate_pin_code()
+
+            ring_code_id = await ring_service.create_access_code(
+                guest_name=booking.guest_name,
+                code=code,
+                valid_from=valid_from,
+                valid_until=valid_until
+            )
+
+            code_data = {
+                "booking_id": booking_id,
+                "lock_id": lock["id"],
+                "code": code,
+                "lock_name": "floor_door",
+                "valid_from": valid_from.isoformat(),
+                "valid_until": valid_until.isoformat(),
+                "status": "active" if ring_code_id else "failed",
+                "tuya_sync_status": None,  # Not applicable for Ring
+                "ring_code_id": ring_code_id
+            }
+
+            code_result = supabase.table("access_codes").insert(code_data).execute()
+
+            if code_result.data:
+                created_codes.append({
+                    "lock_type": "floor_door",
+                    "code": code,
+                    "display_name": lock.get(f"display_name_{booking.guest_language}", lock["device_name"])
+                })
+                logger.info(f"✅ Created floor door code: {code[:2]}****")
 
         if not created_codes:
             raise HTTPException(status_code=500, detail="Failed to create any access codes")
@@ -199,6 +270,7 @@ async def cancel_booking(booking_id: str):
     try:
         supabase = get_supabase()
         tuya_service = get_tuya_service()
+        ring_service = get_ring_service()
 
         # Get booking
         booking_result = supabase.table("bookings").select("*").eq("id", booking_id).execute()
@@ -216,19 +288,26 @@ async def cancel_booking(booking_id: str):
         # Revoke each code
         revoked_count = 0
         for code in codes_result.data:
+            success = False
+
+            # Revoke Tuya lock code
             if code.get("tuya_password_id"):
                 success = tuya_service.delete_temporary_password(
                     code["locks"]["device_id"],
                     code["tuya_password_id"]
                 )
 
-                if success:
-                    supabase.table("access_codes").update({
-                        "status": "revoked",
-                        "revoked_at": datetime.utcnow().isoformat(),
-                        "revoked_reason": "Booking cancelled"
-                    }).eq("id", code["id"]).execute()
-                    revoked_count += 1
+            # Revoke Ring intercom code
+            elif code.get("ring_code_id"):
+                success = await ring_service.revoke_access_code(code["ring_code_id"])
+
+            if success:
+                supabase.table("access_codes").update({
+                    "status": "revoked",
+                    "revoked_at": datetime.utcnow().isoformat(),
+                    "revoked_reason": "Booking cancelled"
+                }).eq("id", code["id"]).execute()
+                revoked_count += 1
 
         # Update booking status
         supabase.table("bookings").update({

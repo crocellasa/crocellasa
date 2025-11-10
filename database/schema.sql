@@ -125,6 +125,9 @@ CREATE TABLE access_codes (
     tuya_password_id VARCHAR(100), -- Tuya's internal password ID
     tuya_error_message TEXT,
 
+    -- Ring intercom synchronization
+    ring_code_id VARCHAR(100), -- Ring API code ID for floor door
+
     -- Metadata
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
@@ -140,6 +143,7 @@ CREATE INDEX idx_access_codes_lock_id ON access_codes(lock_id);
 CREATE INDEX idx_access_codes_status ON access_codes(status);
 CREATE INDEX idx_access_codes_validity ON access_codes(valid_from, valid_until);
 CREATE INDEX idx_access_codes_tuya_sync ON access_codes(tuya_sync_status);
+CREATE INDEX idx_access_codes_ring_code_id ON access_codes(ring_code_id);
 
 -- =====================================================
 -- TABLE: notifications
