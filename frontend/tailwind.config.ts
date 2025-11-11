@@ -16,6 +16,7 @@ const config: Config = {
           brass: '#B5A677',
           navy: '#1A2332',
           charcoal: '#2C2C2C',
+          sage: '#8FA998',
         },
       },
       fontFamily: {
