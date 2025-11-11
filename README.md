@@ -8,14 +8,26 @@ Complete end-to-end automation from booking to checkout: automatic code generati
 
 ## 🎯 Features
 
-- ✅ **Automatic Code Generation**: Creates temporary codes for 3 Tuya smart locks
+### Guest Experience
+- ✅ **Automatic Code Generation**: Creates temporary codes for 3 locks (2x Tuya + Ring)
 - ✅ **Multi-Channel Notifications**: WhatsApp, SMS, and Email
-- ✅ **Guest Portal**: Personalized Next.js portal with access codes, WiFi, map, and house rules
+- ✅ **Guest Portal**: Personalized portal with access codes, WiFi, map, and house rules
 - ✅ **Ring Intercom Integration**: Open main door remotely via Home Assistant
-- ✅ **Auto-Revoke**: Scheduled job to revoke expired codes
 - ✅ **Multi-Language**: Italian and English support
-- ✅ **Admin Notifications**: Real-time alerts via Telegram
+
+### Admin Dashboard (Xentra-inspired)
+- ✅ **Real-time Analytics**: KPIs, trends, and usage charts
+- ✅ **Booking Management**: Search, filter, view all bookings
+- ✅ **Integration Monitoring**: Ring, Tuya, Home Assistant status
+- ✅ **Device Management**: Battery levels, connectivity, health checks
+- ✅ **Activity Log**: Complete timeline of all events
+- ✅ **Access Link Generation**: Temporary codes for maintenance/cleaners
+
+### Automation
+- ✅ **Auto-Revoke**: Scheduled job to revoke expired codes
+- ✅ **Telegram Alerts**: Real-time notifications for admins
 - ✅ **Audit Logging**: Complete activity tracking
+- ✅ **Webhook Integration**: Hospitable sync
 
 ---
 
@@ -35,7 +47,21 @@ alcova-smart-checkin/
 
 ## 🚀 Quick Start
 
-### Prerequisites
+### ⚡ **Fast Deploy (Recommended)**
+
+**Deploy in 5 minutes without local setup!**
+
+1. **Backend** → Railway (already deployed)
+2. **Frontend** → Vercel (follow [DEPLOY_VERCEL.md](./DEPLOY_VERCEL.md))
+3. **Database** → Supabase
+
+👉 **See detailed instructions**: [DEPLOY_VERCEL.md](./DEPLOY_VERCEL.md)
+
+---
+
+### 💻 **Local Development**
+
+#### Prerequisites
 
 - **Python 3.11+**
 - **Node.js 18+**
@@ -45,7 +71,7 @@ alcova-smart-checkin/
 - **Telegram Bot**
 - **Home Assistant** (for Ring Intercom)
 
-### 1. Clone Repository
+#### 1. Clone Repository
 
 ```bash
 git clone <your-repo-url>
