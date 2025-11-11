@@ -2,6 +2,7 @@
 Configuration management using Pydantic Settings
 Loads environment variables from .env file
 """
+import os
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import Field
 from typing import List, Optional
@@ -20,16 +21,17 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     DEBUG: bool = False
 
-    # CORS - stored as string, will be split into list
-    CORS_ORIGINS_STR: str = Field(default="http://localhost:3000", validation_alias="CORS_ORIGINS")
-
     @property
     def CORS_ORIGINS(self) -> List[str]:
-        """Parse CORS_ORIGINS from comma-separated string"""
-        if not self.CORS_ORIGINS_STR:
+        """
+        Parse CORS_ORIGINS from environment variable (comma-separated string)
+        Uses os.getenv directly to avoid Pydantic's JSON parsing
+        """
+        cors_str = os.getenv('CORS_ORIGINS', 'http://localhost:3000')
+        if not cors_str or cors_str.strip() == '':
             return ["http://localhost:3000"]
         # Split by comma and strip whitespace
-        return [origin.strip() for origin in self.CORS_ORIGINS_STR.split(',') if origin.strip()]
+        return [origin.strip() for origin in cors_str.split(',') if origin.strip()]
 
     # Supabase
     SUPABASE_URL: str
