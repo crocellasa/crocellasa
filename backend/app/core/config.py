@@ -79,11 +79,25 @@ class Settings(BaseSettings):
     @field_validator('CORS_ORIGINS', mode='before')
     @classmethod
     def parse_cors_origins(cls, v: Union[str, List[str]]) -> List[str]:
-        """Parse CORS_ORIGINS from string (comma-separated) or list"""
+        """Parse CORS_ORIGINS from string (comma-separated or JSON array) or list"""
         if isinstance(v, str):
-            # Split by comma and strip whitespace
+            # Try to parse as JSON array first
+            import json
+            try:
+                parsed = json.loads(v)
+                if isinstance(parsed, list):
+                    return [origin.strip() for origin in parsed if origin.strip()]
+            except (json.JSONDecodeError, ValueError):
+                pass
+
+            # Fall back to comma-separated string
             return [origin.strip() for origin in v.split(',') if origin.strip()]
-        return v
+
+        if isinstance(v, list):
+            return [origin.strip() if isinstance(origin, str) else str(origin) for origin in v]
+
+        # Default fallback
+        return ["http://localhost:3000", "https://*.vercel.app"]
 
     model_config = SettingsConfigDict(
         env_file=".env",
