@@ -7,7 +7,7 @@ from fastapi.responses import JSONResponse
 import logging
 from contextlib import asynccontextmanager
 
-from app.core.config import settings
+from app.core.config import settings, get_cors_origins
 from app.core.database import init_database
 from app.services.scheduler import init_scheduler, shutdown_scheduler
 from app.api import bookings, guests, codes, intercom, webhooks
@@ -57,7 +57,7 @@ app = FastAPI(
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
+    allow_origins=get_cors_origins(),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

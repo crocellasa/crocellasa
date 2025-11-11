@@ -21,18 +21,6 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     DEBUG: bool = False
 
-    @property
-    def CORS_ORIGINS(self) -> List[str]:
-        """
-        Parse CORS_ORIGINS from environment variable (comma-separated string)
-        Uses os.getenv directly to avoid Pydantic's JSON parsing
-        """
-        cors_str = os.getenv('CORS_ORIGINS', 'http://localhost:3000')
-        if not cors_str or cors_str.strip() == '':
-            return ["http://localhost:3000"]
-        # Split by comma and strip whitespace
-        return [origin.strip() for origin in cors_str.split(',') if origin.strip()]
-
     # Supabase
     SUPABASE_URL: str
     SUPABASE_ANON_KEY: str
@@ -94,11 +82,22 @@ class Settings(BaseSettings):
         env_file=".env",
         env_file_encoding="utf-8",
         case_sensitive=True,
-        extra="ignore",
-        # Ignore CORS_ORIGINS from env to prevent JSON parsing
-        env_ignore=["CORS_ORIGINS"]
+        extra="ignore"
     )
 
 
 # Global settings instance
 settings = Settings()
+
+
+# CORS origins - loaded separately to avoid Pydantic JSON parsing
+def get_cors_origins() -> List[str]:
+    """
+    Get CORS origins from environment variable (comma-separated string)
+    Bypasses Pydantic to avoid JSON parsing issues
+    """
+    cors_str = os.getenv('CORS_ORIGINS', 'http://localhost:3000')
+    if not cors_str or cors_str.strip() == '':
+        return ["http://localhost:3000"]
+    # Split by comma and strip whitespace
+    return [origin.strip() for origin in cors_str.split(',') if origin.strip()]
