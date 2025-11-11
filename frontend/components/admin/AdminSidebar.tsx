@@ -1,7 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import { useState } from 'react'
 import {
   LayoutDashboard,
   Calendar,
@@ -11,8 +12,10 @@ import {
   Home,
   Activity,
   Plug,
-  Clock
+  Clock,
+  LogOut
 } from 'lucide-react'
+import { logout, getUser } from '@/lib/auth'
 
 const navigation = [
   { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
@@ -33,6 +36,16 @@ const settingsSection = [
 
 export default function AdminSidebar() {
   const pathname = usePathname()
+  const router = useRouter()
+  const [loggingOut, setLoggingOut] = useState(false)
+  const user = getUser()
+
+  const handleLogout = async () => {
+    setLoggingOut(true)
+    await logout()
+    router.push('/admin/login')
+    router.refresh()
+  }
 
   return (
     <div className="w-64 bg-white border-r border-gray-200 flex flex-col">
@@ -129,15 +142,25 @@ export default function AdminSidebar() {
 
       {/* Footer */}
       <div className="p-4 border-t border-gray-200">
-        <div className="flex items-center gap-3 px-3 py-2">
+        <div className="flex items-center gap-3 px-3 py-2 mb-2">
           <div className="w-8 h-8 bg-alcova-sage rounded-full flex items-center justify-center">
-            <span className="text-white text-sm font-medium">A</span>
+            <span className="text-white text-sm font-medium">
+              {user?.name?.[0]?.toUpperCase() || 'A'}
+            </span>
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-gray-900 truncate">Admin</p>
-            <p className="text-xs text-gray-500 truncate">admin@landolina.it</p>
+            <p className="text-sm font-medium text-gray-900 truncate">{user?.name || 'Admin'}</p>
+            <p className="text-xs text-gray-500 truncate">{user?.email || 'admin@landolina.it'}</p>
           </div>
         </div>
+        <button
+          onClick={handleLogout}
+          disabled={loggingOut}
+          className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
+        >
+          <LogOut className="w-4 h-4" />
+          {loggingOut ? 'Logging out...' : 'Logout'}
+        </button>
       </div>
     </div>
   )
