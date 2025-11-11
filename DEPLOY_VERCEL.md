@@ -228,6 +228,8 @@ Ora puoi:
 - Vercel Docs: https://vercel.com/docs
 - Next.js Docs: https://nextjs.org/docs
 - Repository: https://github.com/yourusername/crocellasa
+- 
+# Deployment updated
 
 ---
 
