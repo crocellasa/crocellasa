@@ -3,7 +3,8 @@ Configuration management using Pydantic Settings
 Loads environment variables from .env file
 """
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from typing import List, Optional
+from pydantic import field_validator
+from typing import List, Optional, Union
 
 
 class Settings(BaseSettings):
@@ -16,38 +17,38 @@ class Settings(BaseSettings):
     APP_NAME: str = "Alcova Smart Check-in"
     APP_URL: str = "http://localhost:8000"
     FRONTEND_URL: str = "http://localhost:3000"
-    SECRET_KEY: str
+    SECRET_KEY: str = "INSECURE-CHANGE-ME-IN-PRODUCTION"  # Must be set in production!
     DEBUG: bool = False
 
     # CORS
     CORS_ORIGINS: List[str] = ["http://localhost:3000", "https://*.vercel.app"]
 
-    # Supabase
-    SUPABASE_URL: str
-    SUPABASE_ANON_KEY: str
-    SUPABASE_SERVICE_KEY: str
+    # Supabase (optional until configured)
+    SUPABASE_URL: Optional[str] = None
+    SUPABASE_ANON_KEY: Optional[str] = None
+    SUPABASE_SERVICE_KEY: Optional[str] = None
 
-    # Tuya
-    TUYA_CLIENT_ID: str
-    TUYA_SECRET: str
+    # Tuya (optional until configured)
+    TUYA_CLIENT_ID: Optional[str] = None
+    TUYA_SECRET: Optional[str] = None
     TUYA_REGION: str = "eu"
-    TUYA_DEVICE_MAIN_ENTRANCE: str
-    TUYA_DEVICE_FLOOR_DOOR: str
-    TUYA_DEVICE_APARTMENT: str
+    TUYA_DEVICE_MAIN_ENTRANCE: Optional[str] = None
+    TUYA_DEVICE_FLOOR_DOOR: Optional[str] = None
+    TUYA_DEVICE_APARTMENT: Optional[str] = None
 
-    # Twilio (WhatsApp/SMS)
-    TWILIO_ACCOUNT_SID: str
-    TWILIO_AUTH_TOKEN: str
-    TWILIO_WHATSAPP_FROM: str
-    TWILIO_SMS_FROM: str
+    # Twilio (WhatsApp/SMS) (optional until configured)
+    TWILIO_ACCOUNT_SID: Optional[str] = None
+    TWILIO_AUTH_TOKEN: Optional[str] = None
+    TWILIO_WHATSAPP_FROM: Optional[str] = None
+    TWILIO_SMS_FROM: Optional[str] = None
 
-    # Telegram
-    TELEGRAM_BOT_TOKEN: str
-    TELEGRAM_ADMIN_CHAT_ID: str
+    # Telegram (optional - currently disabled)
+    TELEGRAM_BOT_TOKEN: Optional[str] = None
+    TELEGRAM_ADMIN_CHAT_ID: Optional[str] = None
 
-    # Home Assistant (Ring Intercom)
-    HOME_ASSISTANT_URL: str
-    HOME_ASSISTANT_TOKEN: str
+    # Home Assistant (Ring Intercom) (optional until configured)
+    HOME_ASSISTANT_URL: Optional[str] = None
+    HOME_ASSISTANT_TOKEN: Optional[str] = None
     RING_BUTTON_ENTITY_ID: str = "button.ring_intercom_unlock"
 
     # Email (Fallback)
@@ -58,7 +59,7 @@ class Settings(BaseSettings):
     SMTP_FROM: str = "Alcova Landolina <noreply@alcova.com>"
 
     # JWT
-    JWT_SECRET: str
+    JWT_SECRET: str = "INSECURE-JWT-CHANGE-ME-IN-PRODUCTION"  # Must be set in production!
     JWT_ALGORITHM: str = "HS256"
     JWT_EXPIRATION_HOURS: int = 720  # 30 days
 
@@ -74,6 +75,15 @@ class Settings(BaseSettings):
     CODE_LENGTH: int = 6
     CODE_BUFFER_HOURS_BEFORE: int = 2  # Code valid 2h before checkin
     CODE_BUFFER_HOURS_AFTER: int = 2   # Code valid 2h after checkout
+
+    @field_validator('CORS_ORIGINS', mode='before')
+    @classmethod
+    def parse_cors_origins(cls, v: Union[str, List[str]]) -> List[str]:
+        """Parse CORS_ORIGINS from string (comma-separated) or list"""
+        if isinstance(v, str):
+            # Split by comma and strip whitespace
+            return [origin.strip() for origin in v.split(',') if origin.strip()]
+        return v
 
     model_config = SettingsConfigDict(
         env_file=".env",
