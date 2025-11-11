@@ -3,7 +3,8 @@ Configuration management using Pydantic Settings
 Loads environment variables from .env file
 """
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from typing import List, Optional
+from pydantic import field_validator
+from typing import List, Optional, Union
 
 
 class Settings(BaseSettings):
@@ -19,8 +20,17 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     DEBUG: bool = False
 
-    # CORS
-    CORS_ORIGINS: List[str] = ["http://localhost:3000", "https://*.vercel.app"]
+    # CORS - can be JSON array or comma-separated string
+    CORS_ORIGINS: Union[List[str], str] = "http://localhost:3000"
+
+    @field_validator('CORS_ORIGINS', mode='before')
+    @classmethod
+    def parse_cors_origins(cls, v):
+        """Parse CORS_ORIGINS from string or list"""
+        if isinstance(v, str):
+            # Split by comma and strip whitespace
+            return [origin.strip() for origin in v.split(',') if origin.strip()]
+        return v
 
     # Supabase
     SUPABASE_URL: str
