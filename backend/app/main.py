@@ -11,6 +11,7 @@ from app.core.config import settings
 from app.core.database import init_database
 from app.services.scheduler import init_scheduler, shutdown_scheduler
 from app.api import bookings, guests, codes, intercom, webhooks
+from app.api import admin_auth, admin_dashboard, admin_bookings, admin_activity, admin_integrations, admin_locations
 
 # Configure logging
 logging.basicConfig(
@@ -108,6 +109,14 @@ app.include_router(guests.router, prefix="/api/guests", tags=["Guests"])
 app.include_router(codes.router, prefix="/api/codes", tags=["Access Codes"])
 app.include_router(intercom.router, prefix="/api/intercom", tags=["Intercom"])
 app.include_router(webhooks.router, prefix="/webhooks", tags=["Webhooks"])
+
+# Admin routers
+app.include_router(admin_auth.router, prefix="/api/admin/auth", tags=["Admin Auth"])
+app.include_router(admin_dashboard.router, prefix="/api/admin/dashboard", tags=["Admin Dashboard"])
+app.include_router(admin_bookings.router, prefix="/api/admin/bookings", tags=["Admin Bookings"])
+app.include_router(admin_activity.router, prefix="/api/admin/activity", tags=["Admin Activity"])
+app.include_router(admin_integrations.router, prefix="/api/admin/integrations", tags=["Admin Integrations"])
+app.include_router(admin_locations.router, prefix="/api/admin/locations", tags=["Admin Locations"])
 
 
 if __name__ == "__main__":
