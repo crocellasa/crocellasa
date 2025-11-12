@@ -270,7 +270,9 @@ async def generate_token_for_booking(booking_id: str):
             raise HTTPException(status_code=404, detail="Booking not found")
 
         booking = result.data[0]
-        checkout_date = datetime.fromisoformat(booking["checkout_date"].replace('Z', '+00:00'))
+        # Parse as naive UTC datetime (remove timezone info to match generate_guest_token expectations)
+        checkout_str = booking["checkout_date"].replace('Z', '').replace('+00:00', '')
+        checkout_date = datetime.fromisoformat(checkout_str)
 
         # Generate token
         token = generate_guest_token(booking_id, checkout_date)
