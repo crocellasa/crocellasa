@@ -20,8 +20,8 @@ class Settings(BaseSettings):
     SECRET_KEY: str = "INSECURE-CHANGE-ME-IN-PRODUCTION"  # Must be set in production!
     DEBUG: bool = False
 
-    # CORS
-    CORS_ORIGINS: List[str] = ["http://localhost:3000", "https://*.vercel.app"]
+    # CORS (stored as string, parsed to list via property)
+    CORS_ORIGINS: str = "http://localhost:3000,https://*.vercel.app"
 
     # Supabase (optional until configured)
     SUPABASE_URL: Optional[str] = None
@@ -76,23 +76,20 @@ class Settings(BaseSettings):
     CODE_BUFFER_HOURS_BEFORE: int = 2  # Code valid 2h before checkin
     CODE_BUFFER_HOURS_AFTER: int = 2   # Code valid 2h after checkout
 
-    @field_validator('CORS_ORIGINS', mode='before')
-    @classmethod
-    def parse_cors_origins(cls, v: Union[str, List[str], None]) -> List[str]:
-        """Parse CORS_ORIGINS - always returns valid list, never crashes"""
+    @property
+    def cors_origins_list(self) -> List[str]:
+        """Parse CORS_ORIGINS string into list - always returns valid list, never crashes"""
         import json
 
         # Safe defaults
         defaults = ["http://localhost:3000", "https://*.vercel.app"]
 
         try:
+            v = self.CORS_ORIGINS
+
             # Handle None or empty
             if v is None or v == "":
                 return defaults
-
-            # Already a list
-            if isinstance(v, list):
-                return [str(origin).strip() for origin in v if origin]
 
             # String - try JSON first
             if isinstance(v, str):
