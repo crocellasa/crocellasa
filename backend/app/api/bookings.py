@@ -249,6 +249,55 @@ async def cancel_booking(booking_id: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@router.get("/{booking_id}/generate-token")
+async def generate_token_for_booking(booking_id: str):
+    """
+    TEMPORARY TEST ENDPOINT: Generate JWT token for a booking
+
+    Args:
+        booking_id: UUID of the booking
+
+    Returns:
+        JWT token and portal URL
+    """
+    try:
+        supabase = get_supabase()
+
+        # Get booking
+        result = supabase.table("bookings").select("*").eq("id", booking_id).execute()
+
+        if not result.data:
+            raise HTTPException(status_code=404, detail="Booking not found")
+
+        booking = result.data[0]
+        checkout_date = datetime.fromisoformat(booking["checkout_date"].replace('Z', '+00:00'))
+
+        # Generate token
+        token = generate_guest_token(booking_id, checkout_date)
+
+        # Update booking with token
+        supabase.table("bookings").update({
+            "guest_token": token
+        }).eq("id", booking_id).execute()
+
+        portal_url = f"{settings.FRONTEND_URL}/g/{token}?lang={booking['guest_language']}"
+        backend_url = f"https://crocellasa-production.up.railway.app/api/guests/{token}"
+
+        return {
+            "booking_id": booking_id,
+            "guest_name": booking["guest_name"],
+            "token": token,
+            "portal_url": portal_url,
+            "backend_api_url": backend_url
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ Failed to generate token: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @router.get("/{booking_id}", response_model=BookingResponse)
 async def get_booking(booking_id: str):
     """
