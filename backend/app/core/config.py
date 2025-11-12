@@ -78,26 +78,41 @@ class Settings(BaseSettings):
 
     @field_validator('CORS_ORIGINS', mode='before')
     @classmethod
-    def parse_cors_origins(cls, v: Union[str, List[str]]) -> List[str]:
-        """Parse CORS_ORIGINS from string (comma-separated or JSON array) or list"""
-        if isinstance(v, str):
-            # Try to parse as JSON array first
-            import json
-            try:
-                parsed = json.loads(v)
-                if isinstance(parsed, list):
-                    return [origin.strip() for origin in parsed if origin.strip()]
-            except (json.JSONDecodeError, ValueError):
-                pass
+    def parse_cors_origins(cls, v: Union[str, List[str], None]) -> List[str]:
+        """Parse CORS_ORIGINS - always returns valid list, never crashes"""
+        import json
 
-            # Fall back to comma-separated string
-            return [origin.strip() for origin in v.split(',') if origin.strip()]
+        # Safe defaults
+        defaults = ["http://localhost:3000", "https://*.vercel.app"]
 
-        if isinstance(v, list):
-            return [origin.strip() if isinstance(origin, str) else str(origin) for origin in v]
+        try:
+            # Handle None or empty
+            if v is None or v == "":
+                return defaults
 
-        # Default fallback
-        return ["http://localhost:3000", "https://*.vercel.app"]
+            # Already a list
+            if isinstance(v, list):
+                return [str(origin).strip() for origin in v if origin]
+
+            # String - try JSON first
+            if isinstance(v, str):
+                try:
+                    parsed = json.loads(v)
+                    if isinstance(parsed, list):
+                        return [str(origin).strip() for origin in parsed if origin]
+                except:
+                    pass
+
+                # Comma-separated
+                origins = [origin.strip() for origin in v.split(',') if origin.strip()]
+                return origins if origins else defaults
+
+            # Unknown type - use defaults
+            return defaults
+
+        except Exception:
+            # If anything goes wrong, return safe defaults
+            return defaults
 
     model_config = SettingsConfigDict(
         env_file=".env",
