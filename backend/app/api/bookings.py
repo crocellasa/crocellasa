@@ -106,7 +106,7 @@ async def create_booking(booking: BookingCreate):
                 "booking_id": booking_id,
                 "lock_id": lock["id"],
                 "code": code,
-                "lock_name": lock["lock_type"],
+                "lock_type": lock["lock_type"],
                 "valid_from": valid_from.isoformat(),
                 "valid_until": valid_until.isoformat(),
                 "status": "active" if tuya_password_id else "failed",
