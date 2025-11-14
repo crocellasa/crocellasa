@@ -3,7 +3,7 @@ Service for generating temporary access codes
 """
 import random
 import string
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from app.core.config import settings
 import logging
 
@@ -45,6 +45,12 @@ def calculate_code_validity(checkin_date: datetime, checkout_date: datetime) -> 
     Returns:
         Tuple of (valid_from, valid_until)
     """
+    # Ensure datetimes are timezone-aware (convert to UTC if naive)
+    if checkin_date.tzinfo is None:
+        checkin_date = checkin_date.replace(tzinfo=timezone.utc)
+    if checkout_date.tzinfo is None:
+        checkout_date = checkout_date.replace(tzinfo=timezone.utc)
+
     # Add buffer hours before checkin
     valid_from = checkin_date - timedelta(hours=settings.CODE_BUFFER_HOURS_BEFORE)
 
