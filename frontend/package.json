@@ -1,0 +1,39 @@
+{
+  "name": "alcova-guest-portal",
+  "version": "1.0.0",
+  "description": "Guest portal for Alcova Landolina smart check-in",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "14.0.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "@supabase/supabase-js": "^2.38.4",
+    "jose": "^5.1.0",
+    "next-intl": "^3.3.0",
+    "date-fns": "^2.30.0",
+    "lucide-react": "^0.292.0",
+    "qrcode.react": "^3.1.0",
+    "clsx": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.9.2",
+    "@types/react": "^18.2.38",
+    "@types/react-dom": "^18.2.17",
+    "typescript": "^5.3.2",
+    "tailwindcss": "^3.3.5",
+    "postcss": "^8.4.31",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.54.0",
+    "eslint-config-next": "14.0.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
