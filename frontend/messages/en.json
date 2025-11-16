@@ -1,0 +1,42 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  },
+  "portal": {
+    "welcome": "Welcome to Alcova Landolina",
+    "checkin": "Check-in",
+    "checkout": "Check-out",
+    "guests": "Guests",
+    "accessCodes": "Access Codes",
+    "mainEntrance": "Main Entrance",
+    "floorDoor": "Floor Door",
+    "apartmentDoor": "Apartment Door",
+    "validFrom": "Valid from",
+    "validUntil": "Valid until",
+    "propertyInfo": "Property Information",
+    "address": "Address",
+    "wifi": "WiFi",
+    "password": "Password",
+    "scanQR": "Scan to connect",
+    "intercom": "Open Door",
+    "intercomSuccess": "Door opened!",
+    "intercomError": "Error opening door",
+    "houseRules": "House Rules",
+    "recycling": "Recycling",
+    "contact": "Contact",
+    "needHelp": "Need help?",
+    "contactHost": "Contact host",
+    "invalidToken": "Invalid or expired link",
+    "bookingCancelled": "Booking cancelled"
+  },
+  "rules": {
+    "title": "House Rules",
+    "quiet": "Quiet hours after 10 PM",
+    "noSmoking": "No smoking inside",
+    "noPets": "No pets allowed",
+    "checkoutTime": "Check-out by 11:00 AM",
+    "recycling": "Follow recycling guidelines"
+  }
+}
