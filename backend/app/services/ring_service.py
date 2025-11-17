@@ -5,7 +5,7 @@ Manages access codes for Ring intercom (floor door)
 import aiohttp
 import logging
 from typing import Optional, Dict
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from app.core.config import settings
 
 logger = logging.getLogger(__name__)
@@ -40,7 +40,7 @@ class RingIntercomService:
         """
         # Check if we have a valid token
         if self.access_token and self.token_expires_at:
-            if datetime.utcnow() < self.token_expires_at:
+            if datetime.now(timezone.utc) < self.token_expires_at:
                 return self.access_token
 
         # Refresh token
@@ -63,7 +63,7 @@ class RingIntercomService:
 
                     # Token typically expires in 1 hour, refresh 5 min early
                     expires_in = result.get("expires_in", 3600)
-                    self.token_expires_at = datetime.utcnow() + timedelta(seconds=expires_in - 300)
+                    self.token_expires_at = datetime.now(timezone.utc) + timedelta(seconds=expires_in - 300)
 
                     logger.info("✅ Ring access token refreshed")
                     return self.access_token

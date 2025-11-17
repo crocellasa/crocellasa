@@ -1,7 +1,7 @@
 """
 Security utilities: JWT tokens, password hashing, etc.
 """
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional, Dict, Any
 from jose import JWTError, jwt
 from passlib.context import CryptContext
@@ -28,13 +28,13 @@ def create_access_token(data: Dict[str, Any], expires_delta: Optional[timedelta]
     to_encode = data.copy()
 
     if expires_delta:
-        expire = datetime.utcnow() + expires_delta
+        expire = datetime.now(timezone.utc) + expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(hours=settings.JWT_EXPIRATION_HOURS)
+        expire = datetime.now(timezone.utc) + timedelta(hours=settings.JWT_EXPIRATION_HOURS)
 
     to_encode.update({
         "exp": expire,
-        "iat": datetime.utcnow()
+        "iat": datetime.now(timezone.utc)
     })
 
     encoded_jwt = jwt.encode(
@@ -108,7 +108,7 @@ def generate_guest_token(booking_id: str, checkout_date: datetime) -> str:
     """
     # Token expires 48 hours after checkout
     expiration = checkout_date + timedelta(hours=48)
-    expires_delta = expiration - datetime.utcnow()
+    expires_delta = expiration - datetime.now(timezone.utc)
 
     payload = {
         "booking_id": booking_id,

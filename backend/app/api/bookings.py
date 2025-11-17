@@ -2,7 +2,7 @@
 Booking management endpoints
 """
 from fastapi import APIRouter, HTTPException, status
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import List
 import logging
 import uuid
@@ -304,7 +304,7 @@ async def cancel_booking(booking_id: str):
             if success:
                 supabase.table("access_codes").update({
                     "status": "revoked",
-                    "revoked_at": datetime.utcnow().isoformat(),
+                    "revoked_at": datetime.now(timezone.utc).isoformat(),
                     "revoked_reason": "Booking cancelled"
                 }).eq("id", code["id"]).execute()
                 revoked_count += 1

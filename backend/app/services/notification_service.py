@@ -4,7 +4,7 @@ Notification service for WhatsApp, SMS, Email, and Telegram
 from twilio.rest import Client as TwilioClient
 from telegram import Bot
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, timezone
 from app.core.config import settings
 from app.core.database import get_supabase
 import logging
@@ -339,7 +339,7 @@ Dettagli:
                 "provider": provider,
                 "provider_message_id": provider_message_id,
                 "error_message": error_message,
-                "sent_at": datetime.utcnow().isoformat() if status == "sent" else None
+                "sent_at": datetime.now(timezone.utc).isoformat() if status == "sent" else None
             }
 
             supabase.table("notifications").insert(data).execute()
