@@ -18,6 +18,7 @@ tinytuya==1.13.2  # Tuya Cloud API library (works well)
 
 # Communication
 twilio==8.10.3
+python-telegram-bot
 aiosmtplib==3.0.1
 emails==0.6
 
