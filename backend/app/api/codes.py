@@ -2,7 +2,7 @@
 Access codes management endpoints
 """
 from fastapi import APIRouter, HTTPException, status
-from datetime import datetime
+from datetime import datetime, timezone
 import logging
 
 from app.core.database import get_supabase
@@ -57,7 +57,7 @@ async def revoke_code(code_id: str):
         # Update database
         supabase.table("access_codes").update({
             "status": "revoked",
-            "revoked_at": datetime.utcnow().isoformat(),
+            "revoked_at": datetime.now(timezone.utc).isoformat(),
             "revoked_reason": "Manual revocation"
         }).eq("id", code_id).execute()
 

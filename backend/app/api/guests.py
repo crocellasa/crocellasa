@@ -2,7 +2,7 @@
 Guest portal endpoints
 """
 from fastapi import APIRouter, HTTPException, status
-from datetime import datetime
+from datetime import datetime, timezone
 import logging
 
 from app.core.database import get_supabase
@@ -91,7 +91,7 @@ async def get_guest_portal_data(token: str):
         property_data = property_result.data[0] if property_result.data else None
 
         # 5. Log portal access
-        now = datetime.utcnow().isoformat()
+        now = datetime.now(timezone.utc).isoformat()
 
         # Update portal views
         supabase.table("bookings").update({

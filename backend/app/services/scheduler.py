@@ -3,7 +3,7 @@ APScheduler for automated tasks (auto-revoke codes, etc.)
 """
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
-from datetime import datetime
+from datetime import datetime, timezone
 from app.core.config import settings
 from app.core.database import get_supabase
 from app.services.tuya_service import get_tuya_service
@@ -51,7 +51,7 @@ async def revoke_expired_codes():
                         # Update database
                         supabase.table("access_codes").update({
                             "status": "revoked",
-                            "revoked_at": datetime.utcnow().isoformat(),
+                            "revoked_at": datetime.now(timezone.utc).isoformat(),
                             "revoked_reason": "Auto-revoke: expired"
                         }).eq("id", code['id']).execute()
 
@@ -62,7 +62,7 @@ async def revoke_expired_codes():
                     # No Tuya ID, just mark as revoked
                     supabase.table("access_codes").update({
                         "status": "revoked",
-                        "revoked_at": datetime.utcnow().isoformat(),
+                        "revoked_at": datetime.now(timezone.utc).isoformat(),
                         "revoked_reason": "Auto-revoke: no tuya_id"
                     }).eq("id", code['id']).execute()
                     revoked_count += 1
@@ -74,7 +74,7 @@ async def revoke_expired_codes():
         # Update checkout status
         supabase.table("bookings").update({
             "status": "checked_out"
-        }).lt("checkout_date", datetime.utcnow().isoformat()).eq("status", "checked_in").execute()
+        }).lt("checkout_date", datetime.now(timezone.utc).isoformat()).eq("status", "checked_in").execute()
 
         logger.info(f"✅ Auto-revoke complete: {revoked_count} revoked, {failed_count} failed")
 
