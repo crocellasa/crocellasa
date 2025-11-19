@@ -24,7 +24,7 @@ class BookingCreate(BaseModel):
     Model for creating a new booking
     """
 hospitable_id: Optional[str] = Field(None, description="Unique ID from Hospitable/Airbnb (deprecated, use smoobu_id)")
-    smoobu_id: str = Field(..., description="Unique ID from Smoobu (property manager)")    confirmation_code: Optional[str] = None
+    smoobu_id: Optional[str] = FieNone..., description="Unique ID from Smoobu (property manager)")    confirmation_code: Optional[str] = None
     guest_name: str = Field(..., min_length=1, max_length=255)
     guest_email: EmailStr
     guest_phone: str = Field(..., pattern=r"^\+?[1-9]\d{1,14}$")
