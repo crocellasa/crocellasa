@@ -237,11 +237,18 @@ class RingIntercomService:
 _ring_service: Optional[RingIntercomService] = None
 
 
-def get_ring_service() -> RingIntercomService:
+def get_ring_service() -> Optional[RingIntercomService]:
     """
     Get or create Ring service singleton
+    Returns None if Ring credentials are not configured
     """
     global _ring_service
+
+    # Check if Ring is configured
+    if not settings.RING_REFRESH_TOKEN or not settings.RING_INTERCOM_DEVICE_ID:
+        logger.warning("⚠️ Ring Intercom not configured - RING_REFRESH_TOKEN or RING_INTERCOM_DEVICE_ID missing")
+        return None
+
     if _ring_service is None:
         _ring_service = RingIntercomService()
     return _ring_service

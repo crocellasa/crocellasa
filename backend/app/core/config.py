@@ -48,9 +48,9 @@ class Settings(BaseSettings):
     HOME_ASSISTANT_URL: str
     HOME_ASSISTANT_TOKEN: str
 
-    # Ring Intercom (floor door)
-    RING_REFRESH_TOKEN: str  # Ring API refresh token
-    RING_INTERCOM_DEVICE_ID: str  # Ring intercom device ID
+    # Ring Intercom (floor door) - Optional
+    RING_REFRESH_TOKEN: Optional[str] = None  # Ring API refresh token
+    RING_INTERCOM_DEVICE_ID: Optional[str] = None  # Ring intercom device ID
     RING_BUTTON_ENTITY_ID: str = "button.ring_intercom_unlock"  # HA entity for Ring
 
     # Email (Fallback)

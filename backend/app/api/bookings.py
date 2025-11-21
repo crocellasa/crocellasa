@@ -161,7 +161,7 @@ async def create_booking(booking: BookingCreate):
                 logger.info(f"✅ Created apartment code: {code[:2]}****")
 
         # Code 3: Floor Door (Ring Intercom)
-        if "floor_door" in locks_map:
+        if ring_service and "floor_door" in locks_map:
             lock = locks_map["floor_door"]
             code = generate_pin_code()
 
@@ -298,7 +298,7 @@ async def cancel_booking(booking_id: str):
                 )
 
             # Revoke Ring intercom code
-            elif code.get("ring_code_id"):
+            elif ring_service and code.get("ring_code_id"):
                 success = await ring_service.revoke_access_code(code["ring_code_id"])
 
             if success:

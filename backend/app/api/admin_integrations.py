@@ -30,15 +30,25 @@ async def get_integrations_status(current_admin: dict = Depends(get_current_admi
     # Ring Intercom Status
     try:
         ring_service = get_ring_service()
-        # TODO: Implement actual status check
-        integrations.append({
-            "id": "ring",
-            "name": "Ring Intercom",
-            "type": "ring",
-            "status": "warning",  # could be: connected, warning, error
-            "message": "Token expires in 3 days",
-            "lastSync": datetime.now(timezone.utc).isoformat()
-        })
+        if ring_service:
+            # TODO: Implement actual status check
+            integrations.append({
+                "id": "ring",
+                "name": "Ring Intercom",
+                "type": "ring",
+                "status": "warning",  # could be: connected, warning, error
+                "message": "Token expires in 3 days",
+                "lastSync": datetime.now(timezone.utc).isoformat()
+            })
+        else:
+            integrations.append({
+                "id": "ring",
+                "name": "Ring Intercom",
+                "type": "ring",
+                "status": "disabled",
+                "message": "Not configured - Ring credentials missing",
+                "lastSync": None
+            })
     except Exception as e:
         logger.error(f"Failed to get Ring status: {e}")
         integrations.append({
@@ -113,34 +123,45 @@ async def get_all_integrations(current_admin: dict = Depends(get_current_admin))
     # Ring Intercom Integration
     try:
         ring_service = get_ring_service()
-        # Get Ring devices from locks table
-        ring_devices_result = supabase.table("locks")\
-            .select("*")\
-            .eq("lock_type", "floor_door")\
-            .eq("is_active", True)\
-            .execute()
+        if ring_service:
+            # Get Ring devices from locks table
+            ring_devices_result = supabase.table("locks")\
+                .select("*")\
+                .eq("lock_type", "floor_door")\
+                .eq("is_active", True)\
+                .execute()
 
-        ring_devices = []
-        for device in ring_devices_result.data or []:
-            ring_devices.append({
-                "id": device["device_id"],
-                "name": device["device_name"],
-                "battery": 83,  # TODO: Get real battery status from Ring API
-                "online": True,
-                "location": "Via Landolina #186"
+            ring_devices = []
+            for device in ring_devices_result.data or []:
+                ring_devices.append({
+                    "id": device["device_id"],
+                    "name": device["device_name"],
+                    "battery": 83,  # TODO: Get real battery status from Ring API
+                    "online": True,
+                    "location": "Via Landolina #186"
+                })
+
+            integrations.append({
+                "id": "ring",
+                "name": "Ring Intercom API",
+                "type": "ring",
+                "status": "warning",
+                "statusMessage": "Token expires in 3 days",
+                "token": "eyJydCI6ImV5...truncated",
+                "tokenExpiry": "2025-12-18T00:00:00Z",
+                "devices": ring_devices,
+                "lastSync": datetime.now(timezone.utc).isoformat()
             })
-
-        integrations.append({
-            "id": "ring",
-            "name": "Ring Intercom API",
-            "type": "ring",
-            "status": "warning",
-            "statusMessage": "Token expires in 3 days",
-            "token": "eyJydCI6ImV5...truncated",
-            "tokenExpiry": "2025-12-18T00:00:00Z",
-            "devices": ring_devices,
-            "lastSync": datetime.now(timezone.utc).isoformat()
-        })
+        else:
+            integrations.append({
+                "id": "ring",
+                "name": "Ring Intercom API",
+                "type": "ring",
+                "status": "disabled",
+                "statusMessage": "Not configured - Ring credentials missing",
+                "devices": [],
+                "lastSync": None
+            })
     except Exception as e:
         logger.error(f"Failed to get Ring integration: {e}")
 
