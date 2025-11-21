@@ -23,9 +23,9 @@ class BookingCreate(BaseModel):
     """
     Model for creating a new booking
     """
-    hospitable_id: Optional[str] = Field(None, description="Unique ID from Hospitable/Airbnb (deprecated, use smoobu_id)")
     smoobu_id: Optional[str] = Field(None, description="Unique ID from Smoobu (property manager)")
     confirmation_code: Optional[str] = None
+    guest_name: str
     guest_email: EmailStr
     guest_phone: str = Field(..., pattern=r"^\+?[1-9]\d{1,14}$")
     guest_language: GuestLanguage = GuestLanguage.EN
@@ -43,7 +43,7 @@ class BookingCreate(BaseModel):
     class Config:
         json_schema_extra = {
             "example": {
-                "hospitable_id": "HB123456",
+                "smoobu_id": "SMB123456",
                 "confirmation_code": "AIRBNB789",
                 "guest_name": "Mario Rossi",
                 "guest_email": "mario@example.com",
@@ -62,7 +62,8 @@ class BookingResponse(BaseModel):
     Model for booking response
     """
     id: str
-    hospitable_id: str
+    smoobu_id: Optional[str] = None
+    confirmation_code: Optional[str] = None
     guest_name: str
     guest_email: str
     guest_phone: str
