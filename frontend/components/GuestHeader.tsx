@@ -28,42 +28,40 @@ export default function GuestHeader({
   const firstName = guestName.split(' ')[0]
 
   return (
-    <div className="card">
-      <div className="text-center">
-        <h1 className="text-4xl font-serif text-alcova-navy mb-2">
-          {locale === 'it' ? 'Benvenuto' : 'Welcome'}, {firstName}!
-        </h1>
-        <p className="text-alcova-charcoal/70 mb-6">
-          Alcova Landolina
-        </p>
+    <div className="text-center py-8">
+      <h1 className="text-5xl md:text-6xl font-light tracking-tight text-mono-900 mb-4">
+        {locale === 'it' ? 'Benvenuto' : 'Welcome'}, <span className="font-normal">{firstName}</span>
+      </h1>
+      <p className="text-lg text-mono-500 font-light tracking-wide uppercase mb-12">
+        Alcova Landolina
+      </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-          <div className="flex flex-col">
-            <span className="text-alcova-charcoal/60 text-xs uppercase tracking-wide mb-1">
-              {locale === 'it' ? 'Check-in' : 'Check-in'}
-            </span>
-            <span className="font-semibold text-alcova-navy">
-              {formatDate(checkinDate)}
-            </span>
-          </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto">
+        <div className="glass-panel p-4 flex flex-col items-center justify-center">
+          <span className="text-mono-400 text-xs uppercase tracking-widest mb-2">
+            {locale === 'it' ? 'Check-in' : 'Check-in'}
+          </span>
+          <span className="font-medium text-mono-900 text-sm">
+            {formatDate(checkinDate)}
+          </span>
+        </div>
 
-          <div className="flex flex-col">
-            <span className="text-alcova-charcoal/60 text-xs uppercase tracking-wide mb-1">
-              {locale === 'it' ? 'Check-out' : 'Check-out'}
-            </span>
-            <span className="font-semibold text-alcova-navy">
-              {formatDate(checkoutDate)}
-            </span>
-          </div>
+        <div className="glass-panel p-4 flex flex-col items-center justify-center">
+          <span className="text-mono-400 text-xs uppercase tracking-widest mb-2">
+            {locale === 'it' ? 'Check-out' : 'Check-out'}
+          </span>
+          <span className="font-medium text-mono-900 text-sm">
+            {formatDate(checkoutDate)}
+          </span>
+        </div>
 
-          <div className="flex flex-col">
-            <span className="text-alcova-charcoal/60 text-xs uppercase tracking-wide mb-1">
-              {locale === 'it' ? 'Ospiti' : 'Guests'}
-            </span>
-            <span className="font-semibold text-alcova-navy">
-              {numGuests}
-            </span>
-          </div>
+        <div className="glass-panel p-4 flex flex-col items-center justify-center">
+          <span className="text-mono-400 text-xs uppercase tracking-widest mb-2">
+            {locale === 'it' ? 'Ospiti' : 'Guests'}
+          </span>
+          <span className="font-medium text-mono-900 text-sm">
+            {numGuests}
+          </span>
         </div>
       </div>
     </div>

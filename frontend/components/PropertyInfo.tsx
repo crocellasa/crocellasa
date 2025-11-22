@@ -1,7 +1,7 @@
 /**
  * Property information component (address, WiFi, map)
  */
-import { MapPin, Wifi } from 'lucide-react'
+import { MapPin, Wifi, ExternalLink } from 'lucide-react'
 import { QRCodeSVG } from 'qrcode.react'
 
 interface Property {
@@ -28,64 +28,71 @@ export default function PropertyInfo({ property, locale }: PropertyInfoProps) {
     : null
 
   return (
-    <div className="card">
-      <h2 className="text-2xl font-serif text-alcova-navy mb-6">
-        {locale === 'it' ? 'Informazioni Appartamento' : 'Property Information'}
-      </h2>
-
-      {/* Address */}
-      <div className="mb-6">
-        <div className="flex items-start gap-2 mb-2">
-          <MapPin className="w-5 h-5 text-alcova-gold mt-1" />
-          <div>
-            <p className="font-semibold text-alcova-navy">{property.name}</p>
-            <p className="text-alcova-charcoal">{property.address}</p>
-            <p className="text-alcova-charcoal">{property.city}</p>
+    <div className="space-y-6">
+      {/* Address Card */}
+      <div className="glass-card">
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex items-start gap-3">
+            <div className="p-2 bg-mono-100 rounded-lg text-mono-900">
+              <MapPin className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="font-medium text-mono-900 mb-1">{property.name}</h3>
+              <p className="text-sm text-mono-500 leading-relaxed">
+                {property.address}<br />
+                {property.city}
+              </p>
+            </div>
           </div>
+
+          <a
+            href={googleMapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2 text-mono-400 hover:text-mono-900 transition-colors"
+            aria-label={locale === 'it' ? 'Apri in Google Maps' : 'Open in Google Maps'}
+          >
+            <ExternalLink className="w-5 h-5" />
+          </a>
         </div>
-        <a
-          href={googleMapsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block mt-2 text-alcova-gold hover:text-alcova-brass text-sm underline"
-        >
-          {locale === 'it' ? 'Apri in Google Maps' : 'Open in Google Maps'}
-        </a>
       </div>
 
-      {/* WiFi */}
+      {/* WiFi Card */}
       {wifiQR && (
-        <div className="border-t border-alcova-brass/20 pt-6">
-          <div className="flex items-start gap-2 mb-4">
-            <Wifi className="w-5 h-5 text-alcova-gold mt-1" />
-            <div className="flex-1">
-              <p className="font-semibold text-alcova-navy mb-2">WiFi</p>
-              <div className="space-y-1 text-sm">
-                <div>
-                  <span className="text-alcova-charcoal/60">
-                    {locale === 'it' ? 'Rete:' : 'Network:'}
-                  </span>{' '}
-                  <span className="font-mono text-alcova-navy">
-                    {property.wifi_ssid}
-                  </span>
-                </div>
-                <div>
-                  <span className="text-alcova-charcoal/60">
-                    {locale === 'it' ? 'Password:' : 'Password:'}
-                  </span>{' '}
-                  <span className="font-mono text-alcova-navy">
-                    {property.wifi_password}
-                  </span>
-                </div>
-              </div>
+        <div className="glass-card">
+          <div className="flex items-start gap-4">
+            <div className="p-2 bg-mono-100 rounded-lg text-mono-900">
+              <Wifi className="w-5 h-5" />
             </div>
 
-            {/* QR Code */}
-            <div className="bg-white p-2 rounded-lg">
-              <QRCodeSVG value={wifiQR} size={80} />
-              <p className="text-xs text-center text-alcova-charcoal/60 mt-1">
-                {locale === 'it' ? 'Scansiona' : 'Scan'}
-              </p>
+            <div className="flex-1">
+              <h3 className="font-medium text-mono-900 mb-4">WiFi</h3>
+
+              <div className="flex flex-col sm:flex-row gap-6">
+                <div className="space-y-3 flex-1">
+                  <div>
+                    <div className="text-xs text-mono-400 uppercase tracking-wider mb-1">
+                      {locale === 'it' ? 'Rete' : 'Network'}
+                    </div>
+                    <div className="font-mono text-sm bg-white/50 px-3 py-1.5 rounded border border-glass-border inline-block">
+                      {property.wifi_ssid}
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="text-xs text-mono-400 uppercase tracking-wider mb-1">
+                      {locale === 'it' ? 'Password' : 'Password'}
+                    </div>
+                    <div className="font-mono text-sm bg-white/50 px-3 py-1.5 rounded border border-glass-border inline-block">
+                      {property.wifi_password}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white p-3 rounded-xl border border-glass-border shadow-sm">
+                  <QRCodeSVG value={wifiQR} size={100} />
+                </div>
+              </div>
             </div>
           </div>
         </div>

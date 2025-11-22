@@ -9,20 +9,37 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Alcova brand colors
-        alcova: {
-          ivory: '#F5F1E8',
-          gold: '#D4AF37',
-          brass: '#B5A677',
-          navy: '#1A2332',
-          charcoal: '#2C2C2C',
-          sage: '#8FA998',
+        // Modern monochrome palette
+        glass: {
+          border: 'rgba(0, 0, 0, 0.08)',
+          surface: 'rgba(255, 255, 255, 0.6)',
+          highlight: 'rgba(255, 255, 255, 0.8)',
         },
+        mono: {
+          50: '#FAFAFA',
+          100: '#F5F5F5',
+          200: '#E5E5E5',
+          300: '#D4D4D4',
+          400: '#A3A3A3',
+          500: '#737373',
+          600: '#525252',
+          700: '#404040',
+          800: '#262626',
+          900: '#171717',
+          950: '#0A0A0A',
+        }
       },
       fontFamily: {
-        serif: ['DM Serif Display', 'Georgia', 'serif'],
-        sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro', 'Helvetica Neue', 'sans-serif'],
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
       },
+      boxShadow: {
+        'glass': '0 4px 30px rgba(0, 0, 0, 0.03)',
+        'glass-hover': '0 10px 40px rgba(0, 0, 0, 0.06)',
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'subtle-gradient': 'linear-gradient(to bottom right, #ffffff, #f5f5f5)',
+      }
     },
   },
   plugins: [],

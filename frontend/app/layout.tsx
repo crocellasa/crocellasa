@@ -1,11 +1,10 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import { DM_Serif_Display } from 'next/font/google'
+import { Inter } from 'next/font/google'
 
-const dmSerif = DM_Serif_Display({
-  weight: '400',
+const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-serif',
+  variable: '--font-sans',
 })
 
 export const metadata: Metadata = {
@@ -20,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${dmSerif.variable} font-sans antialiased bg-alcova-ivory`}>
+      <body className={`${inter.variable} font-sans antialiased bg-subtle-gradient text-mono-900 min-h-screen selection:bg-mono-200`}>
         {children}
       </body>
     </html>

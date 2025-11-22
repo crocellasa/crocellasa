@@ -1,7 +1,7 @@
 /**
  * Access codes display component
  */
-import { Key } from 'lucide-react'
+import { Key, Copy } from 'lucide-react'
 import { format } from 'date-fns'
 import { it, enUS } from 'date-fns/locale'
 
@@ -22,10 +22,6 @@ interface AccessCodesProps {
 export default function AccessCodes({ codes, locale }: AccessCodesProps) {
   const dateLocale = locale === 'it' ? it : enUS
 
-  const getLockIcon = (lockType: string) => {
-    return <Key className="w-6 h-6 text-alcova-gold" />
-  }
-
   const getLockName = (code: AccessCode) => {
     if (locale === 'it' && code.display_name_it) {
       return code.display_name_it
@@ -45,54 +41,58 @@ export default function AccessCodes({ codes, locale }: AccessCodesProps) {
   }
 
   return (
-    <div className="card">
-      <h2 className="text-2xl font-serif text-alcova-navy mb-6 flex items-center gap-2">
-        <Key className="w-6 h-6" />
-        {locale === 'it' ? 'Codici d\'Accesso' : 'Access Codes'}
-      </h2>
+    <div className="space-y-6">
+      <div className="flex items-center gap-3 mb-4 px-2">
+        <div className="p-2 bg-mono-900 rounded-lg text-white">
+          <Key className="w-5 h-5" />
+        </div>
+        <h2 className="text-xl font-medium text-mono-900">
+          {locale === 'it' ? 'Codici d\'Accesso' : 'Access Codes'}
+        </h2>
+      </div>
 
-      <div className="space-y-4">
+      <div className="grid gap-4">
         {codes.map((code, index) => (
           <div
             key={index}
-            className="border border-alcova-brass/20 rounded-lg p-4 hover:border-alcova-gold transition-colors"
+            className="glass-card group relative overflow-hidden"
           >
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2">
-                {getLockIcon(code.lock_type)}
-                <span className="font-semibold text-alcova-navy">
+            {/* Gradient Accent */}
+            <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-mono-900 to-mono-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <h3 className="font-medium text-mono-600 mb-1">
                   {getLockName(code)}
-                </span>
+                </h3>
+                <div className="text-xs text-mono-400 flex gap-2">
+                  <span>
+                    {format(new Date(code.valid_from), 'HH:mm', { locale: dateLocale })}
+                  </span>
+                  <span>→</span>
+                  <span>
+                    {format(new Date(code.valid_until), 'HH:mm', { locale: dateLocale })}
+                  </span>
+                </div>
               </div>
-            </div>
 
-            <div className="code-display mb-3">
-              {code.code}
-            </div>
-
-            <div className="text-xs text-alcova-charcoal/60">
-              <div>
-                {locale === 'it' ? 'Valido dalle' : 'Valid from'}:{' '}
-                {format(new Date(code.valid_from), 'PPp', { locale: dateLocale })}
-              </div>
-              <div>
-                {locale === 'it' ? 'Valido fino alle' : 'Valid until'}:{' '}
-                {format(new Date(code.valid_until), 'PPp', { locale: dateLocale })}
+              <div className="flex items-center gap-4">
+                <div className="text-3xl font-bold tracking-widest text-mono-900 font-mono bg-white/50 px-4 py-2 rounded-lg border border-glass-border">
+                  {code.code}
+                </div>
               </div>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="mt-6 p-4 bg-alcova-gold/10 rounded-lg text-sm text-alcova-charcoal">
-        <p className="font-semibold mb-1">
-          {locale === 'it' ? '💡 Come usare i codici:' : '💡 How to use the codes:'}
-        </p>
-        <p>
+      <div className="glass-panel p-4 flex gap-3 items-start">
+        <div className="text-mono-900 mt-0.5">💡</div>
+        <div className="text-sm text-mono-500 leading-relaxed">
           {locale === 'it'
             ? 'Inserisci il codice sulla tastiera della serratura e premi #. La porta si aprirà automaticamente.'
             : 'Enter the code on the lock keypad and press #. The door will open automatically.'}
-        </p>
+        </div>
       </div>
     </div>
   )

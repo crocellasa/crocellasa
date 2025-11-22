@@ -44,12 +44,12 @@ export default function IntercomButton({ bookingId, locale }: IntercomButtonProp
   }
 
   return (
-    <div className="card">
-      <h2 className="text-2xl font-serif text-alcova-navy mb-4">
+    <div className="glass-card flex flex-col items-center text-center">
+      <h2 className="text-xl font-medium text-mono-900 mb-2">
         {locale === 'it' ? 'Apri Portone' : 'Open Main Door'}
       </h2>
 
-      <p className="text-alcova-charcoal text-sm mb-4">
+      <p className="text-mono-500 text-sm mb-6 max-w-xs mx-auto">
         {locale === 'it'
           ? 'Premi il pulsante per aprire il portone principale da remoto.'
           : 'Press the button to open the main entrance remotely.'}
@@ -58,20 +58,18 @@ export default function IntercomButton({ bookingId, locale }: IntercomButtonProp
       <button
         onClick={handleOpen}
         disabled={loading}
-        className={`w-full btn-primary flex items-center justify-center gap-2 ${
-          success ? 'bg-green-600 hover:bg-green-700' : ''
-        } ${
-          error ? 'bg-red-600 hover:bg-red-700' : ''
-        } disabled:opacity-50 disabled:cursor-not-allowed`}
+        className={`w-full max-w-sm btn-primary flex items-center justify-center gap-3 h-14 text-lg ${success ? 'bg-green-600 hover:bg-green-700 border-green-500' : ''
+          } ${error ? 'bg-red-600 hover:bg-red-700 border-red-500' : ''
+          } disabled:opacity-70 disabled:cursor-not-allowed`}
       >
         {loading ? (
           <>
-            <Loader2 className="w-5 h-5 animate-spin" />
+            <Loader2 className="w-6 h-6 animate-spin" />
             {locale === 'it' ? 'Apertura...' : 'Opening...'}
           </>
         ) : success ? (
           <>
-            <DoorOpen className="w-5 h-5" />
+            <DoorOpen className="w-6 h-6" />
             {locale === 'it' ? 'Portone aperto! ✓' : 'Door opened! ✓'}
           </>
         ) : error ? (
@@ -80,7 +78,7 @@ export default function IntercomButton({ bookingId, locale }: IntercomButtonProp
           </>
         ) : (
           <>
-            <DoorOpen className="w-5 h-5" />
+            <DoorOpen className="w-6 h-6" />
             {locale === 'it' ? 'Apri Portone' : 'Open Door'}
           </>
         )}

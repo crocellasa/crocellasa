@@ -94,11 +94,11 @@ export default function GuestPortalPage() {
   if (error || !data) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
-        <div className="text-center">
-          <h1 className="text-3xl font-serif text-alcova-navy mb-4">
+        <div className="glass-card max-w-md w-full text-center">
+          <h1 className="text-2xl font-light text-mono-900 mb-4">
             {locale === 'it' ? 'Link non valido' : 'Invalid Link'}
           </h1>
-          <p className="text-alcova-charcoal">
+          <p className="text-mono-500">
             {locale === 'it'
               ? 'Questo link non è valido o è scaduto. Contatta il tuo host.'
               : 'This link is invalid or expired. Please contact your host.'}
@@ -109,8 +109,8 @@ export default function GuestPortalPage() {
   }
 
   return (
-    <div className="min-h-screen bg-alcova-ivory">
-      <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
+    <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto space-y-8">
         <GuestHeader
           guestName={data.booking.guest_name}
           checkinDate={data.booking.checkin_date}
@@ -119,39 +119,45 @@ export default function GuestPortalPage() {
           locale={locale}
         />
 
-        <AccessCodes
-          codes={data.access_codes}
-          locale={locale}
-        />
-
-        {data.property && (
-          <>
-            <PropertyInfo
-              property={data.property}
+        <div className="grid gap-6 md:grid-cols-2">
+          <div className="md:col-span-2">
+            <AccessCodes
+              codes={data.access_codes}
               locale={locale}
             />
+          </div>
 
-            <IntercomButton
-              bookingId={data.booking.id}
-              locale={locale}
-            />
+          {data.property && (
+            <>
+              <div className="md:col-span-2">
+                <IntercomButton
+                  bookingId={data.booking.id}
+                  locale={locale}
+                />
+              </div>
 
-            <HouseRules
-              rules={locale === 'it' ? data.property.house_rules_it : data.property.house_rules_en}
-              locale={locale}
-            />
-          </>
-        )}
+              <PropertyInfo
+                property={data.property}
+                locale={locale}
+              />
 
-        <div className="text-center text-sm text-alcova-charcoal/70 pt-8">
-          <p>
+              <HouseRules
+                rules={locale === 'it' ? data.property.house_rules_it : data.property.house_rules_en}
+                locale={locale}
+              />
+            </>
+          )}
+        </div>
+
+        <div className="text-center pt-8 pb-4">
+          <p className="text-sm text-mono-400 mb-2">
             {locale === 'it'
               ? 'Hai bisogno di aiuto?'
               : 'Need help?'}
           </p>
           <a
             href={`mailto:${data.booking.guest_email}`}
-            className="text-alcova-gold hover:text-alcova-brass"
+            className="text-sm font-medium text-mono-900 hover:text-mono-600 transition-colors"
           >
             {locale === 'it' ? 'Contatta il tuo host' : 'Contact your host'}
           </a>
