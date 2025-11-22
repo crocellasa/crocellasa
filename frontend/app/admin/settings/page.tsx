@@ -7,108 +7,108 @@ export default function SettingsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
-        <p className="text-sm text-gray-600 mt-1">
+        <h1 className="text-3xl font-light text-mono-900 tracking-tight">Settings</h1>
+        <p className="text-sm text-mono-500 mt-1 font-light">
           Manage your account and application settings
         </p>
       </div>
 
       {/* Account Settings */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div className="glass-card p-6">
         <div className="flex items-center gap-3 mb-6">
-          <User className="w-5 h-5 text-gray-600" />
-          <h2 className="text-lg font-semibold text-gray-900">Account Settings</h2>
+          <User className="w-5 h-5 text-mono-600" />
+          <h2 className="text-lg font-medium text-mono-900">Account Settings</h2>
         </div>
 
         <div className="max-w-2xl space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-mono-700 mb-2">
               Full Name
             </label>
             <input
               type="text"
               defaultValue="Admin"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-mono-900 font-light"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-mono-700 mb-2">
               Email
             </label>
             <input
               type="email"
               defaultValue="admin@landolina.it"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-mono-900 font-light"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-mono-700 mb-2">
               Phone Number
             </label>
             <input
               type="tel"
               defaultValue="+39 123 456 7890"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-mono-900 font-light"
             />
           </div>
         </div>
       </div>
 
       {/* Notification Settings */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div className="glass-card p-6">
         <div className="flex items-center gap-3 mb-6">
-          <Bell className="w-5 h-5 text-gray-600" />
-          <h2 className="text-lg font-semibold text-gray-900">Notification Settings</h2>
+          <Bell className="w-5 h-5 text-mono-600" />
+          <h2 className="text-lg font-medium text-mono-900">Notification Settings</h2>
         </div>
 
         <div className="max-w-2xl space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-900">Booking Notifications</p>
-              <p className="text-xs text-gray-500">Get notified when new bookings are created</p>
+              <p className="text-sm font-medium text-mono-900">Booking Notifications</p>
+              <p className="text-xs text-mono-500 font-light">Get notified when new bookings are created</p>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
               <input type="checkbox" defaultChecked className="sr-only peer" />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              <div className="w-11 h-6 bg-mono-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-mono-900/10 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-mono-900"></div>
             </label>
           </div>
 
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-900">Door Access Alerts</p>
-              <p className="text-xs text-gray-500">Get notified when doors are accessed</p>
+              <p className="text-sm font-medium text-mono-900">Door Access Alerts</p>
+              <p className="text-xs text-mono-500 font-light">Get notified when doors are accessed</p>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
               <input type="checkbox" defaultChecked className="sr-only peer" />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              <div className="w-11 h-6 bg-mono-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-mono-900/10 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-mono-900"></div>
             </label>
           </div>
 
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-900">System Errors</p>
-              <p className="text-xs text-gray-500">Get notified about system errors and issues</p>
+              <p className="text-sm font-medium text-mono-900">System Errors</p>
+              <p className="text-xs text-mono-500 font-light">Get notified about system errors and issues</p>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
               <input type="checkbox" defaultChecked className="sr-only peer" />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              <div className="w-11 h-6 bg-mono-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-mono-900/10 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-mono-900"></div>
             </label>
           </div>
         </div>
       </div>
 
       {/* API Settings */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div className="glass-card p-6">
         <div className="flex items-center gap-3 mb-6">
-          <Key className="w-5 h-5 text-gray-600" />
-          <h2 className="text-lg font-semibold text-gray-900">API Settings</h2>
+          <Key className="w-5 h-5 text-mono-600" />
+          <h2 className="text-lg font-medium text-mono-900">API Settings</h2>
         </div>
 
         <div className="max-w-2xl space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-mono-700 mb-2">
               Webhook URL (Hospitable)
             </label>
             <div className="flex items-center gap-2">
@@ -116,13 +116,13 @@ export default function SettingsPage() {
                 type="text"
                 readOnly
                 value={`${process.env.NEXT_PUBLIC_API_URL}/webhooks/hospitable`}
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600 text-sm font-mono"
+                className="flex-1 px-4 py-2 border border-glass-border rounded-lg bg-glass-surface text-mono-600 text-sm font-mono font-light"
               />
-              <button className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors text-sm font-medium">
+              <button className="px-4 py-2 bg-glass-surface hover:bg-glass-highlight border border-glass-border rounded-lg transition-colors text-sm font-medium text-mono-700">
                 Copy
               </button>
             </div>
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-xs text-mono-500 mt-2 font-light">
               Configure this URL in your Hospitable webhook settings
             </p>
           </div>
@@ -130,28 +130,28 @@ export default function SettingsPage() {
       </div>
 
       {/* Language Settings */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div className="glass-card p-6">
         <div className="flex items-center gap-3 mb-6">
-          <Globe className="w-5 h-5 text-gray-600" />
-          <h2 className="text-lg font-semibold text-gray-900">Language & Region</h2>
+          <Globe className="w-5 h-5 text-mono-600" />
+          <h2 className="text-lg font-medium text-mono-900">Language & Region</h2>
         </div>
 
         <div className="max-w-2xl space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-mono-700 mb-2">
               Default Language
             </label>
-            <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <select className="w-full px-4 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-mono-900 font-light">
               <option value="en">English</option>
               <option value="it" selected>Italiano</option>
             </select>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-mono-700 mb-2">
               Timezone
             </label>
-            <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <select className="w-full px-4 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-mono-900 font-light">
               <option value="Europe/Rome" selected>Europe/Rome (GMT+1)</option>
               <option value="Europe/London">Europe/London (GMT+0)</option>
               <option value="America/New_York">America/New York (GMT-5)</option>
@@ -162,7 +162,7 @@ export default function SettingsPage() {
 
       {/* Save Button */}
       <div className="flex justify-end">
-        <button className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
+        <button className="btn-primary flex items-center gap-2">
           <Save className="w-4 h-4" />
           Save All Settings
         </button>

@@ -21,10 +21,10 @@ const activityIcons = {
 }
 
 const activityColors = {
-  door_open: 'text-green-600 bg-green-50',
-  booking_created: 'text-blue-600 bg-blue-50',
-  code_created: 'text-purple-600 bg-purple-50',
-  code_revoked: 'text-red-600 bg-red-50',
+  door_open: 'text-green-700 bg-green-50',
+  booking_created: 'text-blue-700 bg-blue-50',
+  code_created: 'text-purple-700 bg-purple-50',
+  code_revoked: 'text-red-700 bg-red-50',
 }
 
 export default function RecentActivity() {
@@ -78,31 +78,31 @@ export default function RecentActivity() {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <div className="glass-card p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-lg font-semibold text-gray-900">Recent Activity</h2>
-          <p className="text-sm text-gray-600">Latest events from your properties</p>
+          <h2 className="text-lg font-medium text-mono-900">Recent Activity</h2>
+          <p className="text-sm text-mono-500 font-light">Latest events from your properties</p>
         </div>
-        <Clock className="w-5 h-5 text-gray-400" />
+        <Clock className="w-4 h-4 text-mono-400" />
       </div>
 
       {loading ? (
         <div className="space-y-4">
           {[1, 2, 3].map(i => (
             <div key={i} className="flex items-start gap-4 animate-pulse">
-              <div className="w-10 h-10 bg-gray-200 rounded-full"></div>
+              <div className="w-10 h-10 bg-glass-highlight rounded-full"></div>
               <div className="flex-1 space-y-2">
-                <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                <div className="h-4 bg-glass-highlight rounded w-3/4"></div>
+                <div className="h-3 bg-glass-highlight rounded w-1/2"></div>
               </div>
             </div>
           ))}
         </div>
       ) : activities.length === 0 ? (
-        <div className="text-center py-8 text-gray-500">
-          <Clock className="w-12 h-12 mx-auto mb-3 opacity-50" />
-          <p>No recent activity</p>
+        <div className="text-center py-8 text-mono-400">
+          <Clock className="w-10 h-10 mx-auto mb-3 opacity-30" />
+          <p className="font-light">No recent activity</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -111,18 +111,18 @@ export default function RecentActivity() {
             const colorClass = activityColors[activity.type]
 
             return (
-              <div key={activity.id} className="flex items-start gap-4">
-                <div className={`p-2.5 rounded-full ${colorClass}`}>
-                  <Icon className="w-5 h-5" />
+              <div key={activity.id} className="flex items-start gap-4 group">
+                <div className={`p-2.5 rounded-full ${colorClass} bg-opacity-50 transition-transform group-hover:scale-110`}>
+                  <Icon className="w-4 h-4" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900">
+                  <p className="text-sm font-medium text-mono-900">
                     {activity.guestName}
                   </p>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-mono-500 font-light">
                     {activity.details} • {activity.location}
                   </p>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-mono-400 mt-1 font-light">
                     {formatDistanceToNow(new Date(activity.timestamp), { addSuffix: true })}
                   </p>
                 </div>
@@ -132,7 +132,7 @@ export default function RecentActivity() {
         </div>
       )}
 
-      <button className="w-full mt-4 text-sm text-blue-600 hover:text-blue-700 font-medium">
+      <button className="w-full mt-6 text-sm text-mono-600 hover:text-mono-900 font-medium transition-colors border-t border-glass-border pt-4">
         View all activity →
       </button>
     </div>

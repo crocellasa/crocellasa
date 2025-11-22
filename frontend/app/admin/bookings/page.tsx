@@ -98,39 +98,39 @@ export default function BookingsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Bookings</h1>
-          <p className="text-sm text-gray-600 mt-1">
+          <h1 className="text-3xl font-light text-mono-900 tracking-tight">Bookings</h1>
+          <p className="text-sm text-mono-500 mt-1 font-light">
             Manage all your property bookings and access codes
           </p>
         </div>
-        <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
+        <button className="btn-primary flex items-center gap-2">
           <Calendar className="w-4 h-4" />
           Create Manual Booking
         </button>
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+      <div className="glass-card p-4">
         <div className="flex flex-col md:flex-row gap-4">
           {/* Search */}
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-mono-400" />
             <input
               type="text"
               placeholder="Search by guest name, email, or confirmation code..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full pl-10 pr-4 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-light text-mono-900 placeholder-mono-400"
             />
           </div>
 
           {/* Status Filter */}
           <div className="flex items-center gap-2">
-            <Filter className="w-5 h-5 text-gray-400" />
+            <Filter className="w-4 h-4 text-mono-400" />
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-4 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-light text-mono-900"
             >
               <option value="all">All Status</option>
               <option value="confirmed">Confirmed</option>
@@ -143,105 +143,109 @@ export default function BookingsPage() {
       </div>
 
       {/* Bookings Table */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      <div className="glass-card overflow-hidden">
         {loading ? (
-          <div className="p-8 text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="text-gray-600 mt-4">Loading bookings...</p>
+          <div className="p-12 text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-mono-900 mx-auto"></div>
+            <p className="text-mono-500 mt-4 font-light">Loading bookings...</p>
           </div>
         ) : filteredBookings.length === 0 ? (
-          <div className="p-8 text-center text-gray-500">
-            <Calendar className="w-12 h-12 mx-auto mb-3 opacity-50" />
-            <p>No bookings found</p>
+          <div className="p-12 text-center text-mono-400">
+            <Calendar className="w-12 h-12 mx-auto mb-3 opacity-30" />
+            <p className="font-light">No bookings found</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-50 border-b border-gray-200">
+              <thead className="bg-glass-surface/50 border-b border-glass-border">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-[10px] font-medium text-mono-400 uppercase tracking-wider">
                     Guest
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-[10px] font-medium text-mono-400 uppercase tracking-wider">
                     Property
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-[10px] font-medium text-mono-400 uppercase tracking-wider">
                     Check-In / Check-Out
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-[10px] font-medium text-mono-400 uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-[10px] font-medium text-mono-400 uppercase tracking-wider">
                     Access Codes
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-right text-[10px] font-medium text-mono-400 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="divide-y divide-glass-border">
                 {filteredBookings.map((booking) => (
-                  <tr key={booking.id} className="hover:bg-gray-50 transition-colors">
+                  <tr key={booking.id} className="hover:bg-glass-surface/30 transition-colors">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                          <User className="w-5 h-5 text-blue-700" />
+                        <div className="w-8 h-8 bg-mono-100 rounded-full flex items-center justify-center">
+                          <User className="w-4 h-4 text-mono-600" />
                         </div>
                         <div>
-                          <p className="text-sm font-medium text-gray-900">{booking.guest_name}</p>
-                          <p className="text-xs text-gray-500">{booking.guest_email}</p>
+                          <p className="text-sm font-medium text-mono-900">{booking.guest_name}</p>
+                          <p className="text-xs text-mono-500 font-light">{booking.guest_email}</p>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="flex items-center gap-2 text-sm text-gray-700">
-                        <MapPin className="w-4 h-4 text-gray-400" />
+                      <div className="flex items-center gap-2 text-sm text-mono-600 font-light">
+                        <MapPin className="w-3 h-3 text-mono-400" />
                         Via Landolina #186
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-sm">
-                        <p className="text-gray-900 font-medium">
+                      <div className="text-sm font-light">
+                        <p className="text-mono-900">
                           {format(new Date(booking.checkin_date), 'MMM dd, yyyy')}
                         </p>
-                        <p className="text-gray-500">
+                        <p className="text-mono-400 text-xs">
                           {format(new Date(booking.checkout_date), 'MMM dd, yyyy')}
                         </p>
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className={`px-3 py-1 text-xs font-medium rounded-full ${statusColors[booking.status]}`}>
+                      <span className={`px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wider rounded-full border ${booking.status === 'confirmed' ? 'bg-blue-50 text-blue-700 border-blue-100' :
+                          booking.status === 'checked_in' ? 'bg-green-50 text-green-700 border-green-100' :
+                            booking.status === 'checked_out' ? 'bg-mono-50 text-mono-700 border-mono-100' :
+                              'bg-red-50 text-red-700 border-red-100'
+                        }`}>
                         {booking.status.replace('_', ' ')}
                       </span>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
-                          <span className="text-xs font-medium text-green-700">{booking.access_codes_count}</span>
+                        <div className="w-5 h-5 bg-green-50 rounded-full flex items-center justify-center border border-green-100">
+                          <span className="text-[10px] font-medium text-green-700">{booking.access_codes_count}</span>
                         </div>
-                        <span className="text-sm text-gray-600">codes active</span>
+                        <span className="text-xs text-mono-500 font-light">active</span>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <div className="flex items-center justify-end gap-2">
+                      <div className="flex items-center justify-end gap-1">
                         <button
-                          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                          className="p-2 hover:bg-glass-surface rounded-lg transition-colors text-mono-400 hover:text-mono-900"
                           title="View details"
                         >
-                          <Eye className="w-4 h-4 text-gray-600" />
+                          <Eye className="w-4 h-4" />
                         </button>
                         <button
-                          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                          className="p-2 hover:bg-glass-surface rounded-lg transition-colors text-mono-400 hover:text-mono-900"
                           title="Resend notification"
                         >
-                          <Send className="w-4 h-4 text-gray-600" />
+                          <Send className="w-4 h-4" />
                         </button>
                         {booking.status !== 'cancelled' && (
                           <button
-                            className="p-2 hover:bg-red-50 rounded-lg transition-colors"
+                            className="p-2 hover:bg-red-50 rounded-lg transition-colors text-mono-400 hover:text-red-600"
                             title="Cancel booking"
                           >
-                            <XCircle className="w-4 h-4 text-red-600" />
+                            <XCircle className="w-4 h-4" />
                           </button>
                         )}
                       </div>

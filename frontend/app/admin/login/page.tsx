@@ -30,35 +30,35 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-subtle-gradient px-4">
       <div className="max-w-md w-full space-y-8">
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-3xl font-serif text-alcova-navy mb-2">
+          <h1 className="text-4xl font-light text-mono-900 mb-2 tracking-tight">
             Landolina Admin
           </h1>
-          <p className="text-gray-600">Sign in to access the dashboard</p>
+          <p className="text-mono-500 font-light">Sign in to access the dashboard</p>
         </div>
 
         {/* Login Form */}
-        <div className="bg-white rounded-lg shadow-md border border-gray-200 p-8">
+        <div className="glass-card p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Error Message */}
             {error && (
-              <div className="flex items-center gap-3 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+              <div className="flex items-center gap-3 p-4 bg-red-50 border border-red-100 rounded-lg text-red-700">
                 <AlertCircle className="w-5 h-5 flex-shrink-0" />
-                <p className="text-sm">{error}</p>
+                <p className="text-sm font-light">{error}</p>
               </div>
             )}
 
             {/* Email Field */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="email" className="block text-sm font-medium text-mono-700 mb-2">
                 Email
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400" />
+                  <Mail className="h-5 w-5 text-mono-400" />
                 </div>
                 <input
                   id="email"
@@ -66,7 +66,7 @@ export default function LoginPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="block w-full pl-10 pr-3 py-2.5 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-mono-900 placeholder-mono-400 font-light"
                   placeholder="admin@landolina.it"
                   disabled={loading}
                 />
@@ -75,12 +75,12 @@ export default function LoginPage() {
 
             {/* Password Field */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium text-mono-700 mb-2">
                 Password
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
+                  <Lock className="h-5 w-5 text-mono-400" />
                 </div>
                 <input
                   id="password"
@@ -88,7 +88,7 @@ export default function LoginPage() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="block w-full pl-10 pr-3 py-2.5 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-mono-900 placeholder-mono-400 font-light"
                   placeholder="••••••••"
                   disabled={loading}
                 />
@@ -99,7 +99,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-alcova-navy hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-mono-900 hover:bg-mono-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mono-900 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
             >
               {loading ? (
                 <span className="flex items-center gap-2">
@@ -116,17 +116,17 @@ export default function LoginPage() {
           </form>
 
           {/* Demo Credentials */}
-          <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <p className="text-xs font-semibold text-blue-900 mb-2">Demo Credentials:</p>
-            <div className="text-xs text-blue-700 space-y-1">
-              <p>Email: <code className="bg-white px-2 py-0.5 rounded">admin@landolina.it</code></p>
-              <p>Password: <code className="bg-white px-2 py-0.5 rounded">admin123</code></p>
+          <div className="mt-6 p-4 bg-glass-surface/50 border border-glass-border rounded-lg">
+            <p className="text-xs font-medium text-mono-900 mb-2 uppercase tracking-wider">Demo Credentials:</p>
+            <div className="text-xs text-mono-600 space-y-1 font-light">
+              <p>Email: <code className="bg-glass-surface px-2 py-0.5 rounded border border-glass-border text-mono-800">admin@landolina.it</code></p>
+              <p>Password: <code className="bg-glass-surface px-2 py-0.5 rounded border border-glass-border text-mono-800">admin123</code></p>
             </div>
           </div>
         </div>
 
         {/* Footer */}
-        <p className="text-center text-sm text-gray-500">
+        <p className="text-center text-xs text-mono-400 font-light">
           Alcova Landolina © 2025
         </p>
       </div>

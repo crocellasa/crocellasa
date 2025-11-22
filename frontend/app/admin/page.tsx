@@ -50,11 +50,11 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Page Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-sm text-gray-600 mt-1">
+        <h1 className="text-3xl font-light text-mono-900 tracking-tight">Dashboard</h1>
+        <p className="text-sm text-mono-500 mt-1 font-light">
           Welcome back! Here's what's happening with your properties.
         </p>
       </div>
@@ -96,13 +96,13 @@ export default function AdminDashboard() {
       </div>
 
       {/* Analytics Chart */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div className="glass-card p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">Analytics</h2>
-            <p className="text-sm text-gray-600">Last 7 days overview</p>
+            <h2 className="text-lg font-medium text-mono-900">Analytics</h2>
+            <p className="text-sm text-mono-500 font-light">Last 7 days overview</p>
           </div>
-          <div className="flex items-center gap-2 text-sm text-gray-600">
+          <div className="flex items-center gap-2 text-sm text-mono-500">
             <TrendingUp className="w-4 h-4" />
             <span>Bookings & Access Usage</span>
           </div>

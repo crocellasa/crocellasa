@@ -7,60 +7,60 @@ export default function CheckInTimesPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Check-In Times</h1>
-        <p className="text-sm text-gray-600 mt-1">
+        <h1 className="text-3xl font-light text-mono-900 tracking-tight">Check-In Times</h1>
+        <p className="text-sm text-mono-500 mt-1 font-light">
           Configure default check-in and check-out times for your properties
         </p>
       </div>
 
       {/* Settings Form */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div className="glass-card p-6">
         <div className="max-w-2xl space-y-6">
           {/* Check-in Time */}
           <div>
-            <label className="block text-sm font-medium text-gray-900 mb-2">
+            <label className="block text-sm font-medium text-mono-900 mb-2">
               Default Check-In Time
             </label>
             <div className="flex items-center gap-3">
-              <Clock className="w-5 h-5 text-gray-400" />
+              <Clock className="w-5 h-5 text-mono-400" />
               <input
                 type="time"
                 defaultValue="15:00"
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-4 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-mono-900"
               />
-              <span className="text-sm text-gray-600">3:00 PM</span>
+              <span className="text-sm text-mono-600 font-light">3:00 PM</span>
             </div>
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-xs text-mono-400 mt-2 font-light">
               Access codes will be valid from this time on check-in day
             </p>
           </div>
 
           {/* Check-out Time */}
           <div>
-            <label className="block text-sm font-medium text-gray-900 mb-2">
+            <label className="block text-sm font-medium text-mono-900 mb-2">
               Default Check-Out Time
             </label>
             <div className="flex items-center gap-3">
-              <Clock className="w-5 h-5 text-gray-400" />
+              <Clock className="w-5 h-5 text-mono-400" />
               <input
                 type="time"
                 defaultValue="11:00"
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-4 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-mono-900"
               />
-              <span className="text-sm text-gray-600">11:00 AM</span>
+              <span className="text-sm text-mono-600 font-light">11:00 AM</span>
             </div>
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-xs text-mono-400 mt-2 font-light">
               Access codes will be revoked after this time on check-out day
             </p>
           </div>
 
           {/* Buffer Times */}
-          <div className="border-t border-gray-200 pt-6">
-            <h3 className="text-sm font-semibold text-gray-900 mb-4">Buffer Times</h3>
+          <div className="border-t border-glass-border pt-6">
+            <h3 className="text-sm font-semibold text-mono-900 mb-4">Buffer Times</h3>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-mono-700 mb-2">
                   Early Check-In Buffer (hours before)
                 </label>
                 <input
@@ -68,15 +68,15 @@ export default function CheckInTimesPage() {
                   defaultValue="2"
                   min="0"
                   max="24"
-                  className="w-32 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-32 px-4 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-mono-900"
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-mono-400 mt-1 font-light">
                   Codes will be active 2 hours before check-in time
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-mono-700 mb-2">
                   Late Check-Out Buffer (hours after)
                 </label>
                 <input
@@ -84,9 +84,9 @@ export default function CheckInTimesPage() {
                   defaultValue="1"
                   min="0"
                   max="24"
-                  className="w-32 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-32 px-4 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-mono-900"
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-mono-400 mt-1 font-light">
                   Codes will remain active 1 hour after check-out time
                 </p>
               </div>
@@ -94,8 +94,8 @@ export default function CheckInTimesPage() {
           </div>
 
           {/* Save Button */}
-          <div className="flex justify-end pt-4 border-t border-gray-200">
-            <button className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
+          <div className="flex justify-end pt-4 border-t border-glass-border">
+            <button className="btn-primary flex items-center gap-2">
               <Save className="w-4 h-4" />
               Save Settings
             </button>

@@ -27,19 +27,18 @@ export default function KPICard({
   loading,
 }: KPICardProps) {
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <div className="glass-card p-6 transition-all duration-300 hover:shadow-lg hover:border-glass-border/80">
       <div className="flex items-center justify-between mb-4">
-        <div className={`p-3 rounded-lg ${colorClasses[color]}`}>
-          <Icon className="w-6 h-6" />
+        <div className={`p-3 rounded-xl ${colorClasses[color]} bg-opacity-50 backdrop-blur-sm`}>
+          <Icon className="w-5 h-5" />
         </div>
         {trend !== undefined && (
-          <div className={`flex items-center gap-1 text-sm font-medium ${
-            trend >= 0 ? 'text-green-600' : 'text-red-600'
-          }`}>
+          <div className={`flex items-center gap-1 text-xs font-medium ${trend >= 0 ? 'text-green-600' : 'text-red-600'
+            }`}>
             {trend >= 0 ? (
-              <TrendingUp className="w-4 h-4" />
+              <TrendingUp className="w-3 h-3" />
             ) : (
-              <TrendingDown className="w-4 h-4" />
+              <TrendingDown className="w-3 h-3" />
             )}
             <span>{Math.abs(trend)}%</span>
           </div>
@@ -47,14 +46,14 @@ export default function KPICard({
       </div>
 
       <div>
-        <p className="text-sm text-gray-600 mb-1">{title}</p>
+        <p className="text-xs font-medium text-mono-500 uppercase tracking-wider mb-1">{title}</p>
         {loading ? (
-          <div className="h-8 w-20 bg-gray-200 animate-pulse rounded"></div>
+          <div className="h-8 w-20 bg-glass-highlight animate-pulse rounded"></div>
         ) : (
           <div className="flex items-baseline gap-2">
-            <p className="text-3xl font-bold text-gray-900">{value}</p>
+            <p className="text-3xl font-light text-mono-900">{value}</p>
             {total !== undefined && (
-              <p className="text-sm text-gray-500">/ {total}</p>
+              <p className="text-sm text-mono-400 font-light">/ {total}</p>
             )}
           </div>
         )}
