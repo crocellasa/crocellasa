@@ -69,8 +69,9 @@ async def get_all_bookings(
 
             transformed_bookings.append({
                 "id": booking["id"],
-                "hospitable_id": booking.get("hospitable_id", ""),
-                "confirmation_code": booking.get("confirmation_code", ""),
+                "hospitable_id": booking.get("hospitable_id"),
+                "smoobu_id": booking.get("smoobu_id"),
+                "confirmation_code": booking.get("confirmation_code"),
                 "guest_name": booking["guest_name"],
                 "guest_email": booking["guest_email"],
                 "guest_phone": booking.get("guest_phone", ""),
