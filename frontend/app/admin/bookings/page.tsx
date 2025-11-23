@@ -1,8 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Search, Filter, Calendar, User, MapPin, MoreVertical, Eye, XCircle, Send } from 'lucide-react'
+import { Search, Filter, Calendar, User, MapPin, MoreVertical, Eye, XCircle, Send, CheckCircle, AlertCircle, X } from 'lucide-react'
 import { format } from 'date-fns'
+import { fetchWithAuth } from '@/lib/auth'
 
 interface Booking {
   id: string
@@ -27,6 +28,11 @@ const statusColors = {
   cancelled: 'bg-red-100 text-red-700',
 }
 
+interface Toast {
+  type: 'success' | 'error'
+  message: string
+}
+
 export default function BookingsPage() {
   const [bookings, setBookings] = useState<Booking[]>([])
   const [loading, setLoading] = useState(true)
@@ -34,6 +40,7 @@ export default function BookingsPage() {
   const [statusFilter, setStatusFilter] = useState<string>('all')
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [creating, setCreating] = useState(false)
+  const [toast, setToast] = useState<Toast | null>(null)
 
   // Form state
   const [formData, setFormData] = useState({
@@ -52,9 +59,20 @@ export default function BookingsPage() {
     fetchBookings()
   }, [])
 
+  useEffect(() => {
+    if (toast) {
+      const timer = setTimeout(() => setToast(null), 5000)
+      return () => clearTimeout(timer)
+    }
+  }, [toast])
+
+  const showToast = (type: 'success' | 'error', message: string) => {
+    setToast({ type, message })
+  }
+
   const fetchBookings = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/bookings`)
+      const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/bookings`)
       if (response.ok) {
         const data = await response.json()
         setBookings(data)
@@ -75,12 +93,19 @@ export default function BookingsPage() {
     setCreating(true)
 
     try {
+      // Convert datetime-local format to ISO format with timezone
+      const bookingData = {
+        ...formData,
+        checkin_date: new Date(formData.checkin_date).toISOString(),
+        checkout_date: new Date(formData.checkout_date).toISOString(),
+      }
+
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/bookings/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(bookingData),
       })
 
       if (response.ok) {
@@ -104,14 +129,14 @@ export default function BookingsPage() {
         // Refresh bookings list
         await fetchBookings()
 
-        alert('Booking created successfully! Access codes have been sent to the guest.')
+        showToast('success', `Booking created successfully for ${data.guest_name}! Access codes have been sent.`)
       } else {
         const error = await response.json()
-        alert(`Failed to create booking: ${error.detail || 'Unknown error'}`)
+        showToast('error', error.detail || 'Failed to create booking')
       }
     } catch (error) {
       console.error('Failed to create booking:', error)
-      alert('Failed to create booking. Please try again.')
+      showToast('error', 'Failed to create booking. Please check your connection and try again.')
     } finally {
       setCreating(false)
     }
@@ -475,6 +500,33 @@ export default function BookingsPage() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Toast Notification */}
+      {toast && (
+        <div className="fixed bottom-4 right-4 z-50 animate-in slide-in-from-bottom-5">
+          <div className={`glass-card min-w-[320px] max-w-md p-4 flex items-start gap-3 ${
+            toast.type === 'success' ? 'border-l-4 border-green-500' : 'border-l-4 border-red-500'
+          }`}>
+            {toast.type === 'success' ? (
+              <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+            ) : (
+              <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+            )}
+            <div className="flex-1">
+              <p className="text-sm font-medium text-mono-900">
+                {toast.type === 'success' ? 'Success' : 'Error'}
+              </p>
+              <p className="text-sm text-mono-600 mt-0.5 font-light">{toast.message}</p>
+            </div>
+            <button
+              onClick={() => setToast(null)}
+              className="text-mono-400 hover:text-mono-900 transition-colors flex-shrink-0"
+            >
+              <X className="w-4 h-4" />
+            </button>
           </div>
         </div>
       )}
