@@ -4,7 +4,7 @@ import { Bell, RefreshCw } from 'lucide-react'
 
 export default function AdminHeader() {
   return (
-    <header className="bg-glass-surface/50 backdrop-blur-md border-b border-glass-border px-6 py-4 sticky top-0 z-10">
+    <header className="bg-glass-surface/50 backdrop-blur-md border-b border-glass-border px-6 py-4 sticky top-0 z-20">
       <div className="flex items-center justify-between">
         <div className="flex-1"></div>
 
