@@ -63,7 +63,9 @@ class BookingResponse(BaseModel):
     Model for booking response
     """
     id: str
-    hospitable_id: str
+    hospitable_id: Optional[str] = None
+    smoobu_id: Optional[str] = None
+    confirmation_code: Optional[str] = None
     guest_name: str
     guest_email: str
     guest_phone: str

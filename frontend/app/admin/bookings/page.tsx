@@ -1,13 +1,15 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Search, Filter, Calendar, User, MapPin, MoreVertical, Eye, XCircle, Send } from 'lucide-react'
+import { Search, Filter, Calendar, User, MapPin, MoreVertical, Eye, XCircle, Send, CheckCircle, AlertCircle, X } from 'lucide-react'
 import { format } from 'date-fns'
+import { fetchWithAuth } from '@/lib/auth'
 
 interface Booking {
   id: string
-  hospitable_id: string
-  confirmation_code: string
+  hospitable_id?: string
+  smoobu_id?: string
+  confirmation_code?: string
   guest_name: string
   guest_email: string
   guest_phone: string
@@ -26,59 +28,117 @@ const statusColors = {
   cancelled: 'bg-red-100 text-red-700',
 }
 
+interface Toast {
+  type: 'success' | 'error'
+  message: string
+}
+
 export default function BookingsPage() {
   const [bookings, setBookings] = useState<Booking[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<string>('all')
+  const [showCreateModal, setShowCreateModal] = useState(false)
+  const [creating, setCreating] = useState(false)
+  const [toast, setToast] = useState<Toast | null>(null)
+
+  // Form state
+  const [formData, setFormData] = useState({
+    guest_name: '',
+    guest_email: '',
+    guest_phone: '',
+    guest_language: 'en',
+    confirmation_code: '',
+    smoobu_id: '',
+    checkin_date: '',
+    checkout_date: '',
+    num_guests: 1
+  })
 
   useEffect(() => {
     fetchBookings()
   }, [])
 
+  useEffect(() => {
+    if (toast) {
+      const timer = setTimeout(() => setToast(null), 5000)
+      return () => clearTimeout(timer)
+    }
+  }, [toast])
+
+  const showToast = (type: 'success' | 'error', message: string) => {
+    setToast({ type, message })
+  }
+
   const fetchBookings = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/bookings`)
+      const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/bookings`)
       if (response.ok) {
         const data = await response.json()
         setBookings(data)
       } else {
-        // Mock data for development
-        setBookings([
-          {
-            id: '1',
-            hospitable_id: 'HOSP-12345',
-            confirmation_code: 'ABC123',
-            guest_name: 'Marco Rossi',
-            guest_email: 'marco.rossi@example.com',
-            guest_phone: '+39 123 456 7890',
-            property_id: 'alcova_landolina_fi',
-            checkin_date: '2025-12-15T15:00:00Z',
-            checkout_date: '2025-12-18T11:00:00Z',
-            status: 'confirmed',
-            created_at: '2025-12-01T10:00:00Z',
-            access_codes_count: 3,
-          },
-          {
-            id: '2',
-            hospitable_id: 'HOSP-12346',
-            confirmation_code: 'DEF456',
-            guest_name: 'Sarah Johnson',
-            guest_email: 'sarah.j@example.com',
-            guest_phone: '+1 555 123 4567',
-            property_id: 'alcova_landolina_fi',
-            checkin_date: '2025-12-20T15:00:00Z',
-            checkout_date: '2025-12-23T11:00:00Z',
-            status: 'confirmed',
-            created_at: '2025-12-02T14:30:00Z',
-            access_codes_count: 3,
-          },
-        ])
+        console.error('Failed to fetch bookings:', response.statusText)
+        setBookings([])
       }
     } catch (error) {
       console.error('Failed to fetch bookings:', error)
+      setBookings([])
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleCreateBooking = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setCreating(true)
+
+    try {
+      // Convert datetime-local format to ISO format with timezone
+      const bookingData = {
+        ...formData,
+        checkin_date: new Date(formData.checkin_date).toISOString(),
+        checkout_date: new Date(formData.checkout_date).toISOString(),
+      }
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/bookings/create`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bookingData),
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        console.log('Booking created:', data)
+
+        // Close modal and reset form
+        setShowCreateModal(false)
+        setFormData({
+          guest_name: '',
+          guest_email: '',
+          guest_phone: '',
+          guest_language: 'en',
+          confirmation_code: '',
+          smoobu_id: '',
+          checkin_date: '',
+          checkout_date: '',
+          num_guests: 1
+        })
+
+        // Refresh bookings list
+        await fetchBookings()
+
+        showToast('success', `Booking created successfully for ${data.guest_name}! Access codes have been sent.`)
+      } else {
+        const error = await response.json()
+        showToast('error', error.detail || 'Failed to create booking')
+      }
+    } catch (error) {
+      console.error('Failed to create booking:', error)
+      showToast('error', 'Failed to create booking. Please check your connection and try again.')
+    } finally {
+      setCreating(false)
     }
   }
 
@@ -86,7 +146,9 @@ export default function BookingsPage() {
     const matchesSearch =
       booking.guest_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       booking.guest_email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      booking.confirmation_code.toLowerCase().includes(searchQuery.toLowerCase())
+      (booking.confirmation_code && booking.confirmation_code.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (booking.smoobu_id && booking.smoobu_id.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (booking.hospitable_id && booking.hospitable_id.toLowerCase().includes(searchQuery.toLowerCase()))
 
     const matchesStatus = statusFilter === 'all' || booking.status === statusFilter
 
@@ -103,7 +165,10 @@ export default function BookingsPage() {
             Manage all your property bookings and access codes
           </p>
         </div>
-        <button className="btn-primary flex items-center gap-2">
+        <button
+          onClick={() => setShowCreateModal(true)}
+          className="btn-primary flex items-center gap-2"
+        >
           <Calendar className="w-4 h-4" />
           Create Manual Booking
         </button>
@@ -257,6 +322,214 @@ export default function BookingsPage() {
           </div>
         )}
       </div>
+
+      {/* Create Booking Modal */}
+      {showCreateModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="glass-card max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-glass-border">
+              <h2 className="text-2xl font-light text-mono-900">Create Manual Booking</h2>
+              <p className="text-sm text-mono-500 mt-1 font-light">
+                Create a new booking and generate access codes automatically
+              </p>
+            </div>
+
+            <form onSubmit={handleCreateBooking} className="p-6 space-y-6">
+              {/* Guest Information */}
+              <div>
+                <h3 className="text-sm font-medium text-mono-700 mb-4 uppercase tracking-wider">Guest Information</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm text-mono-600 mb-1.5 font-light">
+                      Guest Name <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.guest_name}
+                      onChange={(e) => setFormData({ ...formData, guest_name: e.target.value })}
+                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-light text-mono-900"
+                      placeholder="John Doe"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm text-mono-600 mb-1.5 font-light">
+                      Email <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={formData.guest_email}
+                      onChange={(e) => setFormData({ ...formData, guest_email: e.target.value })}
+                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-light text-mono-900"
+                      placeholder="guest@example.com"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm text-mono-600 mb-1.5 font-light">
+                      Phone <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      value={formData.guest_phone}
+                      onChange={(e) => setFormData({ ...formData, guest_phone: e.target.value })}
+                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-light text-mono-900"
+                      placeholder="+393331234567"
+                    />
+                    <p className="text-xs text-mono-400 mt-1">E.164 format (e.g., +393331234567)</p>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm text-mono-600 mb-1.5 font-light">
+                      Language
+                    </label>
+                    <select
+                      value={formData.guest_language}
+                      onChange={(e) => setFormData({ ...formData, guest_language: e.target.value })}
+                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-light text-mono-900"
+                    >
+                      <option value="en">English</option>
+                      <option value="it">Italiano</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Booking Details */}
+              <div>
+                <h3 className="text-sm font-medium text-mono-700 mb-4 uppercase tracking-wider">Booking Details</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm text-mono-600 mb-1.5 font-light">
+                      Check-in Date <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="datetime-local"
+                      required
+                      value={formData.checkin_date}
+                      onChange={(e) => setFormData({ ...formData, checkin_date: e.target.value })}
+                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-light text-mono-900"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm text-mono-600 mb-1.5 font-light">
+                      Check-out Date <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="datetime-local"
+                      required
+                      value={formData.checkout_date}
+                      onChange={(e) => setFormData({ ...formData, checkout_date: e.target.value })}
+                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-light text-mono-900"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm text-mono-600 mb-1.5 font-light">
+                      Number of Guests <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      required
+                      min="1"
+                      max="10"
+                      value={formData.num_guests}
+                      onChange={(e) => setFormData({ ...formData, num_guests: parseInt(e.target.value) })}
+                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-light text-mono-900"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm text-mono-600 mb-1.5 font-light">
+                      Confirmation Code
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.confirmation_code}
+                      onChange={(e) => setFormData({ ...formData, confirmation_code: e.target.value })}
+                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-light text-mono-900"
+                      placeholder="Optional"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm text-mono-600 mb-1.5 font-light">
+                      Smoobu ID
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.smoobu_id}
+                      onChange={(e) => setFormData({ ...formData, smoobu_id: e.target.value })}
+                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-light text-mono-900"
+                      placeholder="Optional"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-glass-border">
+                <button
+                  type="button"
+                  onClick={() => setShowCreateModal(false)}
+                  disabled={creating}
+                  className="px-4 py-2 text-sm font-light text-mono-600 hover:text-mono-900 transition-colors disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={creating}
+                  className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                >
+                  {creating ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                      Creating...
+                    </>
+                  ) : (
+                    <>
+                      <Calendar className="w-4 h-4" />
+                      Create Booking
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Toast Notification */}
+      {toast && (
+        <div className="fixed bottom-4 right-4 z-50 animate-in slide-in-from-bottom-5">
+          <div className={`glass-card min-w-[320px] max-w-md p-4 flex items-start gap-3 ${
+            toast.type === 'success' ? 'border-l-4 border-green-500' : 'border-l-4 border-red-500'
+          }`}>
+            {toast.type === 'success' ? (
+              <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+            ) : (
+              <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+            )}
+            <div className="flex-1">
+              <p className="text-sm font-medium text-mono-900">
+                {toast.type === 'success' ? 'Success' : 'Error'}
+              </p>
+              <p className="text-sm text-mono-600 mt-0.5 font-light">{toast.message}</p>
+            </div>
+            <button
+              onClick={() => setToast(null)}
+              className="text-mono-400 hover:text-mono-900 transition-colors flex-shrink-0"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
