@@ -48,7 +48,7 @@ export default function AdminSidebar() {
   }
 
   return (
-    <div className="w-64 glass-panel border-r border-glass-border flex flex-col h-full z-20">
+    <div className="w-64 glass-panel border-r border-glass-border flex flex-col h-full relative z-30">
       {/* Logo */}
       <div className="p-6 border-b border-glass-border">
         <h1 className="text-2xl font-light tracking-tight text-mono-900">Landolina</h1>
