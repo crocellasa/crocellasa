@@ -30,9 +30,9 @@ class Settings(BaseSettings):
     TUYA_CLIENT_ID: str
     TUYA_SECRET: str
     TUYA_REGION: str = "eu"
-    TUYA_DEVICE_MAIN_ENTRANCE: str  # Ingresso principale (portone edificio)
+    TUYA_DEVICE_MAIN_ENTRANCE: Optional[str] = None  # Ingresso principale (portone edificio)
     TUYA_DEVICE_FLOOR_DOOR: Optional[str] = None  # Optional - uses Ring intercom instead
-    TUYA_DEVICE_APARTMENT: str  # Porta appartamento
+    TUYA_DEVICE_APARTMENT: Optional[str] = None  # Porta appartamento
 
     # Twilio (WhatsApp/SMS)
     TWILIO_ACCOUNT_SID: str
@@ -68,15 +68,22 @@ class Settings(BaseSettings):
     # n8n
     N8N_WEBHOOK_SECRET: Optional[str] = None
 
+    # Lodgify API (for booking sync)
+    LODGIFY_API_KEY: Optional[str] = None
+    LODGIFY_PROPERTY_ID: Optional[str] = None
+
     # Scheduler
     SCHEDULER_TIMEZONE: str = "Europe/Rome"
     AUTO_REVOKE_HOUR: int = 14  # 2 PM daily check
+    BOOKING_SYNC_HOURS: List[int] = [0, 18]  # Sync bookings at 12 AM and 6 PM
+    CODE_PROVISIONING_HOURS: List[int] = [0, 18]  # Check at 12 AM and 6 PM for codes to provision
+    CODE_PROVISIONING_WINDOW_HOURS: int = 48  # Provision codes 48h before checkin
 
     # Property defaults
     DEFAULT_PROPERTY_ID: str = "alcova_landolina_fi"
     CODE_LENGTH: int = 6
     CODE_BUFFER_HOURS_BEFORE: int = 2  # Code valid 2h before checkin
-    CODE_BUFFER_HOURS_AFTER: int = 2   # Code valid 2h after checkout
+    CODE_EXPIRY_NEXT_DAY_HOUR: int = 9  # Code expires at 9 AM the day after checkout
 
     model_config = SettingsConfigDict(
         env_file=".env",
