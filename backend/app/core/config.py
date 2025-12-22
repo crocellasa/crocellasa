@@ -76,7 +76,7 @@ class Settings(BaseSettings):
     SCHEDULER_TIMEZONE: str = "Europe/Rome"
     AUTO_REVOKE_HOUR: int = 14  # 2 PM daily check
     BOOKING_SYNC_INTERVAL_HOURS: int = 1  # Hourly booking sync
-    CODE_PROVISIONING_INTERVAL_MINUTES: int = 30  # Check every 30 minutes for codes to provision
+    CODE_PROVISIONING_HOURS: List[int] = [0, 18]  # Check at 12 AM and 6 PM for codes to provision
     CODE_PROVISIONING_WINDOW_HOURS: int = 48  # Provision codes 48h before checkin
 
     # Property defaults

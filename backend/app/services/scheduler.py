@@ -49,7 +49,7 @@ async def sync_bookings_from_lodgify():
 
 async def provision_access_codes():
     """
-    Frequent job (every 5 minutes) to provision access codes for upcoming bookings
+    Twice-daily job (12 AM and 6 PM) to provision access codes for upcoming bookings
     """
     logger.info("🔄 Running code provisioning job...")
 
@@ -175,14 +175,15 @@ def init_scheduler():
         replace_existing=True
     )
 
-    # Frequent code provisioning job (every 5 minutes)
-    scheduler.add_job(
-        provision_access_codes,
-        trigger=IntervalTrigger(minutes=settings.CODE_PROVISIONING_INTERVAL_MINUTES),
-        id="provision_codes",
-        name="Provision access codes for upcoming bookings",
-        replace_existing=True
-    )
+    # Code provisioning jobs (at 12 AM and 6 PM)
+    for hour in settings.CODE_PROVISIONING_HOURS:
+        scheduler.add_job(
+            provision_access_codes,
+            trigger=CronTrigger(hour=hour, minute=0),
+            id=f"provision_codes_{hour:02d}00",
+            name=f"Provision access codes at {hour:02d}:00",
+            replace_existing=True
+        )
 
     # Daily auto-revoke job at 2 PM
     scheduler.add_job(
@@ -194,9 +195,10 @@ def init_scheduler():
     )
 
     scheduler.start()
-    logger.info(f"✅ Scheduler started with 3 jobs (timezone: {settings.SCHEDULER_TIMEZONE})")
+    provisioning_times = ", ".join([f"{h:02d}:00" for h in settings.CODE_PROVISIONING_HOURS])
+    logger.info(f"✅ Scheduler started with {2 + len(settings.CODE_PROVISIONING_HOURS)} jobs (timezone: {settings.SCHEDULER_TIMEZONE})")
     logger.info(f"   - Booking sync: every {settings.BOOKING_SYNC_INTERVAL_HOURS}h")
-    logger.info(f"   - Code provisioning: every {settings.CODE_PROVISIONING_INTERVAL_MINUTES}min")
+    logger.info(f"   - Code provisioning: daily at {provisioning_times}")
     logger.info(f"   - Auto-revoke: daily at {settings.AUTO_REVOKE_HOUR}:00")
 
 
