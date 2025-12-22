@@ -44,6 +44,10 @@ def calculate_code_validity(checkin_date: datetime, checkout_date: datetime) -> 
 
     Returns:
         Tuple of (valid_from, valid_until)
+
+    Code expires at 9 AM the day after checkout to force guests to use
+    physical key cards during their stay (prevents leaving card inside and
+    relying on code, or re-entering after checkout).
     """
     # Ensure datetimes are timezone-aware (convert naive to UTC)
     if checkin_date.tzinfo is None:
@@ -55,8 +59,12 @@ def calculate_code_validity(checkin_date: datetime, checkout_date: datetime) -> 
     # Add buffer hours before checkin
     valid_from = checkin_date - timedelta(hours=settings.CODE_BUFFER_HOURS_BEFORE)
 
-    # Add buffer hours after checkout
-    valid_until = checkout_date + timedelta(hours=settings.CODE_BUFFER_HOURS_AFTER)
+    # Expire at 9 AM the day after checkout (security measure)
+    day_after_checkout = checkout_date.date() + timedelta(days=1)
+    valid_until = datetime.combine(
+        day_after_checkout,
+        datetime.min.time().replace(hour=settings.CODE_EXPIRY_NEXT_DAY_HOUR)
+    ).replace(tzinfo=checkout_date.tzinfo)
 
     logger.info(f"Code validity: {valid_from} to {valid_until}")
 
