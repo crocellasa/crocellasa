@@ -1,6 +1,7 @@
 """
 Configuration management using Pydantic Settings
 Loads environment variables from .env file
+Force rebuild: 2025-12-22
 """
 import os
 from pydantic_settings import BaseSettings, SettingsConfigDict
