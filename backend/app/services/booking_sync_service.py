@@ -285,23 +285,17 @@ class BookingSyncService:
                 "codes_provisioned_at": datetime.now(timezone.utc).isoformat()
             }).eq("id", booking_id).execute()
 
-            # Generate guest portal URL
-            guest_token = booking.get("guest_token")
-            portal_url = f"{settings.FRONTEND_URL}/guest/{guest_token}" if guest_token else settings.FRONTEND_URL
+            # TODO: Send access codes to guest via Lodgify messaging API
+            # Lodgify handles guest communication, no need for Twilio/WhatsApp/SMS
+            # Format the codes and send through Lodgify's messaging system
+            # Example message:
+            # "Welcome to Alcova Landolina! Your access codes:
+            #  - Main Entrance: {code}
+            #  - Floor Door (Ring): {code}
+            #  - Apartment Door: {code}
+            #  Portal: {portal_url}"
 
-            # Send notification to guest
-            await self.notification_service.send_guest_welcome(
-                booking_id=booking_id,
-                guest_name=booking["guest_name"],
-                guest_phone=booking["guest_phone"],
-                guest_language=booking.get("guest_language", "en"),
-                checkin_date=checkin_date,
-                checkout_date=checkout_date,
-                codes=codes_created,
-                portal_url=portal_url
-            )
-
-            # Notify admin
+            # Notify admin via Telegram
             await self.notification_service.notify_admin_new_booking(
                 guest_name=booking["guest_name"],
                 checkin_date=checkin_date,

@@ -20,7 +20,7 @@ scheduler: AsyncIOScheduler = None
 
 async def sync_bookings_from_lodgify():
     """
-    Hourly job to sync bookings from Lodgify
+    Twice-daily job (12 AM and 6 PM) to sync bookings from Lodgify
     """
     logger.info("🔄 Running booking sync job...")
 
@@ -166,14 +166,15 @@ def init_scheduler():
 
     scheduler = AsyncIOScheduler(timezone=settings.SCHEDULER_TIMEZONE)
 
-    # Hourly booking sync from Lodgify
-    scheduler.add_job(
-        sync_bookings_from_lodgify,
-        trigger=IntervalTrigger(hours=settings.BOOKING_SYNC_INTERVAL_HOURS),
-        id="sync_bookings",
-        name="Sync bookings from Lodgify",
-        replace_existing=True
-    )
+    # Booking sync jobs (at 12 AM and 6 PM)
+    for hour in settings.BOOKING_SYNC_HOURS:
+        scheduler.add_job(
+            sync_bookings_from_lodgify,
+            trigger=CronTrigger(hour=hour, minute=0),
+            id=f"sync_bookings_{hour:02d}00",
+            name=f"Sync bookings from Lodgify at {hour:02d}:00",
+            replace_existing=True
+        )
 
     # Code provisioning jobs (at 12 AM and 6 PM)
     for hour in settings.CODE_PROVISIONING_HOURS:
@@ -195,9 +196,11 @@ def init_scheduler():
     )
 
     scheduler.start()
+    sync_times = ", ".join([f"{h:02d}:00" for h in settings.BOOKING_SYNC_HOURS])
     provisioning_times = ", ".join([f"{h:02d}:00" for h in settings.CODE_PROVISIONING_HOURS])
-    logger.info(f"✅ Scheduler started with {2 + len(settings.CODE_PROVISIONING_HOURS)} jobs (timezone: {settings.SCHEDULER_TIMEZONE})")
-    logger.info(f"   - Booking sync: every {settings.BOOKING_SYNC_INTERVAL_HOURS}h")
+    total_jobs = 1 + len(settings.BOOKING_SYNC_HOURS) + len(settings.CODE_PROVISIONING_HOURS)
+    logger.info(f"✅ Scheduler started with {total_jobs} jobs (timezone: {settings.SCHEDULER_TIMEZONE})")
+    logger.info(f"   - Booking sync: daily at {sync_times}")
     logger.info(f"   - Code provisioning: daily at {provisioning_times}")
     logger.info(f"   - Auto-revoke: daily at {settings.AUTO_REVOKE_HOUR}:00")
 

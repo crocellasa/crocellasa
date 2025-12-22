@@ -75,7 +75,7 @@ class Settings(BaseSettings):
     # Scheduler
     SCHEDULER_TIMEZONE: str = "Europe/Rome"
     AUTO_REVOKE_HOUR: int = 14  # 2 PM daily check
-    BOOKING_SYNC_INTERVAL_HOURS: int = 1  # Hourly booking sync
+    BOOKING_SYNC_HOURS: List[int] = [0, 18]  # Sync bookings at 12 AM and 6 PM
     CODE_PROVISIONING_HOURS: List[int] = [0, 18]  # Check at 12 AM and 6 PM for codes to provision
     CODE_PROVISIONING_WINDOW_HOURS: int = 48  # Provision codes 48h before checkin
 
@@ -83,7 +83,7 @@ class Settings(BaseSettings):
     DEFAULT_PROPERTY_ID: str = "alcova_landolina_fi"
     CODE_LENGTH: int = 6
     CODE_BUFFER_HOURS_BEFORE: int = 2  # Code valid 2h before checkin
-    CODE_BUFFER_HOURS_AFTER: int = 2   # Code valid 2h after checkout
+    CODE_EXPIRY_NEXT_DAY_HOUR: int = 9  # Code expires at 9 AM the day after checkout
 
     model_config = SettingsConfigDict(
         env_file=".env",
