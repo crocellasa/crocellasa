@@ -68,9 +68,16 @@ class Settings(BaseSettings):
     # n8n
     N8N_WEBHOOK_SECRET: Optional[str] = None
 
+    # Lodgify API (for booking sync)
+    LODGIFY_API_KEY: Optional[str] = None
+    LODGIFY_PROPERTY_ID: Optional[str] = None
+
     # Scheduler
     SCHEDULER_TIMEZONE: str = "Europe/Rome"
     AUTO_REVOKE_HOUR: int = 14  # 2 PM daily check
+    BOOKING_SYNC_INTERVAL_HOURS: int = 1  # Hourly booking sync
+    CODE_PROVISIONING_INTERVAL_MINUTES: int = 5  # Check every 5 minutes for codes to provision
+    CODE_PROVISIONING_WINDOW_HOURS: int = 48  # Provision codes 48h before checkin
 
     # Property defaults
     DEFAULT_PROPERTY_ID: str = "alcova_landolina_fi"

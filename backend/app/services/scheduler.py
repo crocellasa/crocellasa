@@ -1,19 +1,77 @@
 """
-APScheduler for automated tasks (auto-revoke codes, etc.)
+APScheduler for automated tasks (booking sync, code provisioning, auto-revoke, etc.)
 """
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
+from apscheduler.triggers.interval import IntervalTrigger
 from datetime import datetime, timezone
 from app.core.config import settings
 from app.core.database import get_supabase
 from app.services.tuya_service import get_tuya_service
 from app.services.notification_service import get_notification_service
+from app.services.booking_sync_service import get_booking_sync_service
 import logging
 
 logger = logging.getLogger(__name__)
 
 # Global scheduler instance
 scheduler: AsyncIOScheduler = None
+
+
+async def sync_bookings_from_lodgify():
+    """
+    Hourly job to sync bookings from Lodgify
+    """
+    logger.info("🔄 Running booking sync job...")
+
+    try:
+        booking_sync_service = get_booking_sync_service()
+        result = await booking_sync_service.sync_bookings_from_lodgify()
+
+        if result["status"] == "success":
+            logger.info(f"✅ Booking sync complete: {result.get('total', 0)} bookings processed")
+        elif result["status"] == "skipped":
+            logger.info(f"⏭️ Booking sync skipped: {result.get('reason', 'unknown')}")
+        else:
+            logger.error(f"❌ Booking sync failed: {result.get('message', 'unknown error')}")
+
+    except Exception as e:
+        logger.error(f"❌ Booking sync job failed: {e}", exc_info=True)
+        try:
+            notification_service = get_notification_service()
+            await notification_service.notify_admin_error(
+                "Booking Sync Job Failed",
+                str(e)
+            )
+        except:
+            pass
+
+
+async def provision_access_codes():
+    """
+    Frequent job (every 5 minutes) to provision access codes for upcoming bookings
+    """
+    logger.info("🔄 Running code provisioning job...")
+
+    try:
+        booking_sync_service = get_booking_sync_service()
+        result = await booking_sync_service.provision_codes_for_upcoming_bookings()
+
+        if result["status"] == "success":
+            logger.info(f"✅ Code provisioning complete: {result.get('codes_provisioned', 0)} bookings processed")
+        else:
+            logger.error(f"❌ Code provisioning failed: {result.get('message', 'unknown error')}")
+
+    except Exception as e:
+        logger.error(f"❌ Code provisioning job failed: {e}", exc_info=True)
+        try:
+            notification_service = get_notification_service()
+            await notification_service.notify_admin_error(
+                "Code Provisioning Job Failed",
+                str(e)
+            )
+        except:
+            pass
 
 
 async def revoke_expired_codes():
@@ -108,6 +166,24 @@ def init_scheduler():
 
     scheduler = AsyncIOScheduler(timezone=settings.SCHEDULER_TIMEZONE)
 
+    # Hourly booking sync from Lodgify
+    scheduler.add_job(
+        sync_bookings_from_lodgify,
+        trigger=IntervalTrigger(hours=settings.BOOKING_SYNC_INTERVAL_HOURS),
+        id="sync_bookings",
+        name="Sync bookings from Lodgify",
+        replace_existing=True
+    )
+
+    # Frequent code provisioning job (every 5 minutes)
+    scheduler.add_job(
+        provision_access_codes,
+        trigger=IntervalTrigger(minutes=settings.CODE_PROVISIONING_INTERVAL_MINUTES),
+        id="provision_codes",
+        name="Provision access codes for upcoming bookings",
+        replace_existing=True
+    )
+
     # Daily auto-revoke job at 2 PM
     scheduler.add_job(
         revoke_expired_codes,
@@ -118,7 +194,10 @@ def init_scheduler():
     )
 
     scheduler.start()
-    logger.info(f"✅ Scheduler started (timezone: {settings.SCHEDULER_TIMEZONE})")
+    logger.info(f"✅ Scheduler started with 3 jobs (timezone: {settings.SCHEDULER_TIMEZONE})")
+    logger.info(f"   - Booking sync: every {settings.BOOKING_SYNC_INTERVAL_HOURS}h")
+    logger.info(f"   - Code provisioning: every {settings.CODE_PROVISIONING_INTERVAL_MINUTES}min")
+    logger.info(f"   - Auto-revoke: daily at {settings.AUTO_REVOKE_HOUR}:00")
 
 
 def shutdown_scheduler():
