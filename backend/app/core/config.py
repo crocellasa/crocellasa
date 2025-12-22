@@ -45,12 +45,12 @@ class Settings(BaseSettings):
     TELEGRAM_ADMIN_CHAT_ID: str
 
     # Home Assistant (for Tuya locks automation)
-    HOME_ASSISTANT_URL: str
-    HOME_ASSISTANT_TOKEN: str
+    HOME_ASSISTANT_URL: Optional[str] = None
+    HOME_ASSISTANT_TOKEN: Optional[str] = None
 
     # Ring Intercom (floor door)
-    RING_REFRESH_TOKEN: str  # Ring API refresh token
-    RING_INTERCOM_DEVICE_ID: str  # Ring intercom device ID
+    RING_REFRESH_TOKEN: Optional[str] = None  # Ring API refresh token
+    RING_INTERCOM_DEVICE_ID: Optional[str] = None  # Ring intercom device ID
     RING_BUTTON_ENTITY_ID: str = "button.ring_intercom_unlock"  # HA entity for Ring
 
     # Email (Fallback)
