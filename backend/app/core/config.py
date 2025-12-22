@@ -30,9 +30,9 @@ class Settings(BaseSettings):
     TUYA_CLIENT_ID: str
     TUYA_SECRET: str
     TUYA_REGION: str = "eu"
-    TUYA_DEVICE_MAIN_ENTRANCE: str  # Ingresso principale (portone edificio)
+    TUYA_DEVICE_MAIN_ENTRANCE: Optional[str] = None  # Ingresso principale (portone edificio)
     TUYA_DEVICE_FLOOR_DOOR: Optional[str] = None  # Optional - uses Ring intercom instead
-    TUYA_DEVICE_APARTMENT: str  # Porta appartamento
+    TUYA_DEVICE_APARTMENT: Optional[str] = None  # Porta appartamento
 
     # Twilio (WhatsApp/SMS)
     TWILIO_ACCOUNT_SID: str
