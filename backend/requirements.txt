@@ -12,7 +12,7 @@ email-validator==2.1.0  # Required by pydantic EmailStr
 
 # Database
 supabase==2.4.5  # Stable version without proxy issues
-httpx
+httpx>=0.24.0  # Required for Lodgify API and Supabase
 # Tuya Integration
 tinytuya==1.13.2  # Tuya Cloud API library (works well)
 
