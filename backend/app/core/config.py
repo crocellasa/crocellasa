@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     APP_NAME: str = "Alcova Smart Check-in"
     APP_URL: str = "http://localhost:8000"
     FRONTEND_URL: str = "http://localhost:3000"
-    SECRET_KEY: str
+    SECRET_KEY: Optional[str] = None
     DEBUG: bool = False
 
     # Supabase
@@ -41,8 +41,8 @@ class Settings(BaseSettings):
     TWILIO_SMS_FROM: str
 
     # Telegram
-    TELEGRAM_BOT_TOKEN: str
-    TELEGRAM_ADMIN_CHAT_ID: str
+    TELEGRAM_BOT_TOKEN: Optional[str] = None
+    TELEGRAM_ADMIN_CHAT_ID: Optional[str] = None
 
     # Home Assistant (for Tuya locks automation)
     HOME_ASSISTANT_URL: Optional[str] = None
@@ -61,7 +61,7 @@ class Settings(BaseSettings):
     SMTP_FROM: str = "Alcova Landolina <noreply@alcova.com>"
 
     # JWT
-    JWT_SECRET: str
+    JWT_SECRET: Optional[str] = None
     JWT_ALGORITHM: str = "HS256"
     JWT_EXPIRATION_HOURS: int = 720  # 30 days
 
