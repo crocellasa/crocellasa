@@ -27,9 +27,9 @@ class Settings(BaseSettings):
     SUPABASE_ANON_KEY: str
     SUPABASE_SERVICE_KEY: str
 
-    # Tuya
-    TUYA_CLIENT_ID: str
-    TUYA_SECRET: str
+    # Tuya (all optional - can deploy without Tuya integration)
+    TUYA_CLIENT_ID: Optional[str] = None
+    TUYA_SECRET: Optional[str] = None
     TUYA_REGION: str = "eu"
     TUYA_DEVICE_MAIN_ENTRANCE: Optional[str] = None  # Ingresso principale (portone edificio)
     TUYA_DEVICE_FLOOR_DOOR: Optional[str] = None  # Optional - uses Ring intercom instead
