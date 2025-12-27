@@ -29,8 +29,7 @@ class Settings(BaseSettings):
     # Tuya
         TUYA_CLIENT_ID: Optional[str] = None
         TUYA_SECRET: Optional[str] = None
-    TUYA_REGION: str = "eu"
-    TUYA_DEVICE_MAIN_ENTRANCE: Optional[str] = None  # Ingresso principale (portone edificio)
+    TUYA_REGION: Optional[str] = "eu"    TUYA_DEVICE_MAIN_ENTRANCE: Optional[str] = None  # Ingresso principale (portone edificio)
     TUYA_DEVICE_FLOOR_DOOR: Optional[str] = None  # Optional - uses Ring intercom instead
     TUYA_DEVICE_APARTMENT: Optional[str] = None  # Porta appartamento
 
