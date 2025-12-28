@@ -1,5 +1,4 @@
 """
-# Cache-busting rebuild: 2025-12-27 22:50
 Configuration management using Pydantic Settings
 Loads environment variables from .env file
 """
@@ -23,23 +22,23 @@ class Settings(BaseSettings):
     DEBUG: bool = False
 
     # Supabase
-    SUPABASE_URL: str
-    SUPABASE_ANON_KEY: str
-    SUPABASE_SERVICE_KEY: str
+    SUPABASE_URL: Optional[str] = None
+    SUPABASE_ANON_KEY: Optional[str] = None
+    SUPABASE_SERVICE_KEY: Optional[str] = None
 
     # Tuya
-        TUYA_CLIENT_ID: Optional[str] = None
-        TUYA_SECRET: Optional[str] = None
-TUYA_REGION: Optional[str] = "eu"
-    TUYA_DEVICE_MAIN_ENTRANCE: Optional[str] = None  # Ingresso principale (portone edificio)
-    TUYA_DEVICE_FLOOR_DOOR: Optional[str] = None  # Optional - uses Ring intercom instead
-    TUYA_DEVICE_APARTMENT: Optional[str] = None  # Porta appartamento
+    TUYA_CLIENT_ID: Optional[str] = None
+    TUYA_SECRET: Optional[str] = None
+    TUYA_REGION: str = "eu"
+    TUYA_DEVICE_MAIN_ENTRANCE: Optional[str] = None
+    TUYA_DEVICE_FLOOR_DOOR: Optional[str] = None
+    TUYA_DEVICE_APARTMENT: Optional[str] = None
 
     # Twilio (WhatsApp/SMS)
-    TWILIO_ACCOUNT_SID: str
-    TWILIO_AUTH_TOKEN: str
-    TWILIO_WHATSAPP_FROM: str
-    TWILIO_SMS_FROM: str
+    TWILIO_ACCOUNT_SID: Optional[str] = None
+    TWILIO_AUTH_TOKEN: Optional[str] = None
+    TWILIO_WHATSAPP_FROM: Optional[str] = None
+    TWILIO_SMS_FROM: Optional[str] = None
 
     # Telegram
     TELEGRAM_BOT_TOKEN: Optional[str] = None
@@ -84,6 +83,7 @@ TUYA_REGION: Optional[str] = "eu"
     DEFAULT_PROPERTY_ID: str = "alcova_landolina_fi"
     CODE_LENGTH: int = 6
     CODE_BUFFER_HOURS_BEFORE: int = 2  # Code valid 2h before checkin
+    CODE_BUFFER_HOURS_AFTER: int = 2   # Buffer after checkout for overlap/issues
     CODE_EXPIRY_NEXT_DAY_HOUR: int = 9  # Code expires at 9 AM the day after checkout
 
     model_config = SettingsConfigDict(
@@ -109,4 +109,3 @@ def get_cors_origins() -> List[str]:
         return ["http://localhost:3000"]
     # Split by comma and strip whitespace
     return [origin.strip() for origin in cors_str.split(',') if origin.strip()]
-33

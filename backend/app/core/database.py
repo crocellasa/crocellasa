@@ -16,6 +16,10 @@ async def init_database():
     Initialize Supabase client
     """
     global supabase
+    if not settings.SUPABASE_URL or not settings.SUPABASE_SERVICE_KEY:
+        logger.warning("⚠️ Supabase credentials missing. Database functionality will be unavailable.")
+        return
+
     try:
         supabase = create_client(
             settings.SUPABASE_URL,
@@ -24,7 +28,6 @@ async def init_database():
         logger.info("✅ Supabase client initialized")
     except Exception as e:
         logger.error(f"❌ Failed to initialize Supabase: {e}")
-        raise
 
 
 def get_supabase() -> Client:
