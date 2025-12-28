@@ -28,17 +28,17 @@ export default function PropertyInfo({ property, locale }: PropertyInfoProps) {
     : null
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Address Card */}
-      <div className="glass-card">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex items-start gap-3">
-            <div className="p-2 bg-mono-100 rounded-lg text-mono-900">
-              <MapPin className="w-5 h-5" />
+      <div className="glass-card ring-1 ring-brand-brass/5">
+        <div className="flex items-start justify-between gap-6">
+          <div className="flex items-start gap-4">
+            <div className="p-3 bg-brand-ivory rounded-2xl text-brand-brass shadow-sm border border-brand-brass/10">
+              <MapPin className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="font-medium text-mono-900 mb-1">{property.name}</h3>
-              <p className="text-sm text-mono-500 leading-relaxed">
+              <h3 className="text-2xl font-serif text-brand-midnight mb-2">{property.name}</h3>
+              <p className="text-brand-midnight/60 leading-relaxed italic">
                 {property.address}<br />
                 {property.city}
               </p>
@@ -49,48 +49,51 @@ export default function PropertyInfo({ property, locale }: PropertyInfoProps) {
             href={googleMapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-2 text-mono-400 hover:text-mono-900 transition-colors"
+            className="p-3 text-brand-brass/40 hover:text-brand-brass transition-colors"
             aria-label={locale === 'it' ? 'Apri in Google Maps' : 'Open in Google Maps'}
           >
-            <ExternalLink className="w-5 h-5" />
+            <ExternalLink className="w-6 h-6" />
           </a>
         </div>
       </div>
 
       {/* WiFi Card */}
       {wifiQR && (
-        <div className="glass-card">
+        <div className="glass-card ring-1 ring-brand-brass/5">
           <div className="flex items-start gap-4">
-            <div className="p-2 bg-mono-100 rounded-lg text-mono-900">
-              <Wifi className="w-5 h-5" />
+            <div className="p-3 bg-brand-ivory rounded-2xl text-brand-brass shadow-sm border border-brand-brass/10">
+              <Wifi className="w-6 h-6" />
             </div>
 
             <div className="flex-1">
-              <h3 className="font-medium text-mono-900 mb-4">WiFi</h3>
+              <h3 className="text-2xl font-serif text-brand-midnight mb-6">WiFi</h3>
 
-              <div className="flex flex-col sm:flex-row gap-6">
-                <div className="space-y-3 flex-1">
+              <div className="flex flex-col sm:flex-row gap-8 items-center sm:items-start">
+                <div className="space-y-6 flex-1 w-full text-center sm:text-left">
                   <div>
-                    <div className="text-xs text-mono-400 uppercase tracking-wider mb-1">
+                    <div className="text-[10px] text-brand-brass/60 uppercase tracking-[0.2em] mb-2">
                       {locale === 'it' ? 'Rete' : 'Network'}
                     </div>
-                    <div className="font-mono text-sm bg-white/50 px-3 py-1.5 rounded border border-glass-border inline-block">
+                    <div className="text-lg font-medium text-brand-midnight">
                       {property.wifi_ssid}
                     </div>
                   </div>
 
                   <div>
-                    <div className="text-xs text-mono-400 uppercase tracking-wider mb-1">
+                    <div className="text-[10px] text-brand-brass/60 uppercase tracking-[0.2em] mb-2">
                       {locale === 'it' ? 'Password' : 'Password'}
                     </div>
-                    <div className="font-mono text-sm bg-white/50 px-3 py-1.5 rounded border border-glass-border inline-block">
+                    <div className="text-lg font-medium text-brand-midnight">
                       {property.wifi_password}
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-white p-3 rounded-xl border border-glass-border shadow-sm">
-                  <QRCodeSVG value={wifiQR} size={100} />
+                <div className="bg-white p-4 rounded-3xl border border-brand-brass/10 shadow-glass-hover">
+                  <QRCodeSVG value={wifiQR} size={120} fgColor="#0F172A" />
+                  <p className="text-[9px] text-center mt-3 text-brand-midnight/40 tracking-wider">
+                    {locale === 'it' ? 'SCANSIONA PER CONNETTERTI' : 'SCAN TO CONNECT'}
+                  </p>
                 </div>
               </div>
             </div>

@@ -44,45 +44,51 @@ export default function IntercomButton({ bookingId, locale }: IntercomButtonProp
   }
 
   return (
-    <div className="glass-card flex flex-col items-center text-center">
-      <h2 className="text-xl font-medium text-mono-900 mb-2">
-        {locale === 'it' ? 'Apri Portone' : 'Open Main Door'}
+    <div className="glass-card flex flex-col items-center text-center ring-1 ring-brand-brass/5">
+      <h2 className="text-3xl font-serif text-brand-midnight mb-3">
+        {locale === 'it' ? 'Ingresso Principale' : 'Main Entrance'}
       </h2>
 
-      <p className="text-mono-500 text-sm mb-6 max-w-xs mx-auto">
+      <p className="text-brand-midnight/60 text-sm mb-8 max-w-sm mx-auto italic">
         {locale === 'it'
-          ? 'Premi il pulsante per aprire il portone principale da remoto.'
-          : 'Press the button to open the main entrance remotely.'}
+          ? 'Tocca il pulsante dorato per sbloccare il portone dell\'edificio.'
+          : 'Tap the golden button to unlock the building entrance door.'}
       </p>
 
       <button
         onClick={handleOpen}
         disabled={loading}
-        className={`w-full max-w-sm btn-primary flex items-center justify-center gap-3 h-14 text-lg ${success ? 'bg-green-600 hover:bg-green-700 border-green-500' : ''
-          } ${error ? 'bg-red-600 hover:bg-red-700 border-red-500' : ''
+        className={`w-full max-w-md btn-brass flex items-center justify-center gap-3 h-16 text-xl tracking-wide ${success ? 'opacity-90 grayscale-0' : ''
+          } ${error ? 'bg-red-600 grayscale-0' : ''
           } disabled:opacity-70 disabled:cursor-not-allowed`}
       >
         {loading ? (
           <>
             <Loader2 className="w-6 h-6 animate-spin" />
-            {locale === 'it' ? 'Apertura...' : 'Opening...'}
+            {locale === 'it' ? 'Sblocco in corso...' : 'Unlocking...'}
           </>
         ) : success ? (
           <>
             <DoorOpen className="w-6 h-6" />
-            {locale === 'it' ? 'Portone aperto! ✓' : 'Door opened! ✓'}
+            {locale === 'it' ? 'Sbloccato! ✓' : 'Unlocked! ✓'}
           </>
         ) : error ? (
           <>
-            {locale === 'it' ? 'Errore ✗' : 'Error ✗'}
+            {locale === 'it' ? 'Riprova ✗' : 'Try again ✗'}
           </>
         ) : (
           <>
             <DoorOpen className="w-6 h-6" />
-            {locale === 'it' ? 'Apri Portone' : 'Open Door'}
+            {locale === 'it' ? 'Apri Portone' : 'Open Gate'}
           </>
         )}
       </button>
+
+      {success && (
+        <p className="mt-4 text-xs text-brand-brass animate-pulse font-medium">
+          {locale === 'it' ? 'Portone aperto. Benvenuto!' : 'Door unlocked. Welcome!'}
+        </p>
+      )}
     </div>
   )
 }

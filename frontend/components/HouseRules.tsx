@@ -29,22 +29,28 @@ export default function HouseRules({ rules, locale }: HouseRulesProps) {
   const rulesList = rules ? rules.split('\n').filter(r => r.trim()) : defaultRules[locale]
 
   return (
-    <div className="glass-card p-6">
-      <h2 className="text-xl font-light text-mono-900 mb-6 flex items-center gap-3 tracking-tight">
-        <div className="p-2 bg-glass-highlight rounded-lg border border-glass-border">
-          <Info className="w-5 h-5" />
+    <div className="glass-card p-8 md:p-10 ring-1 ring-brand-brass/5">
+      <h2 className="text-3xl font-serif text-brand-midnight mb-8 flex items-center gap-4">
+        <div className="p-3 bg-brand-ivory rounded-2xl text-brand-brass shadow-sm border border-brand-brass/10">
+          <Info className="w-6 h-6" />
         </div>
         {locale === 'it' ? 'Regole della Casa' : 'House Rules'}
       </h2>
 
-      <ul className="space-y-4">
+      <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {rulesList.map((rule, index) => (
-          <li key={index} className="flex items-start gap-3 text-mono-600 font-light group">
-            <span className="w-1.5 h-1.5 rounded-full bg-mono-300 mt-2 group-hover:bg-mono-900 transition-colors"></span>
-            <span>{rule}</span>
+          <li key={index} className="flex items-start gap-4 text-brand-midnight/70 font-medium group text-sm md:text-base italic">
+            <span className="w-2 h-2 rounded-full bg-brand-brass/30 mt-2 flex-shrink-0 group-hover:bg-brand-brass transition-colors"></span>
+            <span className="leading-relaxed">{rule}</span>
           </li>
         ))}
       </ul>
+
+      <div className="mt-10 pt-8 border-t border-brand-brass/10">
+        <p className="text-[10px] text-center text-brand-brass/40 tracking-[0.2em] uppercase">
+          {locale === 'it' ? 'Ti auguriamo un piacevole soggiorno' : 'We wish you a pleasant stay'}
+        </p>
+      </div>
     </div>
   )
 }
