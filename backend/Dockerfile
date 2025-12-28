@@ -1,3 +1,4 @@
+# Build ID: REBUILD_20251228_1739
 # Alcova Smart Check-in Backend
 FROM python:3.11-slim
 

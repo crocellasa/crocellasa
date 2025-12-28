@@ -1,3 +1,5 @@
+# Build ID: REBUILD_20251228_1739
+# This comment forces a change in the entry point to verify deployment sync.
 """
 Main FastAPI application entry point
 """
