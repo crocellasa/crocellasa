@@ -23,7 +23,10 @@ const USER_KEY = 'admin_user'
  * Login admin user
  */
 export async function login(email: string, password: string): Promise<LoginResponse> {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/auth/login`, {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL
+  console.log('🔐 Auth: Attempting login to:', `${apiUrl}/api/admin/auth/login`)
+
+  const response = await fetch(`${apiUrl}/api/admin/auth/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
