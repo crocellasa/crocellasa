@@ -8,7 +8,7 @@ import { fetchWithAuth } from '@/lib/auth'
 interface Booking {
   id: string
   hospitable_id?: string
-  smoobu_id?: string
+  lodgify_id?: string
   confirmation_code?: string
   guest_name: string
   guest_email: string
@@ -49,7 +49,7 @@ export default function BookingsPage() {
     guest_phone: '',
     guest_language: 'en',
     confirmation_code: '',
-    smoobu_id: '',
+    lodgify_id: '',
     checkin_date: '',
     checkout_date: '',
     num_guests: 1
@@ -120,7 +120,7 @@ export default function BookingsPage() {
           guest_phone: '',
           guest_language: 'en',
           confirmation_code: '',
-          smoobu_id: '',
+          lodgify_id: '',
           checkin_date: '',
           checkout_date: '',
           num_guests: 1
@@ -147,7 +147,7 @@ export default function BookingsPage() {
       booking.guest_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       booking.guest_email.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (booking.confirmation_code && booking.confirmation_code.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (booking.smoobu_id && booking.smoobu_id.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (booking.lodgify_id && booking.lodgify_id.toLowerCase().includes(searchQuery.toLowerCase())) ||
       (booking.hospitable_id && booking.hospitable_id.toLowerCase().includes(searchQuery.toLowerCase()))
 
     const matchesStatus = statusFilter === 'all' || booking.status === statusFilter
@@ -276,9 +276,9 @@ export default function BookingsPage() {
                     </td>
                     <td className="px-6 py-4">
                       <span className={`px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wider rounded-full border ${booking.status === 'confirmed' ? 'bg-blue-50 text-blue-700 border-blue-100' :
-                          booking.status === 'checked_in' ? 'bg-green-50 text-green-700 border-green-100' :
-                            booking.status === 'checked_out' ? 'bg-mono-50 text-mono-700 border-mono-100' :
-                              'bg-red-50 text-red-700 border-red-100'
+                        booking.status === 'checked_in' ? 'bg-green-50 text-green-700 border-green-100' :
+                          booking.status === 'checked_out' ? 'bg-mono-50 text-mono-700 border-mono-100' :
+                            'bg-red-50 text-red-700 border-red-100'
                         }`}>
                         {booking.status.replace('_', ' ')}
                       </span>
@@ -458,12 +458,12 @@ export default function BookingsPage() {
 
                   <div>
                     <label className="block text-sm text-mono-600 mb-1.5 font-light">
-                      Smoobu ID
+                      Lodgify ID
                     </label>
                     <input
                       type="text"
-                      value={formData.smoobu_id}
-                      onChange={(e) => setFormData({ ...formData, smoobu_id: e.target.value })}
+                      value={formData.lodgify_id}
+                      onChange={(e) => setFormData({ ...formData, lodgify_id: e.target.value })}
                       className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-light text-mono-900"
                       placeholder="Optional"
                     />
@@ -507,9 +507,8 @@ export default function BookingsPage() {
       {/* Toast Notification */}
       {toast && (
         <div className="fixed bottom-4 right-4 z-50 animate-in slide-in-from-bottom-5">
-          <div className={`glass-card min-w-[320px] max-w-md p-4 flex items-start gap-3 ${
-            toast.type === 'success' ? 'border-l-4 border-green-500' : 'border-l-4 border-red-500'
-          }`}>
+          <div className={`glass-card min-w-[320px] max-w-md p-4 flex items-start gap-3 ${toast.type === 'success' ? 'border-l-4 border-green-500' : 'border-l-4 border-red-500'
+            }`}>
             {toast.type === 'success' ? (
               <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
             ) : (

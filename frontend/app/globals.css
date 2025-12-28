@@ -7,35 +7,35 @@
     @apply text-brand-midnight bg-brand-ivory min-h-screen antialiased;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-serif tracking-tight text-brand-midnight;
   }
 }
 
 @layer components {
   .glass-panel {
-    @apply bg-brand-ivory/60 backdrop-blur-xl border border-brand-brass/10 shadow-glass rounded-3xl transition-all duration-500;
+    @apply bg-brand-ivory/80 backdrop-blur-2xl border border-brand-brass/20 shadow-glass rounded-3xl transition-all duration-500;
   }
 
   .glass-card {
-    @apply glass-panel p-8 hover:shadow-glass-hover hover:border-brand-brass/20;
+    @apply bg-white/90 backdrop-blur-xl border border-brand-brass/10 shadow-glass rounded-3xl p-8 hover:shadow-glass-hover hover:border-brand-brass/30 transition-all duration-500;
   }
 
   .btn-primary {
-    @apply bg-brand-midnight text-brand-ivory font-medium py-4 px-8 rounded-2xl 
-           transition-all duration-300 hover:bg-black hover:shadow-xl hover:scale-[1.02]
-           active:scale-[0.98] border border-transparent;
+    @apply bg-brand-midnight text-brand-ivory font-medium py-4 px-8 rounded-2xl transition-all duration-300 hover:bg-black hover:shadow-elevated hover:scale-[1.02] active:scale-[0.98] border border-transparent;
   }
 
   .btn-secondary {
-    @apply glass-panel text-brand-midnight font-medium py-4 px-8 rounded-2xl
-           hover:bg-white/80 hover:border-brand-brass/30 active:scale-[0.98];
+    @apply bg-brand-sand/50 text-brand-midnight border border-brand-brass/20 font-medium py-4 px-8 rounded-2xl hover:bg-brand-sand hover:border-brand-brass/40 transition-all duration-300 active:scale-[0.98];
   }
 
   .btn-brass {
-    @apply bg-brass-gradient text-white font-medium py-4 px-8 rounded-2xl
-           transition-all duration-300 hover:shadow-brass hover:scale-[1.02]
-           active:scale-[0.98] shadow-sm;
+    @apply bg-brass-gradient text-white font-medium py-4 px-8 rounded-2xl transition-all duration-300 hover:shadow-brass hover:scale-[1.02] active:scale-[0.98] shadow-sm;
   }
 
   .text-gradient-brass {

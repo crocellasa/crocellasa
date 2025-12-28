@@ -30,68 +30,82 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-subtle-gradient px-4">
-      <div className="max-w-md w-full space-y-8">
+    <div className="min-h-screen flex items-center justify-center bg-brand-ivory relative overflow-hidden px-4">
+      {/* Decorative Brand Elements */}
+      <div className="absolute top-0 left-0 w-full h-1 bg-brass-gradient"></div>
+      <div className="absolute -top-24 -left-24 w-96 h-96 bg-brand-brass/5 rounded-full blur-3xl"></div>
+      <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-brand-midnight/5 rounded-full blur-3xl"></div>
+
+      <div className="max-w-md w-full relative z-10">
         {/* Header */}
-        <div className="text-center">
-          <h1 className="text-4xl font-light text-mono-900 mb-2 tracking-tight">
-            Landolina Admin
+        <div className="text-center mb-10">
+          <div className="inline-block px-4 py-1.5 mb-6 bg-brand-brass/10 border border-brand-brass/20 rounded-full">
+            <p className="text-[10px] font-bold text-brand-brass-dark uppercase tracking-[0.3em]">
+              Alcova Landolina
+            </p>
+          </div>
+          <h1 className="text-5xl font-serif text-brand-midnight mb-3 tracking-tight">
+            Admin Portal
           </h1>
-          <p className="text-mono-500 font-light">Sign in to access the dashboard</p>
+          <p className="text-brand-midnight/40 font-light tracking-wide italic">
+            Management console for professional hosting
+          </p>
         </div>
 
         {/* Login Form */}
-        <div className="glass-card p-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="bg-white shadow-elevated rounded-[2.5rem] p-10 border border-brand-brass/5 ring-1 ring-white/50 backdrop-blur-sm">
+          <form onSubmit={handleSubmit} className="space-y-8">
             {/* Error Message */}
             {error && (
-              <div className="flex items-center gap-3 p-4 bg-red-50 border border-red-100 rounded-lg text-red-700">
-                <AlertCircle className="w-5 h-5 flex-shrink-0" />
-                <p className="text-sm font-light">{error}</p>
+              <div className="flex items-center gap-3 p-4 bg-red-50/80 border border-red-100 rounded-2xl text-red-800 animate-in fade-in slide-in-from-top-2 duration-300">
+                <AlertCircle className="w-5 h-5 flex-shrink-0 text-red-500" />
+                <p className="text-sm font-medium">{error}</p>
               </div>
             )}
 
-            {/* Email Field */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-mono-700 mb-2">
-                Email
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-mono-400" />
+            <div className="space-y-6">
+              {/* Email Field */}
+              <div className="space-y-2">
+                <label htmlFor="email" className="block text-xs font-bold text-brand-midnight/60 uppercase tracking-widest ml-1">
+                  Email Address
+                </label>
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-brand-brass">
+                    <Mail className="h-5 w-5 text-brand-midnight/20" />
+                  </div>
+                  <input
+                    id="email"
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="block w-full pl-12 pr-4 py-4 bg-brand-ivory/30 border border-brand-brass/10 rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand-brass/20 focus:border-brand-brass/30 focus:bg-white text-brand-midnight placeholder-brand-midnight/20 transition-all duration-300 shadow-sm"
+                    placeholder="admin@landolina.it"
+                    disabled={loading}
+                  />
                 </div>
-                <input
-                  id="email"
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-2.5 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-mono-900 placeholder-mono-400 font-light"
-                  placeholder="admin@landolina.it"
-                  disabled={loading}
-                />
               </div>
-            </div>
 
-            {/* Password Field */}
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-mono-700 mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-mono-400" />
+              {/* Password Field */}
+              <div className="space-y-2">
+                <label htmlFor="password" className="block text-xs font-bold text-brand-midnight/60 uppercase tracking-widest ml-1">
+                  Security Code
+                </label>
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-brand-brass">
+                    <Lock className="h-5 w-5 text-brand-midnight/20" />
+                  </div>
+                  <input
+                    id="password"
+                    type="password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="block w-full pl-12 pr-4 py-4 bg-brand-ivory/30 border border-brand-brass/10 rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand-brass/20 focus:border-brand-brass/30 focus:bg-white text-brand-midnight placeholder-brand-midnight/20 transition-all duration-300 shadow-sm"
+                    placeholder="••••••••"
+                    disabled={loading}
+                  />
                 </div>
-                <input
-                  id="password"
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-2.5 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-mono-900 placeholder-mono-400 font-light"
-                  placeholder="••••••••"
-                  disabled={loading}
-                />
               </div>
             </div>
 
@@ -99,15 +113,15 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-mono-900 hover:bg-mono-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-mono-900 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+              className="w-full btn-primary py-5 text-lg shadow-brass/20 hover:shadow-brass/40"
             >
               {loading ? (
-                <span className="flex items-center gap-2">
-                  <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <span className="flex items-center justify-center gap-3">
+                  <svg className="animate-spin h-5 w-5 text-white/50" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Signing in...
+                  Accessing Portal...
                 </span>
               ) : (
                 'Sign In'
@@ -116,18 +130,24 @@ export default function LoginPage() {
           </form>
 
           {/* Demo Credentials */}
-          <div className="mt-6 p-4 bg-glass-surface/50 border border-glass-border rounded-lg">
-            <p className="text-xs font-medium text-mono-900 mb-2 uppercase tracking-wider">Demo Credentials:</p>
-            <div className="text-xs text-mono-600 space-y-1 font-light">
-              <p>Email: <code className="bg-glass-surface px-2 py-0.5 rounded border border-glass-border text-mono-800">admin@landolina.it</code></p>
-              <p>Password: <code className="bg-glass-surface px-2 py-0.5 rounded border border-glass-border text-mono-800">admin123</code></p>
+          <div className="mt-10 p-5 bg-brand-sand/30 border border-brand-brass/10 rounded-2xl border-dashed">
+            <p className="text-[10px] font-bold text-brand-midnight/40 mb-3 uppercase tracking-tighter">Authorized Demo Access Only</p>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-[9px] text-brand-midnight/30 uppercase font-medium mb-1">User</p>
+                <code className="text-xs text-brand-midnight/70 block truncate">admin@landolina.it</code>
+              </div>
+              <div>
+                <p className="text-[9px] text-brand-midnight/30 uppercase font-medium mb-1">Pass</p>
+                <code className="text-xs text-brand-midnight/70">admin123</code>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Footer */}
-        <p className="text-center text-xs text-mono-400 font-light">
-          Alcova Landolina © 2025
+        <p className="text-center text-[11px] text-brand-midnight/30 mt-10 uppercase tracking-[0.2em] font-medium">
+          Alcova Landolina &copy; MMXXV
         </p>
       </div>
     </div>

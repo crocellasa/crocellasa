@@ -23,8 +23,8 @@ class BookingCreate(BaseModel):
     """
     Model for creating a new booking
     """
-    hospitable_id: Optional[str] = Field(None, description="Unique ID from Hospitable/Airbnb (deprecated, use smoobu_id)")
-    smoobu_id: Optional[str] = Field(None, description="Unique ID from Smoobu (property manager)")
+    hospitable_id: Optional[str] = Field(None, description="Unique ID from Hospitable/Airbnb (legacy, internally mapped to Lodgify ID)")
+    lodgify_id: Optional[str] = Field(None, description="Unique ID from Lodgify (source of truth)")
     confirmation_code: Optional[str] = None
     guest_name: str
     guest_email: EmailStr
@@ -44,7 +44,8 @@ class BookingCreate(BaseModel):
     class Config:
         json_schema_extra = {
             "example": {
-                "hospitable_id": "HB123456",
+                "hospitable_id": "LD123456",
+                "lodgify_id": "123456",
                 "confirmation_code": "AIRBNB789",
                 "guest_name": "Mario Rossi",
                 "guest_email": "mario@example.com",
@@ -64,7 +65,7 @@ class BookingResponse(BaseModel):
     """
     id: str
     hospitable_id: Optional[str] = None
-    smoobu_id: Optional[str] = None
+    lodgify_id: Optional[str] = None
     confirmation_code: Optional[str] = None
     guest_name: str
     guest_email: str

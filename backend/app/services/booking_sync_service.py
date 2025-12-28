@@ -79,7 +79,7 @@ class BookingSyncService:
                 try:
                     # Extract booking data
                     booking_data = {
-                        "hospitable_id": lb.get("id") or lb.get("booking_id"),
+                        "lodgify_id": lb.get("id") or lb.get("booking_id"),
                         "confirmation_code": lb.get("confirmation_code"),
                         "guest_name": lb.get("guest", {}).get("name", "Guest"),
                         "guest_email": lb.get("guest", {}).get("email", ""),
@@ -95,14 +95,14 @@ class BookingSyncService:
                     # Upsert booking to database
                     result = self.supabase.table("bookings").upsert(
                         booking_data,
-                        on_conflict="hospitable_id"
+                        on_conflict="lodgify_id"
                     ).execute()
 
                     if result.data:
                         if len(result.data) > 0:
                             # Check if this was an insert or update
                             existing = self.supabase.table("bookings").select("id").eq(
-                                "hospitable_id", booking_data["hospitable_id"]
+                                "lodgify_id", booking_data["lodgify_id"]
                             ).execute()
 
                             if existing.data:

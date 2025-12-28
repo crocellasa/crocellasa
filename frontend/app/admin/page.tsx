@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Calendar, Key, Bell, Activity as ActivityIcon, TrendingUp } from 'lucide-react'
+import { Calendar, Key, Bell, Activity as ActivityIcon, TrendingUp, Home } from 'lucide-react'
 import KPICard from '@/components/admin/KPICard'
 import AnalyticsChart from '@/components/admin/AnalyticsChart'
 import RecentActivity from '@/components/admin/RecentActivity'
@@ -50,13 +50,29 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="max-w-7xl mx-auto space-y-12 pb-12">
       {/* Page Header */}
-      <div>
-        <h1 className="text-3xl font-light text-mono-900 tracking-tight">Dashboard</h1>
-        <p className="text-sm text-mono-500 mt-1 font-light">
-          Welcome back! Here's what's happening with your properties.
-        </p>
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-2 h-2 rounded-full bg-brand-brass animate-pulse"></div>
+            <p className="text-[10px] font-bold text-brand-brass-dark uppercase tracking-[0.3em]">Live Overview</p>
+          </div>
+          <h1 className="text-4xl font-serif text-brand-midnight tracking-tight">Main Dashboard</h1>
+          <p className="text-brand-midnight/40 mt-2 font-light">
+            Welcome back! Monitor your check-ins and property health in real-time.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={fetchDashboardStats}
+            className="flex items-center gap-2 px-4 py-2 bg-white border border-brand-brass/10 rounded-xl text-xs font-medium text-brand-midnight hover:bg-brand-sand/50 transition-colors shadow-sm"
+          >
+            <TrendingUp className="w-3 h-3 text-brand-brass" />
+            Recalculate Stats
+          </button>
+        </div>
       </div>
 
       {/* KPI Cards */}
@@ -87,7 +103,7 @@ export default function AdminDashboard() {
           loading={loading}
         />
         <KPICard
-          title="Webhooks"
+          title="Status Monitor"
           value={stats.webhooksReceived}
           icon={Bell}
           color="orange"
@@ -95,25 +111,46 @@ export default function AdminDashboard() {
         />
       </div>
 
-      {/* Analytics Chart */}
-      <div className="glass-card p-6">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h2 className="text-lg font-medium text-mono-900">Analytics</h2>
-            <p className="text-sm text-mono-500 font-light">Last 7 days overview</p>
+      {/* Main Analytics + Integration Grid */}
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+        {/* Left Column: Analytics */}
+        <div className="xl:col-span-2 space-y-8">
+          <div className="bg-white shadow-elevated rounded-[2rem] p-8 border border-brand-brass/5">
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h2 className="text-2xl font-serif text-brand-midnight">Booking Analytics</h2>
+                <p className="text-sm text-brand-midnight/40 font-light mt-1">7-day performance metrics</p>
+              </div>
+              <div className="px-4 py-2 bg-brand-sand/30 rounded-full">
+                <p className="text-[10px] font-bold text-brand-brass-dark uppercase tracking-widest">Lodgify Sync: Active</p>
+              </div>
+            </div>
+            <div className="h-[300px] w-full">
+              <AnalyticsChart />
+            </div>
           </div>
-          <div className="flex items-center gap-2 text-sm text-mono-500">
-            <TrendingUp className="w-4 h-4" />
-            <span>Bookings & Access Usage</span>
+
+          <RecentActivity />
+        </div>
+
+        {/* Right Column: Status & Integrations */}
+        <div className="space-y-8">
+          <IntegrationStatus />
+
+          {/* Quick Help / Info Card */}
+          <div className="bg-brand-midnight rounded-[2rem] p-8 text-white relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-4 opacity-10 transform translate-x-4 -translate-y-4 group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform duration-500">
+              <Home className="w-32 h-32" />
+            </div>
+            <h3 className="text-xl font-serif text-brand-brass mb-3 relative z-10">Professional Plan</h3>
+            <p className="text-sm text-white/60 font-light leading-relaxed mb-6 relative z-10">
+              You're currently managing 3 locks at Via Landolina #186. Your next scheduled Lodgify sync is in 4 hours.
+            </p>
+            <button className="w-full py-3 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl text-xs font-semibold uppercase tracking-widest transition-all relative z-10">
+              View Documentation
+            </button>
           </div>
         </div>
-        <AnalyticsChart />
-      </div>
-
-      {/* Bottom Grid: Recent Activity + Integration Status */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <RecentActivity />
-        <IntegrationStatus />
       </div>
     </div>
   )

@@ -48,11 +48,11 @@ export default function AdminSidebar() {
   }
 
   return (
-    <div className="w-64 glass-panel border-r border-glass-border flex flex-col h-full z-20">
+    <div className="w-64 bg-brand-midnight text-white flex flex-col h-full z-20 shadow-2xl">
       {/* Logo */}
-      <div className="p-6 border-b border-glass-border">
-        <h1 className="text-2xl font-light tracking-tight text-mono-900">Landolina</h1>
-        <p className="text-xs text-mono-500 mt-1 uppercase tracking-wider">Admin Dashboard</p>
+      <div className="p-8 border-b border-white/5">
+        <h1 className="text-2xl font-serif text-brand-brass tracking-tight">Landolina</h1>
+        <p className="text-[10px] text-white/40 mt-1 uppercase tracking-[0.2em] font-medium">Admin Dashboard</p>
       </div>
 
       {/* Navigation */}
@@ -66,15 +66,15 @@ export default function AdminSidebar() {
                 key={item.name}
                 href={item.href}
                 className={`
-                  flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-light transition-all duration-200
+                  flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all duration-300 group
                   ${isActive
-                    ? 'bg-glass-highlight text-mono-900 shadow-sm border border-glass-border'
-                    : 'text-mono-600 hover:bg-glass-surface hover:text-mono-900'
+                    ? 'bg-brand-brass text-white shadow-brass'
+                    : 'text-white/60 hover:text-white hover:bg-white/5'
                   }
                 `}
               >
-                <item.icon className={`w-4 h-4 ${isActive ? 'text-mono-900' : 'text-mono-400'}`} />
-                {item.name}
+                <item.icon className={`w-4 h-4 transition-colors ${isActive ? 'text-white' : 'text-brand-brass/60 group-hover:text-brand-brass'}`} />
+                <span className={isActive ? 'font-medium' : 'font-light'}>{item.name}</span>
               </Link>
             )
           })}
@@ -93,15 +93,15 @@ export default function AdminSidebar() {
                   key={item.name}
                   href={item.href}
                   className={`
-                    flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-light transition-all duration-200
+                    flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all duration-300 group
                     ${isActive
-                      ? 'bg-glass-highlight text-mono-900 shadow-sm border border-glass-border'
-                      : 'text-mono-600 hover:bg-glass-surface hover:text-mono-900'
+                      ? 'bg-brand-brass text-white shadow-brass'
+                      : 'text-white/60 hover:text-white hover:bg-white/5'
                     }
                   `}
                 >
-                  <item.icon className={`w-4 h-4 ${isActive ? 'text-mono-900' : 'text-mono-400'}`} />
-                  {item.name}
+                  <item.icon className={`w-4 h-4 transition-colors ${isActive ? 'text-white' : 'text-brand-brass/60 group-hover:text-brand-brass'}`} />
+                  <span className={isActive ? 'font-medium' : 'font-light'}>{item.name}</span>
                 </Link>
               )
             })}
@@ -110,7 +110,7 @@ export default function AdminSidebar() {
 
         {/* Settings Section */}
         <div>
-          <h3 className="px-3 text-xs font-medium text-mono-400 uppercase tracking-wider mb-2">
+          <h3 className="px-5 text-[10px] font-bold text-white/30 uppercase tracking-[0.2em] mb-3">
             Settings
           </h3>
           <div className="space-y-1">
@@ -121,15 +121,15 @@ export default function AdminSidebar() {
                   key={item.name}
                   href={item.href}
                   className={`
-                    flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-light transition-all duration-200
+                    flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all duration-300 group
                     ${isActive
-                      ? 'bg-glass-highlight text-mono-900 shadow-sm border border-glass-border'
-                      : 'text-mono-600 hover:bg-glass-surface hover:text-mono-900'
+                      ? 'bg-brand-brass text-white shadow-brass'
+                      : 'text-white/60 hover:text-white hover:bg-white/5'
                     }
                   `}
                 >
-                  <item.icon className={`w-4 h-4 ${isActive ? 'text-mono-900' : 'text-mono-400'}`} />
-                  {item.name}
+                  <item.icon className={`w-4 h-4 transition-colors ${isActive ? 'text-white' : 'text-brand-brass/60 group-hover:text-brand-brass'}`} />
+                  <span className={isActive ? 'font-medium' : 'font-light'}>{item.name}</span>
                 </Link>
               )
             })}
@@ -138,24 +138,24 @@ export default function AdminSidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="p-4 border-t border-glass-border bg-glass-surface/30">
-        <div className="flex items-center gap-3 px-3 py-2 mb-2">
-          <div className="w-8 h-8 bg-mono-900 rounded-full flex items-center justify-center shadow-sm">
-            <span className="text-white text-xs font-medium">
+      <div className="p-6 border-t border-white/5 bg-black/10">
+        <div className="flex items-center gap-3 px-2 py-2 mb-4">
+          <div className="w-10 h-10 bg-brand-brass rounded-xl flex items-center justify-center shadow-lg transform rotate-3">
+            <span className="text-white text-sm font-bold -rotate-3">
               {user?.name?.[0]?.toUpperCase() || 'A'}
             </span>
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-mono-900 truncate">{user?.name || 'Admin'}</p>
-            <p className="text-xs text-mono-500 truncate">{user?.email || 'admin@landolina.it'}</p>
+            <p className="text-sm font-medium text-white truncate">{user?.name || 'Admin'}</p>
+            <p className="text-[10px] text-white/40 truncate uppercase tracking-wider">{user?.role || 'Administrator'}</p>
           </div>
         </div>
         <button
           onClick={handleLogout}
           disabled={loggingOut}
-          className="w-full flex items-center gap-2 px-3 py-2 text-sm text-mono-500 hover:text-red-600 hover:bg-red-50/50 rounded-lg transition-colors disabled:opacity-50"
+          className="w-full flex items-center gap-2 px-4 py-3 text-sm text-white/50 hover:text-white hover:bg-red-500/10 rounded-xl transition-all duration-300 disabled:opacity-50 group"
         >
-          <LogOut className="w-4 h-4" />
+          <LogOut className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
           {loggingOut ? 'Logging out...' : 'Logout'}
         </button>
       </div>

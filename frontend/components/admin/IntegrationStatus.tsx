@@ -19,15 +19,15 @@ const statusIcons = {
 }
 
 const statusColors = {
-  connected: 'text-green-600 bg-green-50',
-  warning: 'text-yellow-600 bg-yellow-50',
-  error: 'text-red-600 bg-red-50',
+  connected: 'text-green-600 bg-green-50 border-green-100',
+  warning: 'text-yellow-600 bg-yellow-50 border-yellow-100',
+  error: 'text-red-600 bg-red-50 border-red-100',
 }
 
 const statusBadges = {
-  connected: 'bg-green-100 text-green-700',
-  warning: 'bg-yellow-100 text-yellow-700',
-  error: 'bg-red-100 text-red-700',
+  connected: 'bg-green-500/10 text-green-600 border-green-200',
+  warning: 'bg-yellow-500/10 text-yellow-600 border-yellow-200',
+  error: 'bg-red-500/10 text-red-600 border-red-200',
 }
 
 export default function IntegrationStatus() {
@@ -81,34 +81,36 @@ export default function IntegrationStatus() {
   }
 
   return (
-    <div className="glass-card p-6">
-      <div className="flex items-center justify-between mb-6">
+    <div className="bg-white shadow-elevated rounded-[2rem] p-8 border border-brand-brass/5">
+      <div className="flex items-center justify-between mb-8">
         <div>
-          <h2 className="text-lg font-medium text-mono-900">Integrations</h2>
-          <p className="text-sm text-mono-500 font-light">Smart locks & connected services</p>
+          <h2 className="text-2xl font-serif text-brand-midnight">Integrations</h2>
+          <p className="text-sm text-brand-midnight/40 font-light mt-1">Smart ecosystem status</p>
         </div>
-        <Plug className="w-4 h-4 text-mono-400" />
+        <div className="p-2.5 bg-brand-sand/30 rounded-full">
+          <Plug className="w-5 h-5 text-brand-brass" />
+        </div>
       </div>
 
       {loading ? (
         <div className="space-y-4">
           {[1, 2, 3].map(i => (
-            <div key={i} className="flex items-center gap-4 p-4 border border-glass-border rounded-lg animate-pulse">
-              <div className="w-10 h-10 bg-glass-highlight rounded-full"></div>
-              <div className="flex-1 space-y-2">
-                <div className="h-4 bg-glass-highlight rounded w-1/2"></div>
-                <div className="h-3 bg-glass-highlight rounded w-3/4"></div>
+            <div key={i} className="flex items-center gap-4 p-5 bg-brand-sand/10 border border-brand-brass/5 rounded-2xl animate-pulse">
+              <div className="w-10 h-10 bg-brand-sand/20 rounded-full"></div>
+              <div className="flex-1 space-y-3">
+                <div className="h-4 bg-brand-sand/20 rounded w-1/2"></div>
+                <div className="h-3 bg-brand-sand/20 rounded w-3/4"></div>
               </div>
             </div>
           ))}
         </div>
       ) : integrations.length === 0 ? (
-        <div className="text-center py-8 text-mono-400">
-          <Plug className="w-10 h-10 mx-auto mb-3 opacity-30" />
-          <p className="font-light">No integrations configured</p>
+        <div className="text-center py-12 bg-brand-sand/10 rounded-3xl border border-dashed border-brand-brass/20">
+          <Plug className="w-12 h-12 mx-auto mb-4 text-brand-brass/20" />
+          <p className="font-serif text-brand-midnight/40 text-lg">No active integrations found</p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-4">
           {integrations.map((integration) => {
             const StatusIcon = statusIcons[integration.status]
             const iconColorClass = statusColors[integration.status]
@@ -117,21 +119,21 @@ export default function IntegrationStatus() {
             return (
               <div
                 key={integration.id}
-                className="flex items-center gap-4 p-4 border border-glass-border rounded-xl hover:bg-glass-surface/50 transition-colors group"
+                className="flex items-center gap-5 p-5 bg-brand-ivory/30 border border-brand-brass/5 rounded-2xl hover:bg-brand-sand/30 hover:border-brand-brass/20 transition-all duration-300 group shadow-sm"
               >
-                <div className={`p-2 rounded-full ${iconColorClass} bg-opacity-50`}>
+                <div className={`p-3 rounded-xl border ${iconColorClass} transition-transform duration-500 group-hover:rotate-6`}>
                   <StatusIcon className="w-4 h-4" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <p className="text-sm font-medium text-mono-900">
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <p className="text-sm font-bold text-brand-midnight uppercase tracking-tight">
                       {integration.name}
                     </p>
-                    <span className={`px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider rounded-full ${badgeClass} bg-opacity-50 border border-current/10`}>
+                    <span className={`px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest rounded-full border ${badgeClass}`}>
                       {integration.status}
                     </span>
                   </div>
-                  <p className="text-sm text-mono-500 font-light">
+                  <p className="text-xs text-brand-midnight/50 font-light italic">
                     {integration.message}
                   </p>
                 </div>
@@ -141,8 +143,8 @@ export default function IntegrationStatus() {
         </div>
       )}
 
-      <button className="w-full mt-6 text-sm text-mono-600 hover:text-mono-900 font-medium transition-colors border-t border-glass-border pt-4">
-        Manage integrations →
+      <button className="w-full mt-10 btn-brass py-3 text-xs uppercase tracking-[0.2em] font-bold">
+        Access Infrastructure Panel
       </button>
     </div>
   )

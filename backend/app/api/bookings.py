@@ -50,7 +50,7 @@ async def create_booking(booking: BookingCreate):
 
         booking_data = {
             "hospitable_id": booking.hospitable_id,
-            "smoobu_id": booking.smoobu_id,
+            "lodgify_id": booking.lodgify_id,
             "confirmation_code": booking.confirmation_code,
             "guest_name": booking.guest_name,
             "guest_email": booking.guest_email,
@@ -239,7 +239,7 @@ async def create_booking(booking: BookingCreate):
         return BookingResponse(
             id=booking_id,
             hospitable_id=booking.hospitable_id,
-            smoobu_id=booking.smoobu_id,
+            lodgify_id=booking.lodgify_id,
             confirmation_code=booking.confirmation_code,
             guest_name=booking.guest_name,
             guest_email=booking.guest_email,
