@@ -1,12 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { CheckCircle2, AlertCircle, XCircle, Plug } from 'lucide-react'
+import { CheckCircle2, AlertCircle, XCircle, Plug, RefreshCw } from 'lucide-react'
 
 interface Integration {
   id: string
   name: string
-  type: 'ring' | 'tuya' | 'home_assistant'
+  type: 'ring' | 'tuya' | 'home_assistant' | 'lodgify'
   status: 'connected' | 'warning' | 'error'
   message: string
   lastSync?: string
@@ -37,6 +37,27 @@ export default function IntegrationStatus() {
   useEffect(() => {
     fetchIntegrationStatus()
   }, [])
+
+  const handleSync = async (type: string) => {
+    try {
+      setLoading(true)
+      const endpoint = type === 'lodgify' ? 'lodgify/sync' : 'ring/refresh-token'
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/integrations/${endpoint}`, {
+        method: 'POST'
+      })
+      if (response.ok) {
+        alert(`${type} synchronized successfully`)
+        fetchIntegrationStatus()
+      } else {
+        alert(`Failed to sync ${type}`)
+      }
+    } catch (error) {
+      console.error(`Sync error:`, error)
+      alert(`An error occurred during sync`)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const fetchIntegrationStatus = async () => {
     try {
@@ -85,7 +106,7 @@ export default function IntegrationStatus() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h2 className="text-2xl font-serif text-brand-midnight">Integrations</h2>
-          <p className="text-sm text-brand-midnight/40 font-light mt-1">Smart ecosystem status</p>
+          <p className="text-sm text-brand-midnight/60 font-medium mt-1">Smart ecosystem status</p>
         </div>
         <div className="p-2.5 bg-brand-sand/30 rounded-full">
           <Plug className="w-5 h-5 text-brand-brass" />
@@ -107,7 +128,7 @@ export default function IntegrationStatus() {
       ) : integrations.length === 0 ? (
         <div className="text-center py-12 bg-brand-sand/10 rounded-3xl border border-dashed border-brand-brass/20">
           <Plug className="w-12 h-12 mx-auto mb-4 text-brand-brass/20" />
-          <p className="font-serif text-brand-midnight/40 text-lg">No active integrations found</p>
+          <p className="font-serif text-brand-midnight/50 text-lg">No active integrations found</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -133,9 +154,19 @@ export default function IntegrationStatus() {
                       {integration.status}
                     </span>
                   </div>
-                  <p className="text-xs text-brand-midnight/50 font-light italic">
-                    {integration.message}
-                  </p>
+                  <div className="flex items-center justify-between gap-4">
+                    <p className="text-xs text-brand-midnight/70 font-medium italic truncate">
+                      {integration.message}
+                    </p>
+                    {integration.id === 'lodgify' && (
+                      <button
+                        onClick={() => handleSync('lodgify')}
+                        className="p-1.5 bg-brand-sand/50 hover:bg-brand-sand rounded-lg transition-colors group/sync"
+                      >
+                        <RefreshCw className="w-3 h-3 text-brand-brass-dark group-hover/sync:rotate-180 transition-transform duration-500" />
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             )

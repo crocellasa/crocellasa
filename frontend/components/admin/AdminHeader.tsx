@@ -11,14 +11,14 @@ export default function AdminHeader() {
         <div className="flex items-center gap-4">
           {/* Refresh Button */}
           <button
-            className="p-2 text-mono-500 hover:text-mono-900 hover:bg-glass-highlight rounded-lg transition-colors"
+            className="p-2 text-brand-midnight/60 hover:text-brand-midnight hover:bg-glass-highlight rounded-lg transition-colors"
             title="Refresh data"
           >
             <RefreshCw className="w-4 h-4" />
           </button>
 
           {/* Notifications */}
-          <button className="p-2 text-mono-500 hover:text-mono-900 hover:bg-glass-highlight rounded-lg transition-colors relative">
+          <button className="p-2 text-brand-midnight/60 hover:text-brand-midnight hover:bg-glass-highlight rounded-lg transition-colors relative">
             <Bell className="w-4 h-4" />
             <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-red-500 rounded-full ring-2 ring-white"></span>
           </button>

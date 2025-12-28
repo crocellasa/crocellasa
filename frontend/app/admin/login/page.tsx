@@ -47,7 +47,7 @@ export default function LoginPage() {
           <h1 className="text-5xl font-serif text-brand-midnight mb-3 tracking-tight">
             Admin Portal
           </h1>
-          <p className="text-brand-midnight/40 font-light tracking-wide italic">
+          <p className="text-brand-midnight/40 font-normal tracking-wide italic">
             Management console for professional hosting
           </p>
         </div>

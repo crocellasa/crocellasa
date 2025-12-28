@@ -59,7 +59,7 @@ export default function AdminDashboard() {
             <p className="text-[10px] font-bold text-brand-brass-dark uppercase tracking-[0.3em]">Live Overview</p>
           </div>
           <h1 className="text-4xl font-serif text-brand-midnight tracking-tight">Main Dashboard</h1>
-          <p className="text-brand-midnight/40 mt-2 font-light">
+          <p className="text-brand-midnight/60 mt-2 font-normal">
             Welcome back! Monitor your check-ins and property health in real-time.
           </p>
         </div>
@@ -119,7 +119,7 @@ export default function AdminDashboard() {
             <div className="flex items-center justify-between mb-8">
               <div>
                 <h2 className="text-2xl font-serif text-brand-midnight">Booking Analytics</h2>
-                <p className="text-sm text-brand-midnight/40 font-light mt-1">7-day performance metrics</p>
+                <p className="text-sm text-brand-midnight/60 font-medium mt-1">7-day performance metrics</p>
               </div>
               <div className="px-4 py-2 bg-brand-sand/30 rounded-full">
                 <p className="text-[10px] font-bold text-brand-brass-dark uppercase tracking-widest">Lodgify Sync: Active</p>
@@ -143,7 +143,7 @@ export default function AdminDashboard() {
               <Home className="w-32 h-32" />
             </div>
             <h3 className="text-xl font-serif text-brand-brass mb-3 relative z-10">Professional Plan</h3>
-            <p className="text-sm text-white/60 font-light leading-relaxed mb-6 relative z-10">
+            <p className="text-sm text-white/80 font-normal leading-relaxed mb-6 relative z-10">
               You're currently managing 3 locks at Via Landolina #186. Your next scheduled Lodgify sync is in 4 hours.
             </p>
             <button className="w-full py-3 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl text-xs font-semibold uppercase tracking-widest transition-all relative z-10">

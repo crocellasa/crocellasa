@@ -95,10 +95,10 @@ export default function GuestPortalPage() {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="glass-card max-w-md w-full text-center">
-          <h1 className="text-2xl font-light text-mono-900 mb-4">
+          <h1 className="text-2xl font-normal text-brand-midnight mb-4">
             {locale === 'it' ? 'Link non valido' : 'Invalid Link'}
           </h1>
-          <p className="text-mono-500">
+          <p className="text-brand-midnight/60">
             {locale === 'it'
               ? 'Questo link non è valido o è scaduto. Contatta il tuo host.'
               : 'This link is invalid or expired. Please contact your host.'}
@@ -150,14 +150,14 @@ export default function GuestPortalPage() {
         </div>
 
         <div className="text-center pt-8 pb-4">
-          <p className="text-sm text-mono-400 mb-2">
+          <p className="text-sm text-brand-midnight/50 mb-2">
             {locale === 'it'
               ? 'Hai bisogno di aiuto?'
               : 'Need help?'}
           </p>
           <a
             href={`mailto:${data.booking.guest_email}`}
-            className="text-sm font-medium text-mono-900 hover:text-mono-600 transition-colors"
+            className="text-sm font-medium text-brand-midnight hover:text-brand-midnight/70 transition-colors"
           >
             {locale === 'it' ? 'Contatta il tuo host' : 'Contact your host'}
           </a>

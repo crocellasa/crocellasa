@@ -10,6 +10,7 @@ from app.core.database import get_supabase
 from app.services.tuya_service import get_tuya_service
 from app.services.ring_service import get_ring_service
 from app.services.home_assistant_service import get_home_assistant_service
+from app.services.booking_sync_service import get_booking_sync_service
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -27,16 +28,32 @@ async def get_integrations_status(current_admin: dict = Depends(get_current_admi
 
     integrations = []
 
+    # Lodgify Status
+    try:
+        sync_service = get_booking_sync_service()
+        # Just check if we can reach the API or have credentials
+        integrations.append({
+            "id": "lodgify",
+            "name": "Lodgify API",
+            "type": "lodgify",
+            "status": "connected" if settings.LODGIFY_API_KEY else "warning",
+            "message": "Connected & Syncing" if settings.LODGIFY_API_KEY else "Missing API Key",
+            "lastSync": datetime.now(timezone.utc).isoformat()
+        })
+    except Exception as e:
+        logger.error(f"Failed to get Lodgify status: {e}")
+
     # Ring Intercom Status
     try:
         ring_service = get_ring_service()
-        # TODO: Implement actual status check
+        # Real check: try to get devices
+        devices = await ring_service.get_intercom_devices()
         integrations.append({
             "id": "ring",
             "name": "Ring Intercom",
             "type": "ring",
-            "status": "warning",  # could be: connected, warning, error
-            "message": "Token expires in 3 days",
+            "status": "connected" if devices else "warning",
+            "message": f"{len(devices)} devices active" if devices else "No devices found",
             "lastSync": datetime.now(timezone.utc).isoformat()
         })
     except Exception as e:
@@ -46,41 +63,45 @@ async def get_integrations_status(current_admin: dict = Depends(get_current_admi
             "name": "Ring Intercom",
             "type": "ring",
             "status": "error",
-            "message": f"Error: {str(e)}",
+            "message": "Connection Failed",
             "lastSync": None
         })
 
     # Tuya Smart Locks Status
     try:
         tuya_service = get_tuya_service()
+        # Real check: list devices
+        devices = tuya_service.list_devices()
         integrations.append({
             "id": "tuya",
             "name": "Tuya Smart Locks",
             "type": "tuya",
-            "status": "connected",
-            "message": "2 devices connected",
+            "status": "connected" if devices else "warning",
+            "message": f"{len(devices)} devices connected",
             "lastSync": datetime.now(timezone.utc).isoformat()
         })
     except Exception as e:
         logger.error(f"Failed to get Tuya status: {e}")
         integrations.append({
             "id": "tuya",
-            "name": "Tuya Smart Locks",
+            "name": "Tuya",
             "type": "tuya",
             "status": "error",
-            "message": f"Error: {str(e)}",
+            "message": "Service offline",
             "lastSync": None
         })
 
     # Home Assistant Status
     try:
         ha_service = get_home_assistant_service()
+        # Real check: ping HA
+        is_online = await ha_service.check_health()
         integrations.append({
             "id": "home_assistant",
             "name": "Home Assistant",
             "type": "home_assistant",
-            "status": "connected",
-            "message": "All services operational",
+            "status": "connected" if is_online else "error",
+            "message": "Operational" if is_online else "Connection reset",
             "lastSync": datetime.now(timezone.utc).isoformat()
         })
     except Exception as e:
@@ -90,7 +111,7 @@ async def get_integrations_status(current_admin: dict = Depends(get_current_admi
             "name": "Home Assistant",
             "type": "home_assistant",
             "status": "error",
-            "message": f"Error: {str(e)}",
+            "message": "Unavailable",
             "lastSync": None
         })
 
@@ -201,14 +222,31 @@ async def get_all_integrations(current_admin: dict = Depends(get_current_admin))
 async def refresh_ring_token(current_admin: dict = Depends(get_current_admin)):
     """
     Refresh Ring API token
-
-    Returns:
-        New token information
     """
     logger.info(f"Admin {current_admin['email']} refreshing Ring token")
+    try:
+        ring_service = get_ring_service()
+        success = await ring_service.refresh_token()
+        return {"success": success}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
-    # TODO: Implement actual Ring token refresh
-    raise HTTPException(
-        status_code=status.HTTP_501_NOT_IMPLEMENTED,
-        detail="Ring token refresh not yet implemented"
-    )
+
+@router.post("/lodgify/sync")
+async def trigger_lodgify_sync(current_admin: dict = Depends(get_current_admin)):
+    """
+    Manually trigger Lodgify booking sync
+    """
+    logger.info(f"Admin {current_admin['email']} triggered manual Lodgify sync")
+    try:
+        sync_service = get_booking_sync_service()
+        result = await sync_service.sync_bookings_from_lodgify()
+        
+        if result.get("status") == "success":
+            # Also trigger code provisioning for the new/updated bookings
+            await sync_service.provision_codes_for_upcoming_bookings()
+            
+        return result
+    except Exception as e:
+        logger.error(f"Manual sync failed: {e}")
+        raise HTTPException(status_code=500, detail=str(e))

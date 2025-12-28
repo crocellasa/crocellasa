@@ -53,7 +53,7 @@ export default function KPICard({
           <div className="flex items-baseline gap-2">
             <p className="text-4xl font-serif text-brand-midnight">{value}</p>
             {total !== undefined && (
-              <p className="text-sm text-brand-midnight/20 font-light italic">/ {total}</p>
+              <p className="text-sm text-brand-midnight/20 font-normal italic">/ {total}</p>
             )}
           </div>
         )}

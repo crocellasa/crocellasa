@@ -144,8 +144,8 @@ export default function ActivityPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-light text-mono-900 tracking-tight">Activity Log</h1>
-        <p className="text-sm text-mono-500 mt-1 font-light">
+        <h1 className="text-3xl font-normal text-brand-midnight tracking-tight">Activity Log</h1>
+        <p className="text-sm text-brand-midnight/60 mt-1 font-normal">
           Complete timeline of all events and actions across your properties
         </p>
       </div>
@@ -155,11 +155,11 @@ export default function ActivityPage() {
         <div className="flex flex-col md:flex-row gap-4">
           {/* Event Type Filter */}
           <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4 text-mono-400" />
+            <Filter className="w-4 h-4 text-brand-midnight/50" />
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
-              className="px-4 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-light text-mono-900"
+              className="px-4 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-normal text-brand-midnight"
             >
               <option value="all">All Events</option>
               <option value="door_open">Door Opens</option>
@@ -172,11 +172,11 @@ export default function ActivityPage() {
 
           {/* Date Filter */}
           <div className="flex items-center gap-2">
-            <Calendar className="w-4 h-4 text-mono-400" />
+            <Calendar className="w-4 h-4 text-brand-midnight/50" />
             <select
               value={dateFilter}
               onChange={(e) => setDateFilter(e.target.value)}
-              className="px-4 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-light text-mono-900"
+              className="px-4 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-normal text-brand-midnight"
             >
               <option value="today">Today</option>
               <option value="7days">Last 7 days</option>
@@ -188,7 +188,7 @@ export default function ActivityPage() {
           <div className="flex-1"></div>
 
           {/* Export Button */}
-          <button className="px-4 py-2 border border-glass-border rounded-lg hover:bg-glass-surface transition-colors text-sm font-medium text-mono-600 hover:text-mono-900">
+          <button className="px-4 py-2 border border-glass-border rounded-lg hover:bg-glass-surface transition-colors text-sm font-medium text-brand-midnight/70 hover:text-brand-midnight">
             Export CSV
           </button>
         </div>
@@ -198,12 +198,12 @@ export default function ActivityPage() {
       {loading ? (
         <div className="glass-card p-8 text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-mono-900 mx-auto"></div>
-          <p className="text-mono-500 mt-4 font-light">Loading activity...</p>
+          <p className="text-brand-midnight/60 mt-4 font-normal">Loading activity...</p>
         </div>
       ) : filteredActivities.length === 0 ? (
-        <div className="glass-card p-8 text-center text-mono-400">
+        <div className="glass-card p-8 text-center text-brand-midnight/50">
           <Calendar className="w-12 h-12 mx-auto mb-3 opacity-30" />
-          <p className="font-light">No activity found</p>
+          <p className="font-normal">No activity found</p>
         </div>
       ) : (
         <div className="glass-card p-6">
@@ -234,20 +234,20 @@ export default function ActivityPage() {
                               {eventLabels[activity.event_type]}
                             </span>
                             {activity.guest_name && (
-                              <span className="text-sm font-medium text-mono-900">
+                              <span className="text-sm font-medium text-brand-midnight">
                                 {activity.guest_name}
                               </span>
                             )}
                           </div>
-                          <p className="text-sm text-mono-600 font-light">{activity.details}</p>
+                          <p className="text-sm text-brand-midnight/70 font-normal">{activity.details}</p>
                         </div>
-                        <div className="text-right text-xs text-mono-400 font-light">
+                        <div className="text-right text-xs text-brand-midnight/50 font-normal">
                           <p>{format(new Date(activity.timestamp), 'MMM dd, yyyy')}</p>
                           <p>{format(new Date(activity.timestamp), 'HH:mm:ss')}</p>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-4 text-xs text-mono-500 font-light">
+                      <div className="flex items-center gap-4 text-xs text-brand-midnight/60 font-normal">
                         <span className="flex items-center gap-1">
                           <Calendar className="w-3 h-3" />
                           {formatDistanceToNow(new Date(activity.timestamp), { addSuffix: true })}
@@ -265,11 +265,11 @@ export default function ActivityPage() {
                       {/* Metadata */}
                       {activity.metadata && Object.keys(activity.metadata).length > 0 && (
                         <details className="mt-3 group">
-                          <summary className="text-xs text-mono-500 cursor-pointer hover:text-mono-900 transition-colors list-none flex items-center gap-1">
+                          <summary className="text-xs text-brand-midnight/60 cursor-pointer hover:text-brand-midnight transition-colors list-none flex items-center gap-1">
                             <span className="group-open:hidden">Show details</span>
                             <span className="hidden group-open:inline">Hide details</span>
                           </summary>
-                          <pre className="mt-2 p-3 bg-glass-surface rounded border border-glass-border text-[10px] font-mono text-mono-600 overflow-x-auto">
+                          <pre className="mt-2 p-3 bg-glass-surface rounded border border-glass-border text-[10px] font-mono text-brand-midnight/70 overflow-x-auto">
                             {JSON.stringify(activity.metadata, null, 2)}
                           </pre>
                         </details>

@@ -82,7 +82,7 @@ export default function RecentActivity() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h2 className="text-2xl font-serif text-brand-midnight">Recent Activity</h2>
-          <p className="text-sm text-brand-midnight/40 font-light mt-1">Real-time property event stream</p>
+          <p className="text-sm text-brand-midnight/60 font-medium mt-1">Real-time property event stream</p>
         </div>
         <div className="p-2.5 bg-brand-sand/30 rounded-full">
           <Clock className="w-5 h-5 text-brand-brass" />
@@ -122,12 +122,12 @@ export default function RecentActivity() {
                     <p className="text-sm font-bold text-brand-midnight truncate uppercase tracking-tight">
                       {activity.guestName}
                     </p>
-                    <p className="text-[10px] text-brand-midnight/30 font-medium whitespace-nowrap uppercase tracking-widest">
+                    <p className="text-[10px] text-brand-midnight/50 font-bold whitespace-nowrap uppercase tracking-widest">
                       {formatDistanceToNow(new Date(activity.timestamp), { addSuffix: true })}
                     </p>
                   </div>
-                  <p className="text-sm text-brand-midnight/50 font-light leading-relaxed">
-                    {activity.details} at <span className="font-medium text-brand-brass-dark">{activity.location}</span>
+                  <p className="text-sm text-brand-midnight/70 font-normal leading-relaxed">
+                    {activity.details} at <span className="font-bold text-brand-brass-dark">{activity.location}</span>
                   </p>
                 </div>
               </div>

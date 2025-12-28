@@ -160,8 +160,8 @@ export default function BookingsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-light text-mono-900 tracking-tight">Bookings</h1>
-          <p className="text-sm text-mono-500 mt-1 font-light">
+          <h1 className="text-3xl font-medium text-brand-midnight/80 tracking-tight">Bookings</h1>
+          <p className="text-sm text-brand-midnight/70 mt-1 font-medium">
             Manage all your property bookings and access codes
           </p>
         </div>
@@ -179,23 +179,23 @@ export default function BookingsPage() {
         <div className="flex flex-col md:flex-row gap-4">
           {/* Search */}
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-mono-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-brand-midnight/50" />
             <input
               type="text"
               placeholder="Search by guest name, email, or confirmation code..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-light text-mono-900 placeholder-mono-400"
+              className="w-full pl-10 pr-4 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-normal text-brand-midnight placeholder-mono-400"
             />
           </div>
 
           {/* Status Filter */}
           <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4 text-mono-400" />
+            <Filter className="w-4 h-4 text-brand-midnight/50" />
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-light text-mono-900"
+              className="px-4 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-normal text-brand-midnight"
             >
               <option value="all">All Status</option>
               <option value="confirmed">Confirmed</option>
@@ -212,34 +212,34 @@ export default function BookingsPage() {
         {loading ? (
           <div className="p-12 text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-mono-900 mx-auto"></div>
-            <p className="text-mono-500 mt-4 font-light">Loading bookings...</p>
+            <p className="text-brand-midnight/60 mt-4 font-normal">Loading bookings...</p>
           </div>
         ) : filteredBookings.length === 0 ? (
-          <div className="p-12 text-center text-mono-400">
+          <div className="p-12 text-center text-brand-midnight/50">
             <Calendar className="w-12 h-12 mx-auto mb-3 opacity-30" />
-            <p className="font-light">No bookings found</p>
+            <p className="font-normal">No bookings found</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-glass-surface/50 border-b border-glass-border">
                 <tr>
-                  <th className="px-6 py-4 text-left text-[10px] font-medium text-mono-400 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-[10px] font-medium text-brand-midnight/50 uppercase tracking-wider">
                     Guest
                   </th>
-                  <th className="px-6 py-4 text-left text-[10px] font-medium text-mono-400 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-[10px] font-medium text-brand-midnight/50 uppercase tracking-wider">
                     Property
                   </th>
-                  <th className="px-6 py-4 text-left text-[10px] font-medium text-mono-400 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-[10px] font-medium text-brand-midnight/50 uppercase tracking-wider">
                     Check-In / Check-Out
                   </th>
-                  <th className="px-6 py-4 text-left text-[10px] font-medium text-mono-400 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-[10px] font-medium text-brand-midnight/50 uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="px-6 py-4 text-left text-[10px] font-medium text-mono-400 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-[10px] font-medium text-brand-midnight/50 uppercase tracking-wider">
                     Access Codes
                   </th>
-                  <th className="px-6 py-4 text-right text-[10px] font-medium text-mono-400 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-right text-[10px] font-medium text-brand-midnight/50 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
@@ -250,26 +250,26 @@ export default function BookingsPage() {
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 bg-mono-100 rounded-full flex items-center justify-center">
-                          <User className="w-4 h-4 text-mono-600" />
+                          <User className="w-4 h-4 text-brand-midnight/70" />
                         </div>
                         <div>
-                          <p className="text-sm font-medium text-mono-900">{booking.guest_name}</p>
-                          <p className="text-xs text-mono-500 font-light">{booking.guest_email}</p>
+                          <p className="text-sm font-medium text-brand-midnight">{booking.guest_name}</p>
+                          <p className="text-xs text-brand-midnight/60 font-normal">{booking.guest_email}</p>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="flex items-center gap-2 text-sm text-mono-600 font-light">
-                        <MapPin className="w-3 h-3 text-mono-400" />
+                      <div className="flex items-center gap-2 text-sm text-mono-700 font-medium">
+                        <MapPin className="w-3 h-3 text-brand-midnight/50" />
                         Via Landolina #186
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-sm font-light">
-                        <p className="text-mono-900">
+                      <div className="text-sm font-normal">
+                        <p className="text-brand-midnight">
                           {format(new Date(booking.checkin_date), 'MMM dd, yyyy')}
                         </p>
-                        <p className="text-mono-400 text-xs">
+                        <p className="text-brand-midnight/60 text-xs font-bold">
                           {format(new Date(booking.checkout_date), 'MMM dd, yyyy')}
                         </p>
                       </div>
@@ -288,26 +288,26 @@ export default function BookingsPage() {
                         <div className="w-5 h-5 bg-green-50 rounded-full flex items-center justify-center border border-green-100">
                           <span className="text-[10px] font-medium text-green-700">{booking.access_codes_count}</span>
                         </div>
-                        <span className="text-xs text-mono-500 font-light">active</span>
+                        <span className="text-xs text-brand-midnight/60 font-normal">active</span>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-1">
                         <button
-                          className="p-2 hover:bg-glass-surface rounded-lg transition-colors text-mono-400 hover:text-mono-900"
+                          className="p-2 hover:bg-glass-surface rounded-lg transition-colors text-brand-midnight/50 hover:text-brand-midnight"
                           title="View details"
                         >
                           <Eye className="w-4 h-4" />
                         </button>
                         <button
-                          className="p-2 hover:bg-glass-surface rounded-lg transition-colors text-mono-400 hover:text-mono-900"
+                          className="p-2 hover:bg-glass-surface rounded-lg transition-colors text-brand-midnight/50 hover:text-brand-midnight"
                           title="Resend notification"
                         >
                           <Send className="w-4 h-4" />
                         </button>
                         {booking.status !== 'cancelled' && (
                           <button
-                            className="p-2 hover:bg-red-50 rounded-lg transition-colors text-mono-400 hover:text-red-600"
+                            className="p-2 hover:bg-red-50 rounded-lg transition-colors text-brand-midnight/50 hover:text-red-600"
                             title="Cancel booking"
                           >
                             <XCircle className="w-4 h-4" />
@@ -328,8 +328,8 @@ export default function BookingsPage() {
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="glass-card max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-glass-border">
-              <h2 className="text-2xl font-light text-mono-900">Create Manual Booking</h2>
-              <p className="text-sm text-mono-500 mt-1 font-light">
+              <h2 className="text-2xl font-medium text-brand-midnight/80">Create Manual Booking</h2>
+              <p className="text-sm text-brand-midnight/70 mt-1 font-medium">
                 Create a new booking and generate access codes automatically
               </p>
             </div>
@@ -340,7 +340,7 @@ export default function BookingsPage() {
                 <h3 className="text-sm font-medium text-mono-700 mb-4 uppercase tracking-wider">Guest Information</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm text-mono-600 mb-1.5 font-light">
+                    <label className="block text-sm text-brand-midnight/70 mb-1.5 font-normal">
                       Guest Name <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -348,13 +348,13 @@ export default function BookingsPage() {
                       required
                       value={formData.guest_name}
                       onChange={(e) => setFormData({ ...formData, guest_name: e.target.value })}
-                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-light text-mono-900"
+                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-medium text-brand-midnight/80"
                       placeholder="John Doe"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm text-mono-600 mb-1.5 font-light">
+                    <label className="block text-sm text-brand-midnight/70 mb-1.5 font-normal">
                       Email <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -362,13 +362,13 @@ export default function BookingsPage() {
                       required
                       value={formData.guest_email}
                       onChange={(e) => setFormData({ ...formData, guest_email: e.target.value })}
-                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-light text-mono-900"
+                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-medium text-brand-midnight/80"
                       placeholder="guest@example.com"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm text-mono-600 mb-1.5 font-light">
+                    <label className="block text-sm text-brand-midnight/70 mb-1.5 font-normal">
                       Phone <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -376,20 +376,20 @@ export default function BookingsPage() {
                       required
                       value={formData.guest_phone}
                       onChange={(e) => setFormData({ ...formData, guest_phone: e.target.value })}
-                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-light text-mono-900"
+                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-medium text-brand-midnight/80"
                       placeholder="+393331234567"
                     />
-                    <p className="text-xs text-mono-400 mt-1">E.164 format (e.g., +393331234567)</p>
+                    <p className="text-xs text-brand-midnight/50 mt-1">E.164 format (e.g., +393331234567)</p>
                   </div>
 
                   <div>
-                    <label className="block text-sm text-mono-600 mb-1.5 font-light">
+                    <label className="block text-sm text-brand-midnight/70 mb-1.5 font-normal">
                       Language
                     </label>
                     <select
                       value={formData.guest_language}
                       onChange={(e) => setFormData({ ...formData, guest_language: e.target.value })}
-                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-light text-mono-900"
+                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-medium text-brand-midnight/80"
                     >
                       <option value="en">English</option>
                       <option value="it">Italiano</option>
@@ -403,7 +403,7 @@ export default function BookingsPage() {
                 <h3 className="text-sm font-medium text-mono-700 mb-4 uppercase tracking-wider">Booking Details</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm text-mono-600 mb-1.5 font-light">
+                    <label className="block text-sm text-brand-midnight/70 mb-1.5 font-normal">
                       Check-in Date <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -411,12 +411,12 @@ export default function BookingsPage() {
                       required
                       value={formData.checkin_date}
                       onChange={(e) => setFormData({ ...formData, checkin_date: e.target.value })}
-                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-light text-mono-900"
+                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-medium text-brand-midnight/80"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm text-mono-600 mb-1.5 font-light">
+                    <label className="block text-sm text-brand-midnight/70 mb-1.5 font-normal">
                       Check-out Date <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -424,12 +424,12 @@ export default function BookingsPage() {
                       required
                       value={formData.checkout_date}
                       onChange={(e) => setFormData({ ...formData, checkout_date: e.target.value })}
-                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-light text-mono-900"
+                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-medium text-brand-midnight/80"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm text-mono-600 mb-1.5 font-light">
+                    <label className="block text-sm text-brand-midnight/70 mb-1.5 font-normal">
                       Number of Guests <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -439,32 +439,32 @@ export default function BookingsPage() {
                       max="10"
                       value={formData.num_guests}
                       onChange={(e) => setFormData({ ...formData, num_guests: parseInt(e.target.value) })}
-                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-light text-mono-900"
+                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-medium text-brand-midnight/80"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm text-mono-600 mb-1.5 font-light">
+                    <label className="block text-sm text-brand-midnight/70 mb-1.5 font-normal">
                       Confirmation Code
                     </label>
                     <input
                       type="text"
                       value={formData.confirmation_code}
                       onChange={(e) => setFormData({ ...formData, confirmation_code: e.target.value })}
-                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-light text-mono-900"
+                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-medium text-brand-midnight/80"
                       placeholder="Optional"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm text-mono-600 mb-1.5 font-light">
+                    <label className="block text-sm text-brand-midnight/70 mb-1.5 font-normal">
                       Lodgify ID
                     </label>
                     <input
                       type="text"
                       value={formData.lodgify_id}
                       onChange={(e) => setFormData({ ...formData, lodgify_id: e.target.value })}
-                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-light text-mono-900"
+                      className="w-full px-3 py-2 bg-glass-surface border border-glass-border rounded-lg focus:outline-none focus:ring-2 focus:ring-mono-900/10 text-sm font-medium text-brand-midnight/80"
                       placeholder="Optional"
                     />
                   </div>
@@ -477,7 +477,7 @@ export default function BookingsPage() {
                   type="button"
                   onClick={() => setShowCreateModal(false)}
                   disabled={creating}
-                  className="px-4 py-2 text-sm font-light text-mono-600 hover:text-mono-900 transition-colors disabled:opacity-50"
+                  className="px-4 py-2 text-sm font-normal text-brand-midnight/60 hover:text-brand-midnight transition-colors disabled:opacity-50"
                 >
                   Cancel
                 </button>
@@ -515,14 +515,14 @@ export default function BookingsPage() {
               <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
             )}
             <div className="flex-1">
-              <p className="text-sm font-medium text-mono-900">
+              <p className="text-sm font-medium text-brand-midnight">
                 {toast.type === 'success' ? 'Success' : 'Error'}
               </p>
-              <p className="text-sm text-mono-600 mt-0.5 font-light">{toast.message}</p>
+              <p className="text-sm text-brand-midnight/70 mt-0.5 font-normal">{toast.message}</p>
             </div>
             <button
               onClick={() => setToast(null)}
-              className="text-mono-400 hover:text-mono-900 transition-colors flex-shrink-0"
+              className="text-brand-midnight/50 hover:text-brand-midnight transition-colors flex-shrink-0"
             >
               <X className="w-4 h-4" />
             </button>

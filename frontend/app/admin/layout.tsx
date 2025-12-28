@@ -6,7 +6,7 @@ import AuthGuard from '@/components/admin/AuthGuard'
 export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
     <AuthGuard>
-      <div className="flex h-screen bg-subtle-gradient font-sans text-mono-900">
+      <div className="flex h-screen bg-subtle-gradient font-sans text-brand-midnight">
         {/* Sidebar */}
         <AdminSidebar />
 

@@ -123,7 +123,7 @@ export default function IntegrationsPage() {
       case 'disconnected':
         return <XCircle className="w-5 h-5 text-red-600" />
       default:
-        return <AlertCircle className="w-5 h-5 text-mono-400" />
+        return <AlertCircle className="w-5 h-5 text-brand-midnight/50" />
     }
   }
 
@@ -141,8 +141,8 @@ export default function IntegrationsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-light text-mono-900 tracking-tight">Integrations</h1>
-        <p className="text-sm text-mono-500 mt-1 font-light">
+        <h1 className="text-3xl font-normal text-brand-midnight tracking-tight">Integrations</h1>
+        <p className="text-sm text-brand-midnight/60 mt-1 font-normal">
           Manage your smart lock integrations and connected devices
         </p>
       </div>
@@ -150,11 +150,11 @@ export default function IntegrationsPage() {
       {/* Progress Indicator */}
       <div className="glass-card p-4 bg-glass-highlight/30">
         <div className="flex items-center justify-between mb-2">
-          <p className="text-sm font-medium text-mono-900">Setup Progress</p>
-          <p className="text-sm font-medium text-mono-900">3/3 Complete</p>
+          <p className="text-sm font-medium text-brand-midnight">Setup Progress</p>
+          <p className="text-sm font-medium text-brand-midnight">3/3 Complete</p>
         </div>
         <div className="w-full bg-glass-surface rounded-full h-1.5">
-          <div className="bg-mono-900 h-1.5 rounded-full transition-all duration-500" style={{ width: '100%' }}></div>
+          <div className="bg-brand-midnight h-1.5 rounded-full transition-all duration-500" style={{ width: '100%' }}></div>
         </div>
       </div>
 
@@ -178,15 +178,15 @@ export default function IntegrationsPage() {
                   <div className="flex items-center gap-4">
                     {getStatusIcon(integration.status)}
                     <div>
-                      <h3 className="text-lg font-medium text-mono-900">{integration.name}</h3>
-                      <p className="text-sm text-mono-500 mt-1 font-light">{integration.statusMessage}</p>
+                      <h3 className="text-lg font-medium text-brand-midnight">{integration.name}</h3>
+                      <p className="text-sm text-brand-midnight/60 mt-1 font-normal">{integration.statusMessage}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <span className={`px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wider rounded-full border ${getStatusBadge(integration.status)}`}>
                       {integration.status}
                     </span>
-                    <button className="p-2 hover:bg-glass-surface rounded-lg transition-colors text-mono-400 hover:text-mono-900" title="Refresh">
+                    <button className="p-2 hover:bg-glass-surface rounded-lg transition-colors text-brand-midnight/50 hover:text-brand-midnight" title="Refresh">
                       <RefreshCw className="w-4 h-4" />
                     </button>
                   </div>
@@ -196,19 +196,19 @@ export default function IntegrationsPage() {
                 {integration.type === 'ring' && integration.token && (
                   <div className="bg-glass-surface rounded-lg p-4 border border-glass-border">
                     <div className="flex items-center gap-2 mb-2">
-                      <Key className="w-4 h-4 text-mono-500" />
-                      <p className="text-sm font-medium text-mono-900">API Token</p>
+                      <Key className="w-4 h-4 text-brand-midnight/60" />
+                      <p className="text-sm font-medium text-brand-midnight">API Token</p>
                     </div>
                     <div className="flex items-center gap-3">
-                      <code className="flex-1 bg-white/50 px-3 py-2 rounded border border-glass-border text-xs font-mono text-mono-600 truncate">
+                      <code className="flex-1 bg-white/50 px-3 py-2 rounded border border-glass-border text-xs font-mono text-brand-midnight/70 truncate">
                         {integration.token}
                       </code>
-                      <button className="px-3 py-2 bg-mono-900 text-white text-sm rounded-lg hover:bg-mono-800 transition-colors font-light">
+                      <button className="px-3 py-2 bg-brand-midnight text-white text-sm rounded-lg hover:bg-mono-800 transition-colors font-normal">
                         Refresh Token
                       </button>
                     </div>
                     {integration.tokenExpiry && (
-                      <p className="text-xs text-mono-400 mt-2 font-light">
+                      <p className="text-xs text-brand-midnight/50 mt-2 font-normal">
                         Expires: {new Date(integration.tokenExpiry).toLocaleDateString()}
                       </p>
                     )}
@@ -219,17 +219,17 @@ export default function IntegrationsPage() {
                 {integration.type === 'home_assistant' && integration.config && (
                   <div className="bg-glass-surface rounded-lg p-4 border border-glass-border">
                     <div className="flex items-center gap-2 mb-3">
-                      <Home className="w-4 h-4 text-mono-500" />
-                      <p className="text-sm font-medium text-mono-900">Configuration</p>
+                      <Home className="w-4 h-4 text-brand-midnight/60" />
+                      <p className="text-sm font-medium text-brand-midnight">Configuration</p>
                     </div>
                     <div className="grid grid-cols-2 gap-3 text-sm">
                       <div>
-                        <p className="text-mono-500 font-light">URL</p>
-                        <p className="font-mono text-mono-900 text-xs mt-1">{integration.config.url}</p>
+                        <p className="text-brand-midnight/60 font-normal">URL</p>
+                        <p className="font-mono text-brand-midnight text-xs mt-1">{integration.config.url}</p>
                       </div>
                       <div>
-                        <p className="text-mono-500 font-light">Entities</p>
-                        <p className="font-medium text-mono-900 mt-1">{integration.config.entities}</p>
+                        <p className="text-brand-midnight/60 font-normal">Entities</p>
+                        <p className="font-medium text-brand-midnight mt-1">{integration.config.entities}</p>
                       </div>
                     </div>
                   </div>
@@ -239,7 +239,7 @@ export default function IntegrationsPage() {
               {/* Devices List */}
               {integration.devices && integration.devices.length > 0 && (
                 <div className="p-6 bg-glass-surface/30">
-                  <h4 className="text-xs font-medium text-mono-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+                  <h4 className="text-xs font-medium text-brand-midnight/60 uppercase tracking-wider mb-4 flex items-center gap-2">
                     <DoorClosed className="w-3 h-3" />
                     Connected Devices ({integration.devices.length})
                   </h4>
@@ -252,12 +252,12 @@ export default function IntegrationsPage() {
                         <div className="flex items-center gap-4">
                           <div className={`w-8 h-8 rounded-full flex items-center justify-center ${device.online ? 'bg-green-50' : 'bg-mono-100'
                             }`}>
-                            <DoorClosed className={`w-4 h-4 ${device.online ? 'text-green-700' : 'text-mono-400'
+                            <DoorClosed className={`w-4 h-4 ${device.online ? 'text-green-700' : 'text-brand-midnight/50'
                               }`} />
                           </div>
                           <div>
-                            <p className="text-sm font-medium text-mono-900">{device.name}</p>
-                            <p className="text-xs text-mono-500 font-light">{device.location}</p>
+                            <p className="text-sm font-medium text-brand-midnight">{device.name}</p>
+                            <p className="text-xs text-brand-midnight/60 font-normal">{device.location}</p>
                           </div>
                         </div>
                         <div className="flex items-center gap-4">
@@ -265,12 +265,12 @@ export default function IntegrationsPage() {
                             <div className="flex items-center gap-2 text-sm">
                               <Battery className={`w-4 h-4 ${device.battery > 50 ? 'text-green-600' : device.battery > 20 ? 'text-yellow-600' : 'text-red-600'
                                 }`} />
-                              <span className="text-mono-600 font-light">{device.battery}%</span>
+                              <span className="text-brand-midnight/70 font-normal">{device.battery}%</span>
                             </div>
                           )}
                           <div className="flex items-center gap-2 text-sm">
                             <Wifi className={`w-4 h-4 ${device.online ? 'text-green-600' : 'text-mono-300'}`} />
-                            <span className={`font-light ${device.online ? 'text-green-700' : 'text-mono-400'}`}>
+                            <span className={`font-normal ${device.online ? 'text-green-700' : 'text-brand-midnight/50'}`}>
                               {device.online ? 'Online' : 'Offline'}
                             </span>
                           </div>

@@ -74,7 +74,7 @@ export default function AdminSidebar() {
                 `}
               >
                 <item.icon className={`w-4 h-4 transition-colors ${isActive ? 'text-white' : 'text-brand-brass/60 group-hover:text-brand-brass'}`} />
-                <span className={isActive ? 'font-medium' : 'font-light'}>{item.name}</span>
+                <span className={isActive ? 'font-medium' : 'font-normal'}>{item.name}</span>
               </Link>
             )
           })}
@@ -82,7 +82,7 @@ export default function AdminSidebar() {
 
         {/* Setup Section */}
         <div>
-          <h3 className="px-3 text-xs font-medium text-mono-400 uppercase tracking-wider mb-2">
+          <h3 className="px-3 text-xs font-medium text-brand-midnight/50 uppercase tracking-wider mb-2">
             Setup
           </h3>
           <div className="space-y-1">
@@ -101,7 +101,7 @@ export default function AdminSidebar() {
                   `}
                 >
                   <item.icon className={`w-4 h-4 transition-colors ${isActive ? 'text-white' : 'text-brand-brass/60 group-hover:text-brand-brass'}`} />
-                  <span className={isActive ? 'font-medium' : 'font-light'}>{item.name}</span>
+                  <span className={isActive ? 'font-medium' : 'font-normal'}>{item.name}</span>
                 </Link>
               )
             })}
@@ -129,7 +129,7 @@ export default function AdminSidebar() {
                   `}
                 >
                   <item.icon className={`w-4 h-4 transition-colors ${isActive ? 'text-white' : 'text-brand-brass/60 group-hover:text-brand-brass'}`} />
-                  <span className={isActive ? 'font-medium' : 'font-light'}>{item.name}</span>
+                  <span className={isActive ? 'font-medium' : 'font-normal'}>{item.name}</span>
                 </Link>
               )
             })}

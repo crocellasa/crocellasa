@@ -34,12 +34,12 @@ export default function AnalyticsChart() {
       {/* Legend */}
       <div className="flex items-center gap-6 text-sm">
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 bg-mono-900 rounded-full"></div>
-          <span className="text-mono-600 font-light">Bookings Created</span>
+          <div className="w-2 h-2 bg-brand-midnight rounded-full"></div>
+          <span className="text-brand-midnight/70 font-normal">Bookings Created</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 bg-mono-300 rounded-full"></div>
-          <span className="text-mono-600 font-light">Doors Opened</span>
+          <span className="text-brand-midnight/70 font-normal">Doors Opened</span>
         </div>
       </div>
 
@@ -51,7 +51,7 @@ export default function AnalyticsChart() {
             <div className="w-full flex gap-1.5 items-end h-full px-1">
               {/* Bookings Bar */}
               <div
-                className="flex-1 bg-mono-900 rounded-t-sm transition-all duration-300 group-hover:bg-mono-800"
+                className="flex-1 bg-brand-midnight rounded-t-sm transition-all duration-300 group-hover:bg-mono-800"
                 style={{
                   height: `${(item.bookings / maxValue) * 100}%`,
                   minHeight: item.bookings > 0 ? '4px' : '0',
@@ -69,7 +69,7 @@ export default function AnalyticsChart() {
               />
             </div>
             {/* Date Label */}
-            <p className="text-[10px] text-mono-400 font-medium uppercase tracking-wider whitespace-nowrap">{item.date}</p>
+            <p className="text-[10px] text-brand-midnight/50 font-medium uppercase tracking-wider whitespace-nowrap">{item.date}</p>
           </div>
         ))}
       </div>
