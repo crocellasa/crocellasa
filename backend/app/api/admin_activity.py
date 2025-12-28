@@ -55,11 +55,18 @@ async def get_recent_activity(
                 "notification_sent": "notification_sent"
             }
 
+            # Property mapping
+            location_map = {
+                "alcova_landolina_fi": "Via Landolina #186",
+                "default": "Via Landolina #186"
+            }
+            property_id = activity.get("property_id", "alcova_landolina_fi")
+
             transformed.append({
                 "id": activity["id"],
                 "type": type_mapping.get(event_type, event_type),
                 "guestName": activity.get("metadata", {}).get("guest_name", "Unknown Guest"),
-                "location": "Via Landolina #186",  # TODO: Get from property_id
+                "location": location_map.get(property_id, location_map["default"]),
                 "timestamp": activity["created_at"],
                 "details": activity.get("description", "")
             })
@@ -130,12 +137,19 @@ async def get_activity_log(
         for activity in activities:
             metadata = activity.get("metadata", {})
 
+            # Property mapping
+            location_map = {
+                "alcova_landolina_fi": "Via Landolina #186",
+                "default": "Via Landolina #186"
+            }
+            activity_property_id = activity.get("property_id") or metadata.get("property_id") or "alcova_landolina_fi"
+
             transformed.append({
                 "id": activity["id"],
                 "event_type": activity.get("event_type", "unknown"),
                 "guest_name": metadata.get("guest_name"),
-                "property_id": activity.get("property_id", "alcova_landolina_fi"),
-                "location": "Via Landolina #186",  # TODO: Map from property_id
+                "property_id": activity_property_id,
+                "location": location_map.get(activity_property_id, location_map["default"]),
                 "details": activity.get("description", ""),
                 "metadata": metadata,
                 "timestamp": activity["created_at"]

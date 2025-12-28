@@ -41,34 +41,6 @@ export default function RecentActivity() {
       if (response.ok) {
         const data = await response.json()
         setActivities(data)
-      } else {
-        // Mock data for development
-        setActivities([
-          {
-            id: '1',
-            type: 'door_open',
-            guestName: 'Marco Rossi',
-            location: 'Via Landolina #186',
-            timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
-            details: 'Main entrance opened',
-          },
-          {
-            id: '2',
-            type: 'booking_created',
-            guestName: 'Sarah Johnson',
-            location: 'Via Landolina #186',
-            timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
-            details: 'Check-in: Dec 15',
-          },
-          {
-            id: '3',
-            type: 'code_created',
-            guestName: 'Giovanni Bianchi',
-            location: 'Via Landolina #186',
-            timestamp: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(),
-            details: '3 access codes generated',
-          },
-        ])
       }
     } catch (error) {
       console.error('Failed to fetch activity:', error)

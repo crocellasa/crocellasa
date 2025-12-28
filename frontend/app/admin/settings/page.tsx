@@ -99,31 +99,31 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      {/* API Settings */}
+      {/* API & Webhook Settings */}
       <div className="glass-card p-6">
         <div className="flex items-center gap-3 mb-6">
           <Key className="w-5 h-5 text-brand-midnight/70" />
-          <h2 className="text-lg font-medium text-brand-midnight">API Settings</h2>
+          <h2 className="text-lg font-medium text-brand-midnight">Integration Settings</h2>
         </div>
 
-        <div className="max-w-2xl space-y-4">
+        <div className="max-w-2xl space-y-6">
           <div>
-            <label className="block text-sm font-medium text-mono-700 mb-2">
-              Webhook URL (Hospitable)
+            <label className="block text-sm font-bold text-brand-midnight mb-2 uppercase tracking-tight">
+              Webhook URL (PMS / Lodgify)
             </label>
             <div className="flex items-center gap-2">
               <input
                 type="text"
                 readOnly
-                value={`${process.env.NEXT_PUBLIC_API_URL}/webhooks/hospitable`}
+                value={`${process.env.NEXT_PUBLIC_API_URL}/webhooks/lodgify`}
                 className="flex-1 px-4 py-2 border border-glass-border rounded-lg bg-glass-surface text-brand-midnight/70 text-sm font-mono font-normal"
               />
-              <button className="px-4 py-2 bg-glass-surface hover:bg-glass-highlight border border-glass-border rounded-lg transition-colors text-sm font-medium text-mono-700">
+              <button className="px-4 py-2 bg-brand-sand hover:bg-brand-sand-dark border border-glass-border rounded-lg transition-colors text-sm font-bold text-brand-midnight uppercase tracking-tighter">
                 Copy
               </button>
             </div>
-            <p className="text-xs text-brand-midnight/60 mt-2 font-normal">
-              Configure this URL in your Hospitable webhook settings
+            <p className="text-xs text-brand-midnight/60 mt-2 font-normal italic">
+              Configure this URL in your Lodgify webhook settings (v2) to receive real-time updates.
             </p>
           </div>
         </div>

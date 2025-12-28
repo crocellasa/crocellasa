@@ -10,13 +10,12 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
-@router.post("/hospitable")
-async def hospitable_webhook(request: Request, x_webhook_secret: str = Header(None)):
+@router.post("/lodgify")
+async def lodgify_webhook(request: Request, x_webhook_secret: str = Header(None)):
     """
-    Webhook endpoint for Hospitable
+    Webhook endpoint for Lodgify (v2 API)
 
-    This is primarily called by n8n, which will then call /bookings/create
-    You can also configure Hospitable to call this directly.
+    This receives real-time booking updates directly from Lodgify.
 
     Args:
         request: FastAPI request with webhook payload
@@ -33,7 +32,7 @@ async def hospitable_webhook(request: Request, x_webhook_secret: str = Header(No
         # Get payload
         payload = await request.json()
 
-        logger.info(f"📨 Received Hospitable webhook: {payload.get('event_type', 'unknown')}")
+        logger.info(f"📨 Received Lodgify webhook: {payload.get('event_type', 'unknown')}")
 
         # Log webhook for debugging
         # In production, you might want to forward this to n8n or process directly

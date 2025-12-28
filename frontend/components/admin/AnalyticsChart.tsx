@@ -12,17 +12,18 @@ export default function AnalyticsChart() {
   const [data, setData] = useState<ChartData[]>([])
 
   useEffect(() => {
-    // Mock data for now - replace with actual API call
-    const last7Days = Array.from({ length: 7 }, (_, i) => {
-      const date = new Date()
-      date.setDate(date.getDate() - (6 - i))
-      return {
-        date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-        bookings: Math.floor(Math.random() * 10) + 2,
-        doorOpens: Math.floor(Math.random() * 25) + 5,
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/dashboard/analytics`)
+        if (response.ok) {
+          const result = await response.json()
+          setData(result)
+        }
+      } catch (error) {
+        console.error('Failed to fetch analytics:', error)
       }
-    })
-    setData(last7Days)
+    }
+    fetchData()
   }, [])
 
   const maxValue = Math.max(

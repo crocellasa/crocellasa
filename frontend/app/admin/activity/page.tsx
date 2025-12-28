@@ -83,7 +83,7 @@ export default function ActivityPage() {
             guest_name: 'Sarah Johnson',
             property_id: 'alcova_landolina_fi',
             location: 'Via Landolina #186',
-            details: 'New booking from Hospitable webhook',
+            details: 'New booking from Lodgify webhook',
             metadata: { confirmation_code: 'ABC123', nights: 3 },
             timestamp: new Date(now.getTime() - 1000 * 60 * 60 * 2).toISOString(),
           },

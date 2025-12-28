@@ -7,6 +7,7 @@ from typing import List
 from datetime import datetime, timezone
 from app.core.dependencies import get_current_admin
 from app.core.database import get_supabase
+from app.core.config import settings
 from app.services.tuya_service import get_tuya_service
 from app.services.ring_service import get_ring_service
 from app.services.home_assistant_service import get_home_assistant_service
