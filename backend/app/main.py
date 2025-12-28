@@ -39,6 +39,10 @@ async def lifespan(app: FastAPI):
     init_scheduler()
     logger.info("✅ Scheduler initialized")
 
+    # Log CORS configuration for debugging
+    origins = get_cors_origins()
+    logger.info(f"🌐 CORS: Allowing communication from: {origins}")
+
     yield
 
     # Shutdown

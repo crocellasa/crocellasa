@@ -61,7 +61,7 @@ class Settings(BaseSettings):
     SMTP_FROM: str = "Alcova Landolina <noreply@alcova.com>"
 
     # JWT
-    JWT_SECRET: Optional[str] = None
+    JWT_SECRET: str = "alcova-temporary-dev-secret-change-me"
     JWT_ALGORITHM: str = "HS256"
     JWT_EXPIRATION_HOURS: int = 720  # 30 days
 
@@ -106,6 +106,13 @@ def get_cors_origins() -> List[str]:
     """
     cors_str = os.getenv('CORS_ORIGINS', 'http://localhost:3000')
     if not cors_str or cors_str.strip() == '':
-        return ["http://localhost:3000"]
-    # Split by comma and strip whitespace
-    return [origin.strip() for origin in cors_str.split(',') if origin.strip()]
+        origins = ["http://localhost:3000"]
+    elif cors_str == '*':
+        origins = ["*"]
+    else:
+        # Split by comma and strip whitespace
+        origins = [origin.strip() for origin in cors_str.split(',') if origin.strip()]
+    
+    # We log this here once to help debugging in Railway
+    print(f"CORS: Allowed origins are set to: {origins}")
+    return origins
