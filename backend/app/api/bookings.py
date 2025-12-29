@@ -49,7 +49,6 @@ async def create_booking(booking: BookingCreate):
         logger.info(f"Creating booking for {booking.guest_name}")
 
         booking_data = {
-            "hospitable_id": booking.hospitable_id,
             "lodgify_id": booking.lodgify_id,
             "confirmation_code": booking.confirmation_code,
             "guest_name": booking.guest_name,
@@ -238,7 +237,6 @@ async def create_booking(booking: BookingCreate):
 
         return BookingResponse(
             id=booking_id,
-            hospitable_id=booking.hospitable_id,
             lodgify_id=booking.lodgify_id,
             confirmation_code=booking.confirmation_code,
             guest_name=booking.guest_name,
@@ -259,6 +257,25 @@ async def create_booking(booking: BookingCreate):
         raise
     except Exception as e:
         logger.error(f"❌ Failed to create booking: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/{booking_id}/provision")
+async def provision_booking(booking_id: str):
+    """
+    Trigger access code provisioning for a specific booking
+    """
+    try:
+        from app.services.booking_sync_service import get_booking_sync_service
+        sync_service = get_booking_sync_service()
+        result = await sync_service.provision_booking(booking_id)
+        if result["status"] == "error":
+            raise HTTPException(status_code=400, detail=result["message"])
+        return result
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ Failed to provision booking {booking_id}: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 

@@ -10,19 +10,27 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
+@router.post("/n8n")
+async def n8n_webhook(request: Request, x_webhook_secret: str = Header(None)):
+    """
+    Generic ingress for n8n workflows
+    """
+    if settings.N8N_WEBHOOK_SECRET and x_webhook_secret != settings.N8N_WEBHOOK_SECRET:
+        raise HTTPException(status_code=401, detail="Invalid webhook secret")
+    
+    payload = await request.json()
+    logger.info(f"⚡ Received n8n signal: {payload.get('action', 'unknown')}")
+    
+    # This acts as a router for various n8n actions if needed
+    # For now, just acknowledge
+    return {"status": "ok", "received": True}
+
+
 @router.post("/lodgify")
 async def lodgify_webhook(request: Request, x_webhook_secret: str = Header(None)):
     """
     Webhook endpoint for Lodgify (v2 API)
-
-    This receives real-time booking updates directly from Lodgify.
-
-    Args:
-        request: FastAPI request with webhook payload
-        x_webhook_secret: Optional webhook secret for validation
-
-    Returns:
-        Acknowledgement
+    Can be called directly by Lodgify or forwarded by n8n
     """
     try:
         # Validate webhook secret if configured
@@ -31,11 +39,7 @@ async def lodgify_webhook(request: Request, x_webhook_secret: str = Header(None)
 
         # Get payload
         payload = await request.json()
-
         logger.info(f"📨 Received Lodgify webhook: {payload.get('event_type', 'unknown')}")
-
-        # Log webhook for debugging
-        # In production, you might want to forward this to n8n or process directly
 
         return {
             "status": "received",

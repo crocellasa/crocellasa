@@ -7,7 +7,6 @@ import { fetchWithAuth } from '@/lib/auth'
 
 interface Booking {
   id: string
-  hospitable_id?: string
   lodgify_id?: string
   confirmation_code?: string
   guest_name: string
@@ -147,8 +146,7 @@ export default function BookingsPage() {
       booking.guest_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       booking.guest_email.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (booking.confirmation_code && booking.confirmation_code.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (booking.lodgify_id && booking.lodgify_id.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (booking.hospitable_id && booking.hospitable_id.toLowerCase().includes(searchQuery.toLowerCase()))
+      (booking.lodgify_id && booking.lodgify_id.toLowerCase().includes(searchQuery.toLowerCase()))
 
     const matchesStatus = statusFilter === 'all' || booking.status === statusFilter
 

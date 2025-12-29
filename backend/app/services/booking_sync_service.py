@@ -184,6 +184,23 @@ class BookingSyncService:
             )
             return {"status": "error", "message": str(e)}
 
+    async def provision_booking(self, booking_id: str) -> Dict:
+        """
+        Manually trigger provisioning for a specific booking
+        """
+        # Fetch booking from DB
+        result = self.supabase.table("bookings").select("*").eq("id", booking_id).execute()
+        if not result.data:
+            return {"status": "error", "message": "Booking not found"}
+        
+        booking = result.data[0]
+        success = await self._provision_codes_for_booking(booking)
+        
+        return {
+            "status": "success" if success else "error",
+            "message": "Codes provisioned" if success else "Failed to provision codes"
+        }
+
     async def _provision_codes_for_booking(self, booking: Dict) -> bool:
         """
         Provision access codes for a single booking

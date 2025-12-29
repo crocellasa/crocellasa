@@ -1,0 +1,172 @@
+{
+    "name": "Alcova Smart Check-in Backbone",
+    "nodes": [
+        {
+            "parameters": {
+                "rule": {
+                    "interval": [
+                        {
+                            "field": "hours",
+                            "interval": 1
+                        }
+                    ]
+                }
+            },
+            "id": "lodgify-sync-trigger",
+            "name": "Hourly Sync",
+            "type": "n8n-nodes-base.scheduleTrigger",
+            "typeVersion": 1,
+            "position": [
+                200,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "url": "=https://api.lodgify.com/v2/reservations",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpHeaderAuth",
+                "options": {
+                    "queryParameters": {
+                        "parameters": [
+                            {
+                                "name": "start",
+                                "value": "={{$now.toISO()}}"
+                            }
+                        ]
+                    }
+                }
+            },
+            "id": "fetch-lodgify",
+            "name": "Fetch Lodgify",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.1,
+            "position": [
+                400,
+                300
+            ],
+            "credentials": {
+                "httpHeaderAuth": {
+                    "id": "lodgify-api-key",
+                    "name": "Lodgify API Key"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "=https://your-backend.railway.app/api/v1/bookings/create",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "x-webhook-secret",
+                            "value": "your-secret-here"
+                        }
+                    ]
+                },
+                "sendBody": true,
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "lodgify_id",
+                            "value": "={{$json.id}}"
+                        }
+                    ]
+                }
+            },
+            "id": "save-to-backend",
+            "name": "Save to Backend",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.1,
+            "position": [
+                600,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "amount": 48,
+                "unit": "hours",
+                "action": "remove"
+            },
+            "id": "calc-provisioning-time",
+            "name": "Calc Provisioning Time",
+            "type": "n8n-nodes-base.dateTime",
+            "typeVersion": 2,
+            "position": [
+                800,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "=https://your-backend.railway.app/api/v1/bookings/{{$node[\"save-to-backend\"].json[\"id\"]}}/provision",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "x-webhook-secret",
+                            "value": "your-secret-here"
+                        }
+                    ]
+                }
+            },
+            "id": "trigger-provisioning",
+            "name": "Trigger Provisioning",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.1,
+            "position": [
+                1000,
+                300
+            ]
+        }
+    ],
+    "connections": {
+        "lodgify-sync-trigger": {
+            "main": [
+                [
+                    {
+                        "node": "fetch-lodgify",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "fetch-lodgify": {
+            "main": [
+                [
+                    {
+                        "node": "save-to-backend",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "save-to-backend": {
+            "main": [
+                [
+                    {
+                        "node": "calc-provisioning-time",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "calc-provisioning-time": {
+            "main": [
+                [
+                    {
+                        "node": "trigger-provisioning",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    }
+}
